@@ -138,7 +138,7 @@ def single_BB (Teff, Rns, Mns):
 
     Teff_inf = Teff * sqrt(1 - xg)
 
-    res = 15.0*sigma_SB / ( pow(pi, 4) * pow(kB, 4)) * np.power(Eph, 3) / (np.exp(Eph / (kB *Teff_inf)) - 1.0) / (1.0 - xg) ## Temporary fix
+    res = 15.0*sigma_SB / ( pow(pi, 4) * pow(kB, 4)) * np.power(Eph, 3) / (np.exp(Eph / (kB *Teff_inf)) - 1.0) / (1.0 - xg) 
 
     max_sp = np.max(res)
 
