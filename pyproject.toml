@@ -1,0 +1,18 @@
+[project]
+name = "magpies"
+version = "0.0.1"
+authors = [
+  { name="Dr Andrei Igoshev", email="ignotur@gmail.com" },
+]
+description = "Package to convert magnetic and thermal maps of neutron stars to synthetic X-ray observations"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/ignotur/magpies"
+"Bug Tracker" = "https://github.com/ignotur/magpies/issues"

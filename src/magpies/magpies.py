@@ -1,9 +1,20 @@
 from math import *
 import numpy as np
 
-## Function to calculate the free fall acceleration at the surface of neutron star
 
 def g14 (Rns, Mns):
+    """
+    NAME: g14
+
+    PURPOSE: calculate the free fall acceleration at the surface of neutron star in units of g/1e14 cm/s/s
+
+    INPUT: Rns - neutron star radius in units of km, Mns - neutron star mass in units of solar mass
+
+    OUTPUT: free fall acceleration at the surface of neutron star in units of g/1e14 cm/s/s
+    
+
+    """
+
     G = 6.67430e-8   ## cgs
     Msol = 2e33      ## Solar mass in gramms
     R = Rns * 1e5    ## cm
@@ -170,11 +181,10 @@ def get_redshifted_spectra_pole_3D (theta, phi, Tmap, Rns, Mns):
     for i in range (0, len(phi)):
         for j in range (0, len(theta)):
             al = alpha (cos(theta[j]), Rns, Mns)
-            Df = D_factor (cos(theta[j]), Rns, Mns)
 
 
             if al < pi / 2.0:
-
+                Df = D_factor (cos(theta[j]), Rns, Mns)
                 sp_red = sp_red +  Df * 15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta[j]) * np.cos(al)  * np.power(Eph, 3) / (np.exp(Eph / kB / Ts_inf[i,j]) - 1.0) * dtheta * dphi
                 map_of_visible[i,j] = Ts_inf[i, j]
 
@@ -207,7 +217,7 @@ def get_redshifted_spectra_equator_3D (theta, phi, Tmap, Rns, Mns):
     xg = 2.0 * G * Mns*Msol / R / c / c
     g14 = G*Mns*Msol / R / R / sqrt(1.0 - xg ) / 1e14 ## Gudmundsson et al. (1983), eq. (2-3)
     
-    print ('xg = ', xg, ' log_10 of  mean non-redshifted Ts = ', log10(np.mean(Tmap)))
+    #print ('xg = ', xg, ' log_10 of  mean non-redshifted Ts = ', log10(np.mean(Tmap)))
     
     Ts_inf = Tmap * sqrt(1 - xg)
     
@@ -227,12 +237,12 @@ def get_redshifted_spectra_equator_3D (theta, phi, Tmap, Rns, Mns):
         for j in range (0, len(theta)):
             new_theta = sin(theta[j])*cos(phi[i])
             al = alpha (new_theta, Rns, Mns)
-            Df = D_factor (new_theta, Rns, Mns)
             
             
             
             #print (phi[i], theta[j], al)
             if al < pi / 2.0:
+                Df = D_factor (new_theta, Rns, Mns)
                 sp_red = sp_red +  Df * 15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta[j]) * np.cos(al) * np.power(Eph, 3) / (np.exp(Eph / kB / Ts_inf[i,j]) - 1.0) * dtheta * dphi            
                 map_of_visible[i,j] = Ts_inf[i, j]
                 
@@ -260,7 +270,7 @@ def two_BB (param, Teff, Rns, Mns):
 
     return [eph, spec]
 
-def diff (param, Teff, Rns, Mns, spec):
+def two_BB_diff (param, Teff, Rns, Mns, spec):
 
     eph, spec_synth = two_BB (param, Teff, Rns, Mns)
 
@@ -284,7 +294,7 @@ def precompute_Dcos_alpha (Rns, Mns, chi, inc, phase, phi1, theta1):
 
 ## Efficient calculations of lightcurve - no beaming
 
-def lightcurve_fast (theta, phi, Tmap, Rns, Mns, phases, chi, inc):
+def lightcurve (theta, phi, Tmap, Rns, Mns, phases, chi, inc):
 
     sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
     kB = 8.617e-8       ## keV / K
