@@ -277,8 +277,9 @@ def two_BB_diff (param, Teff, Rns, Mns, spec):
     res = 0.0
 
     for i in range (0, len(spec)):
-        if (spec[i] > 0) and (spec_synth[i] > 0):
-            res = res + (spec[i] - spec_synth[i])**2.0 / abs(spec[i])**2
+        if (spec[i] > 1) and (spec_synth[i] > 1):
+#            res = res + (spec[i] - spec_synth[i])**2.0 / abs(spec[i])**2
+            res = res + (log(spec[i]) - log(spec_synth[i]))**2.0 / abs(log(spec_synth[i]))
 
     return res
 
