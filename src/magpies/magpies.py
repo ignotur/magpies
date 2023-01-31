@@ -337,8 +337,6 @@ def lightcurve (theta, phi, Tmap, Rns, Mns, phases, chi, inc):
 
     for i in range (0, len(phases)):
         Dcosalpha = precompute_Dcos_alpha (Rns, Mns, chi, inc, phases[i], phi1, theta1)
-
-        print (np.sum(Dcosalpha), np.sum(factor_int))
         res_int.append (np.sum(factor_int * Dcosalpha))
 
     return res_int
@@ -368,8 +366,6 @@ def lightcurve_cos2 (theta, phi, Tmap, Rns, Mns, phases, chi, inc):
 
     for i in range (0, len(phases)):
         Dcosalpha = precompute_Dcos2_alpha (Rns, Mns, chi, inc, phases[i], phi1, theta1)
-
-        print (np.sum(Dcosalpha), np.sum(factor_int))
         res_int.append (np.sum(factor_int * Dcosalpha))
 
     return res_int
