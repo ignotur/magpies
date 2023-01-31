@@ -289,9 +289,26 @@ def precompute_Dcos_alpha (Rns, Mns, chi, inc, phase, phi1, theta1):
     
     cospsi = (np.sin(chi)*np.cos(theta1) + np.sin(theta1)*np.cos(chi)*np.cos(phi1))*np.sin(inc)*np.cos(phase) + (-np.sin(chi)*np.sin(theta1)*np.cos(phi1) + np.cos(chi)*np.cos(theta1))*np.cos(inc) + np.sin(inc)*np.sin(phase)*np.sin(phi1)*np.sin(theta1)
     Dfact = D_factor (cospsi, Rns, Mns)
+    Dfact = np.nan_to_num (Dfact, copy = False)
     cos_al = cos_alpha (cospsi, Rns, Mns)
+    cos_al = np.nan_to_num(cos_al, copy = False)
     b = (cos_al > 0).astype(int)
-    return b*Dfact * cos_al
+    b = np.nan_to_num (b, copy = False)
+    return b*Dfact * cos_al 
+
+## Auxiliary function to compute the multiplication factors for lightcurve efficiently taking into account cos^2 beaming
+
+def precompute_Dcos2_alpha (Rns, Mns, chi, inc, phase, phi1, theta1):
+    
+    cospsi = (np.sin(chi)*np.cos(theta1) + np.sin(theta1)*np.cos(chi)*np.cos(phi1))*np.sin(inc)*np.cos(phase) + (-np.sin(chi)*np.sin(theta1)*np.cos(phi1) + np.cos(chi)*np.cos(theta1))*np.cos(inc) + np.sin(inc)*np.sin(phase)*np.sin(phi1)*np.sin(theta1)
+    Dfact = D_factor (cospsi, Rns, Mns)
+    Dfact = np.nan_to_num (Dfact, copy = False)
+    cos_al = cos_alpha (cospsi, Rns, Mns)
+    cos_al = np.nan_to_num(cos_al, copy = False)
+    b = (cos_al > 0).astype(int)
+    b = np.nan_to_num (b, copy = False)
+    return b*Dfact * cos_al * cos_al * cos_al
+
 
 ## Efficient calculations of lightcurve - no beaming
 
@@ -311,8 +328,8 @@ def lightcurve (theta, phi, Tmap, Rns, Mns, phases, chi, inc):
 
     Ts_inf = Tmap * sqrt(1 - xg)
 
-    dtheta = theta[1] - theta[0]
-    dphi   = phi[1] - phi[0]
+    dtheta = theta[10] - theta[9]
+    dphi   = phi[10] - phi[9]
 
     factor_int = sigma_SB * R * R * np.power(Ts_inf, 4.0) * np.sin(theta1) / pi * dtheta * dphi
 
@@ -320,6 +337,39 @@ def lightcurve (theta, phi, Tmap, Rns, Mns, phases, chi, inc):
 
     for i in range (0, len(phases)):
         Dcosalpha = precompute_Dcos_alpha (Rns, Mns, chi, inc, phases[i], phi1, theta1)
+
+        print (np.sum(Dcosalpha), np.sum(factor_int))
+        res_int.append (np.sum(factor_int * Dcosalpha))
+
+    return res_int
+
+def lightcurve_cos2 (theta, phi, Tmap, Rns, Mns, phases, chi, inc):
+
+    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
+    kB = 8.617e-8       ## keV / K
+    G = 6.67430e-8    ## cgs
+    Msol = 2e33       ## Solar mass in gramms
+    c   = 2.998e+10   ## speed of light in cm/s
+
+    theta1, phi1 = np.meshgrid (theta, phi)
+
+    R = Rns * 1e5
+
+    xg = 2.0 * G * Mns*Msol / R / c / c
+
+    Ts_inf = Tmap * sqrt(1 - xg)
+
+    dtheta = theta[10] - theta[9]
+    dphi   = phi[10] - phi[9]
+
+    factor_int = sigma_SB * R * R * np.power(Ts_inf, 4.0) * np.sin(theta1) / pi * dtheta * dphi
+
+    res_int = []
+
+    for i in range (0, len(phases)):
+        Dcosalpha = precompute_Dcos2_alpha (Rns, Mns, chi, inc, phases[i], phi1, theta1)
+
+        print (np.sum(Dcosalpha), np.sum(factor_int))
         res_int.append (np.sum(factor_int * Dcosalpha))
 
     return res_int
