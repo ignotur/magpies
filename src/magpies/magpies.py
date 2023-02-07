@@ -277,9 +277,10 @@ def two_BB_diff (param, Teff, Rns, Mns, spec):
     res = 0.0
 
     for i in range (0, len(spec)):
-        if (spec[i] > 1) and (spec_synth[i] > 1):
+        if (spec[i] > np.max(spec) / 1e3):
 #            res = res + (spec[i] - spec_synth[i])**2.0 / abs(spec[i])**2
-            res = res + (log(spec[i]) - log(spec_synth[i]))**2.0 / abs(log(spec_synth[i]))
+#            res = res + (log(spec[i]) - log(spec_synth[i]))**2.0 / abs(log(spec_synth[i])) - better complete shape fit
+            res = res + (spec[i] - spec_synth[i])**2 / abs(spec[i])
 
     return res
 
