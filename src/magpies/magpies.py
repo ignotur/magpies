@@ -148,6 +148,32 @@ def single_BB (Teff, Rns, Mns):
 
     return [Eph, res]
 
+## Single blackbody spectra
+## Result is computed in units: number of photons with fixed energy per energy bin
+def single_BB_obs (Teff, Rns, Mns, eph, nphot):
+
+    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
+    kB = 8.617e-8       ## keV / K
+    G = 6.67430e-8    ## cgs
+    Msol = 2e33       ## Solar mass in gramms
+    c   = 2.998e+10   ## speed of light in cm/s
+
+    R = Rns * 1e5
+
+    xg = 2.0 * G * Mns*Msol / R / c / c
+    g14 = G*Mns*Msol / R / R / sqrt(1.0 - xg ) / 1e14 ## Gudmundsson et al. (1983), eq. (2-3)
+
+    Teff_inf = Teff * sqrt(1 - xg)
+
+    res = 15.0*sigma_SB / ( pow(pi, 4) * pow(kB, 4)) * np.power(eph, 3) / (np.exp(eph / (kB *Teff_inf)) - 1.0) / (1.0 - xg) 
+
+    coeff = nphot / np.sum(res)
+
+    res_n = np.asarray(np.asarray(res) * coeff, dtype=int)
+
+    return res_n
+
+
 def get_redshifted_spectra_pole_3D (theta, phi, Tmap, Rns, Mns):
     sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
     kB = 8.617e-8       ## keV / K
@@ -188,11 +214,6 @@ def get_redshifted_spectra_pole_3D (theta, phi, Tmap, Rns, Mns):
                 sp_red = sp_red +  Df * 15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta[j]) * np.cos(al)  * np.power(Eph, 3) / (np.exp(Eph / kB / Ts_inf[i,j]) - 1.0) * dtheta * dphi
                 map_of_visible[i,j] = Ts_inf[i, j]
 
-    #Teff_inf = pow(10, 5.6) * sqrt(1 - xg)
-
-    #res_1b =  en_red * 15.0*sigma_SB / (4.0 * pow(pi, 4) * pow(kB, 4)) * np.power(Eph, 3) / (np.exp(Eph / kB / Teff_inf) - 1.0)
-
-
     max_sp = np.max(sp_red)
 
     for i in range (0, len(sp_red)):
@@ -200,6 +221,46 @@ def get_redshifted_spectra_pole_3D (theta, phi, Tmap, Rns, Mns):
             sp_red[i] = 0.0
 
     return [Eph, sp_red, map_of_visible]
+
+def get_redshifted_spectra_pole_obs (theta, phi, Tmap, Rns, Mns, eph, nphot):
+    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
+    kB = 8.617e-8       ## keV / K
+    G = 6.67430e-8    ## cgs
+    Msol = 2e33       ## Solar mass in gramms
+    c   = 2.998e+10   ## speed of light in cm/s
+
+    map_of_visible = np.zeros ((len(phi), len(theta)))
+
+    R = Rns * 1e5
+
+    xg = 2.0 * G * Mns*Msol / R / c / c
+
+    Ts_inf = Tmap * sqrt(1 - xg)
+
+    ## Here we prepare variables for integration over the visible hemisphere
+
+    sp_red = np.zeros(len(eph))
+
+    dtheta = theta[1] - theta[0]
+    dphi   = phi[1] - phi[0]
+
+    for i in range (0, len(phi)):
+        for j in range (0, len(theta)):
+            al = alpha (cos(theta[j]), Rns, Mns)
+
+
+            if al < pi / 2.0:
+                Df = D_factor (cos(theta[j]), Rns, Mns)
+                sp_red = sp_red +  Df * 15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta[j]) * np.cos(al)  * np.power(eph, 3) / (np.exp(eph / kB / Ts_inf[i,j]) - 1.0) * dtheta * dphi
+                map_of_visible[i,j] = Ts_inf[i, j]
+
+    coeff = nphot / np.sum(sp_red)
+
+    sp_red_n = np.asarray(sp_red * coeff, dtype=int)
+
+
+    return [sp_red_n, map_of_visible]
+
 
 def get_redshifted_spectra_equator_3D (theta, phi, Tmap, Rns, Mns):
     
@@ -270,19 +331,70 @@ def two_BB (param, Teff, Rns, Mns):
 
     return [eph, spec]
 
+def two_BB_obs (param, Teff, Rns, Mns, eph, nphot):
+
+    sc, sh, pc, ph = param
+
+    sc = abs(sc)
+    sh = abs(sh)
+    pc = abs(pc)
+    ph = abs(ph)
+
+    sp_Teff1 = single_BB_obs (pc*Teff, Rns, Mns, eph, nphot * sc)
+    sp_Teff2 = single_BB_obs (ph*Teff, Rns, Mns, eph, nphot * sh)
+
+    spec = sp_Teff1 + sp_Teff2
+
+    return spec
+
+
+
 def two_BB_diff (param, Teff, Rns, Mns, spec):
 
     eph, spec_synth = two_BB (param, Teff, Rns, Mns)
 
     res = 0.0
 
+    spec_n  = np.asarray(spec) / np.max(spec)
+    spec_sn = np.asarray(spec_synth) / np.max(spec) 
+
     for i in range (0, len(spec)):
-        if (spec[i] > np.max(spec) / 1e3):
+#        if (spec[i] > np.max(spec) / 1e3):
+        if (spec[i] > 1):
 #            res = res + (spec[i] - spec_synth[i])**2.0 / abs(spec[i])**2
 #            res = res + (log(spec[i]) - log(spec_synth[i]))**2.0 / abs(log(spec_synth[i])) - better complete shape fit
-            res = res + (spec[i] - spec_synth[i])**2 / abs(spec[i])
+#            res = res + (spec[i] - spec_synth[i])**2 / abs(spec[i])
+#            res = res + (spec[i] - spec_synth[i])**2 / abs(spec_synth[i])
+#            res = res + (spec_n[i] - spec_sn[i])**2 / abs(spec_sn[i])
+            res = res + (spec[i] - spec_synth[i])**2 / (spec[i] + spec_synth[i])           
+
+    res = res / 142.0
+    res = sqrt(res)
 
     return res
+
+
+def two_BB_diff_obs (param, Teff, Rns, Mns, spec, eph, nphot):
+
+    spec_synth = two_BB_obs (param, Teff, Rns, Mns, eph, nphot)
+
+    res = 0.0
+
+    for i in range (0, len(spec)):
+#        if (spec[i] > np.max(spec) / 1e3):
+        if (spec[i] > 1):
+#            res = res + (spec[i] - spec_synth[i])**2.0 / abs(spec[i])**2
+#            res = res + (log(spec[i]) - log(spec_synth[i]))**2.0 / abs(log(spec_synth[i])) - better complete shape fit
+#            res = res + (spec[i] - spec_synth[i])**2 / abs(spec[i])
+#            res = res + (spec[i] - spec_synth[i])**2 / abs(spec_synth[i])
+#            res = res + (spec_n[i] - spec_sn[i])**2 / abs(spec_sn[i])
+            res = res + (spec[i] - spec_synth[i])**2 / (spec[i] + spec_synth[i])           
+
+    res = res / len(eph)
+#    res = sqrt(res)
+
+    return res
+
 
 ## Auxiliary function to compute the multiplication factors for lightcurve efficiently
 
