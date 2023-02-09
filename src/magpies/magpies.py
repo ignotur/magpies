@@ -315,6 +315,55 @@ def get_redshifted_spectra_equator_3D (theta, phi, Tmap, Rns, Mns):
 
     return [Eph, sp_red, map_of_visible]
 
+
+def get_redshifted_spectra_equator_obs (theta, phi, Tmap, Rns, Mns, eph, nphot):
+    
+    map_of_visible = np.zeros ((len(phi), len(theta)))
+    
+    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
+    kB = 8.617e-8       ## keV / K
+    G = 6.67430e-8    ## cgs
+    Msol = 2e33       ## Solar mass in gramms
+    Bp = 1e14         ## G
+    c   = 2.998e+10   ## speed of light in cm/s
+    
+    R = Rns * 1e5
+
+    xg = 2.0 * G * Mns*Msol / R / c / c
+    g14 = G*Mns*Msol / R / R / sqrt(1.0 - xg ) / 1e14 ## Gudmundsson et al. (1983), eq. (2-3)
+    
+    #print ('xg = ', xg, ' log_10 of  mean non-redshifted Ts = ', log10(np.mean(Tmap)))
+    
+    Ts_inf = Tmap * sqrt(1 - xg)
+    
+    ## Here we prepare variables for integration over the visible hemisphere
+    
+    sp_red = np.zeros(len(eph))
+
+    dtheta = theta[1] - theta[0]
+    dphi   = phi[1] - phi[0] 
+
+    for i in range (0, len(phi)):
+        for j in range (0, len(theta)):
+            new_theta = sin(theta[j])*cos(phi[i])
+            al = alpha (new_theta, Rns, Mns)
+            
+            
+            
+            #print (phi[i], theta[j], al)
+            if al < pi / 2.0:
+                Df = D_factor (new_theta, Rns, Mns)
+                sp_red = sp_red +  Df * 15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta[j]) * np.cos(al) * np.power(eph, 3) / (np.exp(eph / kB / Ts_inf[i,j]) - 1.0) * dtheta * dphi            
+                map_of_visible[i,j] = Ts_inf[i, j]
+
+    coeff = nphot / np.sum(sp_red)
+
+    sp_red_n = np.asarray(sp_red * coeff, dtype=int)
+                
+    return [sp_red_n, map_of_visible]
+
+
+
 def two_BB (param, Teff, Rns, Mns):
 
     sc, sh, pc, ph = param
