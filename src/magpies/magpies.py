@@ -519,6 +519,21 @@ def precompute_Dcos2_alpha (Rns, Mns, chi, inc, phase, phi1, theta1):
 ## Efficient calculations of lightcurve - no beaming
 
 def lightcurve (theta, phi, Tmap, Rns, Mns, phases, chi, inc):
+    """
+
+    NAME: lightcurve
+
+    PURPOSE: calculate soft X-ray lightcurve
+
+    INPUT: Tmap is the surface thermal map which is stored at the locations theta and phi, Rns is radius of neutron star in km
+    Mns is mass of neutron star in Solar mass units, phases is a python list of phases in radians and chi and inc are rotational orientation angles.
+    chi is the magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map) and inc is the
+    inclination of the observer with respect to the rotational axis.
+
+    OUTPUT: Soft X-ray lightcurve in units of intensity for each rotational phase [erg/s]
+    
+
+    """
 
     sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
     kB = 8.617e-8       ## keV / K

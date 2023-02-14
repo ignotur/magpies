@@ -7,3 +7,4 @@ Here we briefly describe most functions implemented in the Magpies python librar
 .. autofunction:: magpies.compute_L
 .. autofunction:: magpies.compute_Teff
 .. autofunction:: magpies.D_factor
+.. autofunction:: magpies.lightcurve
