@@ -1,5 +1,5 @@
-Atmos
-=====
+Atmos method list
+=================
 
 A selection of functions to model temperature distribution over the neutron star surface
 

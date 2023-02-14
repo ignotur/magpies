@@ -4,6 +4,7 @@ import numpy as np
 
 def g14 (Rns, Mns):
     """
+
     NAME: g14
 
     PURPOSE: calculate the free fall acceleration at the surface of neutron star in units of g/1e14 cm/s/s
@@ -28,7 +29,20 @@ def g14 (Rns, Mns):
 ## Function to compute the luminosity of neutron star
 
 def compute_L (theta, phi, Rns, Tmap):
+    """
+
+    NAME: compute_L
+
+    PURPOSE: calculate the total thermal X-ray luminosity of neutron star
+
+    INPUT: Tmap is the surface thermal map which is stored at the locations theta and phi, Rns is radius of neutron star in km
+           The thermal map can be one dimensional (in the case of axisymmetric temperature distribution) or two-dimensional.
+
+    OUTPUT: total thermal luminosity erg / s
     
+
+    """
+
     sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
     kB = 8.617e-8       ## keV / K
     G = 6.67430e-8    ## cgs
@@ -61,6 +75,21 @@ def compute_L (theta, phi, Rns, Tmap):
 ## Function to compute the effective temperature
 
 def compute_Teff (theta, phi, Rns, Tmap):
+    """
+
+    NAME: compute_Teff
+
+    PURPOSE: calculating the effective temperature of neutron star
+
+    INPUT: Tmap is the surface thermal map which is stored at the locations theta and phi, Rns is radius of neutron star in km
+           The thermal map can be one dimensional (in the case of axisymmetric temperature distribution) or two-dimensional.
+
+    OUTPUT: Effective temperature in Kelvins
+    
+
+    """
+
+
     sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
 
     Lns = compute_L (theta, phi, Rns, Tmap)
@@ -69,6 +98,21 @@ def compute_Teff (theta, phi, Rns, Tmap):
 ## Lensing factor following the article Poutanen (2020) A&A 640, A24 (2020)
 
 def D_factor (cospsi, Rns, Mns):
+    """
+
+    NAME: D_factor
+
+    PURPOSE: calculating the lensing factor following the article Poutanen (2020) A&A 640, A24 (2020)
+
+    INPUT: cospsi is the cosine of propagation angle, Rns is radius of neutron star in km, Mns mass of neutron star in Solar mass 
+
+    OUTPUT: Dimensionless lensing factor
+    
+
+    """
+
+
+
     G   = 6.67430e-8  ## cgs
     R   = Rns * 1e5   ## cm
     M   = Mns * 2e33  ## 1.4 Solar mass in g
