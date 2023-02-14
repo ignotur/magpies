@@ -389,10 +389,10 @@ def two_BB_obs (param, Teff, Rns, Mns, eph, nphot):
     pc = abs(pc)
     ph = abs(ph)
 
-    sp_Teff1 = single_BB_obs (pc*Teff, Rns, Mns, eph, nphot * sc)
-    sp_Teff2 = single_BB_obs (ph*Teff, Rns, Mns, eph, nphot * sh)
+    sp_Teff1 = single_BB_obs (pc*Teff, Rns, Mns, eph, nphot)
+    sp_Teff2 = single_BB_obs (ph*Teff, Rns, Mns, eph, nphot)
 
-    spec = sp_Teff1 + sp_Teff2
+    spec = sc * sp_Teff1 + sh * sp_Teff2
 
     return spec
 
