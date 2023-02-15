@@ -4,8 +4,9 @@ import numpy as np
 
 def g14 (Rns, Mns):
     """
+    |
 
-    PURPOSE: calculate the free fall acceleration at the surface of neutron star in units of g/1e14 cm/s/s
+    Calculate the **free fall acceleration** at the surface of neutron star.
 
     :param Rns: neutron star radius [km]
     :param Mns: neutron star mass [Solar mass]
@@ -29,8 +30,9 @@ def g14 (Rns, Mns):
 
 def compute_L (theta, phi, Rns, Tmap):
     """
+    |
 
-    PURPOSE: calculate the total thermal X-ray luminosity of neutron star
+    Calculate the **total thermal X-ray luminosity** of neutron star.
 
     :param Tmap: Tmap is the surface thermal map [K]
     :param theta: list magnetic latitude [radians] where Tmap is provided 
@@ -77,8 +79,9 @@ def compute_L (theta, phi, Rns, Tmap):
 
 def compute_Teff (theta, phi, Rns, Tmap):
     """
+    |
 
-    PURPOSE: calculating the effective temperature of neutron star
+    Calculate the effective temperature of neutron star.
 
     :param Tmap: Tmap is the surface thermal map [K]
     :param theta: list magnetic latitude [radians] where Tmap is provided 
@@ -102,8 +105,9 @@ def compute_Teff (theta, phi, Rns, Tmap):
 
 def D_factor (cospsi, Rns, Mns):
     """
+    |
 
-    PURPOSE: calculating the lensing factor following the article Poutanen (2020) A&A 640, A24 (2020)
+    Calculate the lensing factor following the article Poutanen (2020) A&A 640, A24 (2020)
 
     :param cospsi: cosine of propagation angle
     :param Rns: radius of neutron star [km]
@@ -222,6 +226,25 @@ def single_BB_obs (Teff, Rns, Mns, eph, nphot):
 
 
 def get_redshifted_spectra_pole_3D (theta, phi, Tmap, Rns, Mns):
+    """
+    |
+
+    Calculate thermal spectra emitted by neutron star observed from its magnetic pole (top row of thermal map).
+
+    :param Tmap: two dimensional array describing the surface thermal map [K]
+    :param theta: list of magnetic latitude [radians] where Tmap is provided
+    :param phi: list of magnetic longuitudets [radians] where Tmap is provided
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+
+    :returns: :eph: logarithmic energy mesh [keV]
+              :sp: redshifted spectra [erg s^-1 cm^-2 keV^-1]
+              :visible_map: two-dimensional array which contains only the temperature distribution on visible hemisphere
+    
+
+    """
+
+
     sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
     kB = 8.617e-8       ## keV / K
     G = 6.67430e-8    ## cgs
@@ -270,6 +293,25 @@ def get_redshifted_spectra_pole_3D (theta, phi, Tmap, Rns, Mns):
     return [Eph, sp_red, map_of_visible]
 
 def get_redshifted_spectra_pole_obs (theta, phi, Tmap, Rns, Mns, eph, nphot):
+    """
+    |
+
+    Calculate thermal spectra [integer number of photons per bin] emitted by neutron star observed from its magnetic pole (top row of thermal map).
+
+    :param Tmap: two dimensional array describing the surface thermal map [K]
+    :param theta: list of magnetic latitude [radians] where Tmap is provided
+    :param phi: list of magnetic longuitudets [radians] where Tmap is provided
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param eph: list energies where spectra should be computed [keV]
+    :param nphot: total number of photons to be generated
+
+    :returns: :sp: number of photons per energy bin
+              :visible_map: two-dimensional array which contains only the temperature distribution on visible hemisphere
+    
+
+    """
+
     sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
     kB = 8.617e-8       ## keV / K
     G = 6.67430e-8    ## cgs
@@ -469,6 +511,25 @@ def two_BB_diff (param, Teff, Rns, Mns, spec):
 
     return res
 
+def BB_diff_obs (param, Teff, Rns, Mns, spec, eph, nphot):
+
+    sc, pc = param
+
+    spec_synth = single_BB_obs (sc*Teff, Rns, Mns, eph, nphot*pc)
+
+    res = 0.0
+
+    for i in range (0, len(spec)):
+        if (spec[i] > 1):
+            res = res + (spec[i] - spec_synth[i])**2 / (spec[i] + spec_synth[i])
+
+    res = res / len(eph)
+
+    return res
+
+
+
+
 
 def two_BB_diff_obs (param, Teff, Rns, Mns, spec, eph, nphot):
 
@@ -523,8 +584,9 @@ def precompute_Dcos2_alpha (Rns, Mns, chi, inc, phase, phi1, theta1):
 
 def lightcurve (theta, phi, Tmap, Rns, Mns, phases, chi, inc):
     """
+    |
 
-    PURPOSE: calculate soft X-ray lightcurve
+    Calculate soft X-ray lightcurve
 
     :param Tmap: Tmap is the surface thermal map [K]
     :param theta: list magnetic latitude [radians] where Tmap is provided

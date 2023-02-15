@@ -39,16 +39,23 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="atmos.NS_atmosphere">
 <span class="sig-prename descclassname"><span class="pre">atmos.</span></span><span class="sig-name descname"><span class="pre">NS_atmosphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#atmos.NS_atmosphere" title="Permalink to this definition">¶</a></dt>
-<dd><p>NAME: NS_atmosphere</p>
-<p>PURPOSE: class which simulates the surface temperature distribution for different types of magnetised atmospheres</p>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Class which simulates the surface temperature distribution for different types of magnetised atmospheres</p>
 <p>OUTPUT: class member describing the surface temperature distribution</p>
 </dd></dl>
 
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="atmos.NS_atmosphere.__init__">
 <span class="sig-prename descclassname"><span class="pre">atmos.NS_atmosphere.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#atmos.NS_atmosphere.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>NAME: NS_atmosphere</p>
-<p>PURPOSE: Initialise the class member with physical parameters of the neutron star</p>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Initialise the class member with physical parameters of the neutron star</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -59,18 +66,28 @@
 </ul>
 </dd>
 </dl>
-<p>‘Potekhin_2015’ is for Potekhin, Pons &amp; Page (2015) for iron envelope 2015SSRv..191..239P</p>
-<p>‘Potekhin_2003_iron’ is for Potekhin, Yakovlev, Chabrier &amp; Gnedin (2003) for iron envelope 2003ApJ…594..404P 
+<p><strong>Potekhin_2015</strong> is for Potekhin, Pons &amp; Page (2015) for iron envelope 2015SSRv..191..239P</p>
+<p><strong>Potekhin_2003_iron</strong> is for Potekhin, Yakovlev, Chabrier &amp; Gnedin (2003) for iron envelope 2003ApJ…594..404P 
 this is the same fit as provided by Beznogov, Potekhin &amp; Yakovlev (2021) for iron envelope 2021PhR…919….1B</p>
-<p>‘Potekhin_Yakovlev_2001_iron’ is for Potekhin &amp; Yakovlev (2001) for iron envelope 2001A&amp;A…374..213P</p>
-<p>‘Potekhin_2003_accr’ is for Potekhin, Yakovlev, Chabrier &amp; Gnedin (2003) for fully accreted envelope 2003ApJ…594..404P</p>
+<p><strong>Potekhin_Yakovlev_2001_iron</strong> is for Potekhin &amp; Yakovlev (2001) for iron envelope 2001A&amp;A…374..213P</p>
+<p><strong>Potekhin_2003_accr</strong> is for Potekhin, Yakovlev, Chabrier &amp; Gnedin (2003) for fully accreted envelope 2003ApJ…594..404P</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>class member</p>
+</dd>
+</dl>
 </dd></dl>
 
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="atmos.NS_atmosphere.Ts">
 <span class="sig-prename descclassname"><span class="pre">atmos.NS_atmosphere.</span></span><span class="sig-name descname"><span class="pre">Ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#atmos.NS_atmosphere.Ts" title="Permalink to this definition">¶</a></dt>
-<dd><p>NAME: Ts</p>
-<p>PURPOSE: describes the dependance of the surface temperature distribution on magnetic latitude</p>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Describes the dependance of the surface temperature distribution on magnetic latitude</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>theta</strong> – [radians] is magnetic latitude</p>

@@ -19,4 +19,12 @@ Here we briefly describe most functions implemented in the Magpies python librar
 
 |
 
+.. autofunction:: magpies.get_redshifted_spectra_pole_3D
+
+|
+
+.. autofunction:: magpies.get_redshifted_spectra_pole_obs
+
+|
+
 .. autofunction:: magpies.lightcurve
