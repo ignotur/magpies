@@ -18,25 +18,22 @@ class NS_atmosphere:
 
             PURPOSE: Initialise the class member with physical parameters of the neutron star
 
-            INPUT: g14 is free fall acceleration at the NS surface in units of g/1e14 cm/s/s
+            :param g14: is free fall acceleration at the NS surface in units of g/1e14 cm/s/s
 
-            Tb is the temperature in deep layers in units of Kelvin
+            :param Tb: is the temperature in deep layers in units of Kelvin
 
-            B is the pole magnetic field in units of Gauss
+            :param B: is the pole magnetic field in units of Gauss
 
-            model_name is the fit type for surface temperature distribution, options are as the following:
+            :param model_name: is the fit type for surface temperature distribution, options are as the following:
 
-            Potekhin_2015 is for Potekhin, Pons & Page (2015) for iron envelope 2015SSRv..191..239P
+            'Potekhin_2015' is for Potekhin, Pons & Page (2015) for iron envelope 2015SSRv..191..239P
 
-            Potekhin_2003_iron is for Potekhin, Yakovlev, Chabrier & Gnedin (2003) for iron envelope 2003ApJ...594..404P 
+            'Potekhin_2003_iron' is for Potekhin, Yakovlev, Chabrier & Gnedin (2003) for iron envelope 2003ApJ...594..404P 
             this is the same fit as provided by Beznogov, Potekhin & Yakovlev (2021) for iron envelope 2021PhR...919....1B
 
-            Potekhin_Yakovlev_2001_iron is for Potekhin & Yakovlev (2001) for iron envelope 2001A&A...374..213P
+            'Potekhin_Yakovlev_2001_iron' is for Potekhin & Yakovlev (2001) for iron envelope 2001A&A...374..213P
 
-            Potekhin_2003_accr is for Potekhin, Yakovlev, Chabrier & Gnedin (2003) for fully accreted envelope 2003ApJ...594..404P
-
-
-            OUTPUT: free fall acceleration at the surface of neutron star in units of g/1e14 cm/s/s
+            'Potekhin_2003_accr' is for Potekhin, Yakovlev, Chabrier & Gnedin (2003) for fully accreted envelope 2003ApJ...594..404P
 
 
         """
@@ -106,6 +103,21 @@ class NS_atmosphere:
 
 
     def Ts (self, theta):
+
+        """
+
+            NAME: Ts
+
+            PURPOSE: describes the dependance of the surface temperature distribution on magnetic latitude 
+
+            :param theta: [radians] is magnetic latitude
+
+            :returns: surface temperature [Kelvins] at locations prescribed by specifiying magnetic latitude
+
+
+        """
+
+
 
         if self.name == 1:
             a2 = 10 * self.B12 / (sqrt(self.T9) + 0.1 * self.B12 * pow(self.T9, -1.0 / 4.0))

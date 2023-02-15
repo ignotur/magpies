@@ -5,13 +5,12 @@ import numpy as np
 def g14 (Rns, Mns):
     """
 
-    NAME: g14
-
     PURPOSE: calculate the free fall acceleration at the surface of neutron star in units of g/1e14 cm/s/s
 
-    INPUT: Rns - neutron star radius in units of km, Mns - neutron star mass in units of solar mass
+    :param Rns: neutron star radius [km]
+    :param Mns: neutron star mass [Solar mass]
 
-    OUTPUT: free fall acceleration at the surface of neutron star in units of g/1e14 cm/s/s
+    :returns: free fall acceleration at the surface of neutron star [g/1e14 cm/s/s]
     
 
     """
@@ -31,14 +30,16 @@ def g14 (Rns, Mns):
 def compute_L (theta, phi, Rns, Tmap):
     """
 
-    NAME: compute_L
-
     PURPOSE: calculate the total thermal X-ray luminosity of neutron star
 
-    INPUT: Tmap is the surface thermal map which is stored at the locations theta and phi, Rns is radius of neutron star in km
-           The thermal map can be one dimensional (in the case of axisymmetric temperature distribution) or two-dimensional.
+    :param Tmap: Tmap is the surface thermal map [K]
+    :param theta: list magnetic latitude [radians] where Tmap is provided 
+    :param phi: list of magnetic longuitudets [radians] where Tmap is provided
+    :param Rns: radius of neutron star [km]
+           
+    The thermal map can be one dimensional (in the case of axisymmetric temperature distribution) or two-dimensional.
 
-    OUTPUT: total thermal luminosity erg / s
+    :returns: total thermal luminosity [erg/s]
     
 
     """
@@ -77,14 +78,16 @@ def compute_L (theta, phi, Rns, Tmap):
 def compute_Teff (theta, phi, Rns, Tmap):
     """
 
-    NAME: compute_Teff
-
     PURPOSE: calculating the effective temperature of neutron star
 
-    INPUT: Tmap is the surface thermal map which is stored at the locations theta and phi, Rns is radius of neutron star in km
-           The thermal map can be one dimensional (in the case of axisymmetric temperature distribution) or two-dimensional.
+    :param Tmap: Tmap is the surface thermal map [K]
+    :param theta: list magnetic latitude [radians] where Tmap is provided 
+    :param phi: list of magnetic longuitudets [radians] where Tmap is provided
+    :param Rns: radius of neutron star [km]
 
-    OUTPUT: Effective temperature in Kelvins
+    The thermal map can be one dimensional (in the case of axisymmetric temperature distribution) or two-dimensional.
+
+    :returns: Effective temperature [K]
     
 
     """
@@ -100,13 +103,13 @@ def compute_Teff (theta, phi, Rns, Tmap):
 def D_factor (cospsi, Rns, Mns):
     """
 
-    NAME: D_factor
-
     PURPOSE: calculating the lensing factor following the article Poutanen (2020) A&A 640, A24 (2020)
 
-    INPUT: cospsi is the cosine of propagation angle, Rns is radius of neutron star in km, Mns mass of neutron star in Solar mass 
+    :param cospsi: cosine of propagation angle
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass] 
 
-    OUTPUT: Dimensionless lensing factor
+    :returns: Dimensionless lensing factor
     
 
     """
@@ -521,16 +524,18 @@ def precompute_Dcos2_alpha (Rns, Mns, chi, inc, phase, phi1, theta1):
 def lightcurve (theta, phi, Tmap, Rns, Mns, phases, chi, inc):
     """
 
-    NAME: lightcurve
-
     PURPOSE: calculate soft X-ray lightcurve
 
-    INPUT: Tmap is the surface thermal map which is stored at the locations theta and phi, Rns is radius of neutron star in km
-    Mns is mass of neutron star in Solar mass units, phases is a python list of phases in radians and chi and inc are rotational orientation angles.
-    chi is the magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map) and inc is the
-    inclination of the observer with respect to the rotational axis.
+    :param Tmap: Tmap is the surface thermal map [K]
+    :param theta: list magnetic latitude [radians] where Tmap is provided
+    :param phi: list of magnetic longuitudets [radians] where Tmap is provided
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param phases: list of phases [radian] 
+    :param chi:  magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)
+    :param inc: inclination of the observer with respect to the rotational axis.
 
-    OUTPUT: Soft X-ray lightcurve in units of intensity for each rotational phase [erg/s]
+    :returns: Soft X-ray lightcurve in units of intensity for each rotational phase [erg/s]
     
 
     """

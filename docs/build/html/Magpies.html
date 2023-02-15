@@ -38,55 +38,115 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="magpies.g14">
 <span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">g14</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.g14" title="Permalink to this definition">¶</a></dt>
-<dd><p>NAME: g14</p>
-<p>PURPOSE: calculate the free fall acceleration at the surface of neutron star in units of g/1e14 cm/s/s</p>
-<p>INPUT: Rns - neutron star radius in units of km, Mns - neutron star mass in units of solar mass</p>
-<p>OUTPUT: free fall acceleration at the surface of neutron star in units of g/1e14 cm/s/s</p>
+<dd><p>PURPOSE: calculate the free fall acceleration at the surface of neutron star in units of g/1e14 cm/s/s</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Rns</strong> – neutron star radius [km]</p></li>
+<li><p><strong>Mns</strong> – neutron star mass [Solar mass]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>free fall acceleration at the surface of neutron star [g/1e14 cm/s/s]</p>
+</dd>
+</dl>
 </dd></dl>
 
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="magpies.compute_L">
 <span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">compute_L</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.compute_L" title="Permalink to this definition">¶</a></dt>
-<dd><p>NAME: compute_L</p>
-<p>PURPOSE: calculate the total thermal X-ray luminosity of neutron star</p>
-<dl class="simple">
-<dt>INPUT: Tmap is the surface thermal map which is stored at the locations theta and phi, Rns is radius of neutron star in km</dt><dd><p>The thermal map can be one dimensional (in the case of axisymmetric temperature distribution) or two-dimensional.</p>
+<dd><p>PURPOSE: calculate the total thermal X-ray luminosity of neutron star</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Tmap</strong> – Tmap is the surface thermal map [K]</p></li>
+<li><p><strong>theta</strong> – list magnetic latitude [radians] where Tmap is provided</p></li>
+<li><p><strong>phi</strong> – list of magnetic longuitudets [radians] where Tmap is provided</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+</ul>
 </dd>
 </dl>
-<p>OUTPUT: total thermal luminosity erg / s</p>
+<p>The thermal map can be one dimensional (in the case of axisymmetric temperature distribution) or two-dimensional.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>total thermal luminosity [erg/s]</p>
+</dd>
+</dl>
 </dd></dl>
 
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="magpies.compute_Teff">
 <span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">compute_Teff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.compute_Teff" title="Permalink to this definition">¶</a></dt>
-<dd><p>NAME: compute_Teff</p>
-<p>PURPOSE: calculating the effective temperature of neutron star</p>
-<dl class="simple">
-<dt>INPUT: Tmap is the surface thermal map which is stored at the locations theta and phi, Rns is radius of neutron star in km</dt><dd><p>The thermal map can be one dimensional (in the case of axisymmetric temperature distribution) or two-dimensional.</p>
+<dd><p>PURPOSE: calculating the effective temperature of neutron star</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Tmap</strong> – Tmap is the surface thermal map [K]</p></li>
+<li><p><strong>theta</strong> – list magnetic latitude [radians] where Tmap is provided</p></li>
+<li><p><strong>phi</strong> – list of magnetic longuitudets [radians] where Tmap is provided</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+</ul>
 </dd>
 </dl>
-<p>OUTPUT: Effective temperature in Kelvins</p>
+<p>The thermal map can be one dimensional (in the case of axisymmetric temperature distribution) or two-dimensional.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Effective temperature [K]</p>
+</dd>
+</dl>
 </dd></dl>
 
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="magpies.D_factor">
 <span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">D_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cospsi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.D_factor" title="Permalink to this definition">¶</a></dt>
-<dd><p>NAME: D_factor</p>
-<p>PURPOSE: calculating the lensing factor following the article Poutanen (2020) A&amp;A 640, A24 (2020)</p>
-<p>INPUT: cospsi is the cosine of propagation angle, Rns is radius of neutron star in km, Mns mass of neutron star in Solar mass</p>
-<p>OUTPUT: Dimensionless lensing factor</p>
+<dd><p>PURPOSE: calculating the lensing factor following the article Poutanen (2020) A&amp;A 640, A24 (2020)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cospsi</strong> – cosine of propagation angle</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dimensionless lensing factor</p>
+</dd>
+</dl>
 </dd></dl>
 
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="magpies.lightcurve">
 <span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">lightcurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.lightcurve" title="Permalink to this definition">¶</a></dt>
-<dd><p>NAME: lightcurve</p>
-<p>PURPOSE: calculate soft X-ray lightcurve</p>
-<p>INPUT: Tmap is the surface thermal map which is stored at the locations theta and phi, Rns is radius of neutron star in km
-Mns is mass of neutron star in Solar mass units, phases is a python list of phases in radians and chi and inc are rotational orientation angles.
-chi is the magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map) and inc is the
-inclination of the observer with respect to the rotational axis.</p>
-<p>OUTPUT: Soft X-ray lightcurve in units of intensity for each rotational phase [erg/s]</p>
+<dd><p>PURPOSE: calculate soft X-ray lightcurve</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Tmap</strong> – Tmap is the surface thermal map [K]</p></li>
+<li><p><strong>theta</strong> – list magnetic latitude [radians] where Tmap is provided</p></li>
+<li><p><strong>phi</strong> – list of magnetic longuitudets [radians] where Tmap is provided</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>phases</strong> – list of phases [radian]</p></li>
+<li><p><strong>chi</strong> – magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)</p></li>
+<li><p><strong>inc</strong> – inclination of the observer with respect to the rotational axis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Soft X-ray lightcurve in units of intensity for each rotational phase [erg/s]</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
