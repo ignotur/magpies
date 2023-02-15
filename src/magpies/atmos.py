@@ -2,13 +2,52 @@ from math import *
 import numpy as np
 
 class NS_atmosphere:
+    """
+    NAME: NS_atmosphere
+
+    PURPOSE: class which simulates the surface temperature distribution for different types of magnetised atmospheres
+
+    OUTPUT: class member describing the surface temperature distribution
+    
+    """
     def __init__ (self, model_name, g14, Tb, B):
+
+        """
+
+            NAME: NS_atmosphere
+
+            PURPOSE: Initialise the class member with physical parameters of the neutron star
+
+            INPUT: g14 is free fall acceleration at the NS surface in units of g/1e14 cm/s/s
+
+            Tb is the temperature in deep layers in units of Kelvin
+
+            B is the pole magnetic field in units of Gauss
+
+            model_name is the fit type for surface temperature distribution, options are as the following:
+
+            Potekhin_2015 is for Potekhin, Pons & Page (2015) for iron envelope 2015SSRv..191..239P
+
+            Potekhin_2003_iron is for Potekhin, Yakovlev, Chabrier & Gnedin (2003) for iron envelope 2003ApJ...594..404P 
+            this is the same fit as provided by Beznogov, Potekhin & Yakovlev (2021) for iron envelope 2021PhR...919....1B
+
+            Potekhin_Yakovlev_2001_iron is for Potekhin & Yakovlev (2001) for iron envelope 2001A&A...374..213P
+
+            Potekhin_2003_accr is for Potekhin, Yakovlev, Chabrier & Gnedin (2003) for fully accreted envelope 2003ApJ...594..404P
+
+
+            OUTPUT: free fall acceleration at the surface of neutron star in units of g/1e14 cm/s/s
+
+
+        """
+
 
         if model_name == 'Potekhin_2015':
             self.name = 1
             self.g14 = g14
             self.T9  = Tb / 1e9
             self.B12 = B / 1e12
+
         elif model_name == 'Potekhin_2003_iron':
             self.name = 2
             self.g14 = g14
@@ -200,6 +239,8 @@ class NS_atmosphere:
             print ("Surface temperatures for magnetised envelope of NS")
             print ("Following fit from Potekhin, Yakovlev, Chabrier & Gnedin (2003) for iron envelope")
             print ("The Astrophysical Journal, Volume 594, Issue 1, pp. 404-418  2003ApJ...594..404P")
+            print ("Same fits are provided in Beznogov, Potekhin & Yakovlev (2021) for iron envelope")
+            print ("Physics Reports, Volume 919, p. 1-68 2021PhR...919....1B")
         elif self.name == 3:
             print ("Surface temperatures for magnetised envelope of NS")
             print ("Following fit from Potekhin & Yakovlev (2001) for iron envelope")

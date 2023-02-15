@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
     <title>Atmos method list &#8212; Magpies 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -39,7 +39,27 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="atmos.NS_atmosphere">
 <span class="sig-prename descclassname"><span class="pre">atmos.</span></span><span class="sig-name descname"><span class="pre">NS_atmosphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#atmos.NS_atmosphere" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>NAME: NS_atmosphere</p>
+<p>PURPOSE: class which simulates the surface temperature distribution for different types of magnetised atmospheres</p>
+<p>OUTPUT: class member describing the surface temperature distribution</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="atmos.NS_atmosphere.__init__">
+<span class="sig-prename descclassname"><span class="pre">atmos.NS_atmosphere.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#atmos.NS_atmosphere.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>NAME: NS_atmosphere</p>
+<p>PURPOSE: Initialise the class member with physical parameters of the neutron star</p>
+<p>INPUT: g14 is free fall acceleration at the NS surface in units of g/1e14 cm/s/s</p>
+<p>Tb is the temperature in deep layers in units of Kelvin</p>
+<p>B is the pole magnetic field in units of Gauss</p>
+<p>model_name is the fit type for surface temperature distribution, options are as the following:</p>
+<p>Potekhin_2015 is for Potekhin, Pons &amp; Page (2015) for iron envelope 2015SSRv..191..239P</p>
+<p>Potekhin_2003_iron is for Potekhin, Yakovlev, Chabrier &amp; Gnedin (2003) for iron envelope 2003ApJ…594..404P 
+this is the same fit as provided by Beznogov, Potekhin &amp; Yakovlev (2021) for iron envelope 2021PhR…919….1B</p>
+<p>Potekhin_Yakovlev_2001_iron is for Potekhin &amp; Yakovlev (2001) for iron envelope 2001A&amp;A…374..213P</p>
+<p>Potekhin_2003_accr is for Potekhin, Yakovlev, Chabrier &amp; Gnedin (2003) for fully accreted envelope 2003ApJ…594..404P</p>
+<p>OUTPUT: free fall acceleration at the surface of neutron star in units of g/1e14 cm/s/s</p>
+</dd></dl>
 
 </section>
 
@@ -60,7 +80,7 @@
 
 
 <h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Atmos method list</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Magpies.html">Magpies method list</a></li>
@@ -79,7 +99,7 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -101,7 +121,7 @@
       &copy;2023, Dr Andrei P. Igoshev.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
