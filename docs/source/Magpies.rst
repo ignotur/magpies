@@ -19,6 +19,14 @@ Here we briefly describe most functions implemented in the Magpies python librar
 
 |
 
+.. autofunction:: magpies.single_BB_obs
+
+|
+
+.. autofunction:: magpies.two_BB_obs
+
+|
+
 .. autofunction:: magpies.get_redshifted_spectra_pole_3D
 
 |

@@ -202,6 +202,21 @@ def single_BB (Teff, Rns, Mns):
 ## Single blackbody spectra
 ## Result is computed in units: number of photons with fixed energy per energy bin
 def single_BB_obs (Teff, Rns, Mns, eph, nphot):
+    """
+    |
+
+    Calculate thermal spectra [counts per energy bin] emitted by neutron star with fixed surface temperature.
+
+    :param Teff: effective temperature of neutron star [K]
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param eph: list of energies where spectra is to be calculated [keV]
+    :param nphot: total number of received photons
+
+    :returns: :sp: redshifted spectra [counts per energy bin]
+    
+
+    """
 
     sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
     kB = 8.617e-8       ## keV / K
@@ -470,6 +485,26 @@ def two_BB (param, Teff, Rns, Mns):
     return [eph, spec]
 
 def two_BB_obs (param, Teff, Rns, Mns, eph, nphot):
+    """
+    |
+
+    Calculate thermal spectra [counts per energy bin] composed of two blackbodies.
+
+    :param param: array of four parameters [sc, sh, pc, ph]
+    :sc: fraction of total surface area covered with first hot spot
+    :sh: fraction of total surface area covered with second hot spot
+    :pc: temperature of first hot spot as a fraction of Teff 
+    :ph: temperature of second hot spot as a fraction of Teff 
+    :param Teff: effective temperature of neutron star
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param eph: list of energies where spectra is to be calculated [keV]
+    :param nphot: total number of received photons
+
+    :returns: :sp: redshifted spectra [counts per energy bin]
+    
+
+    """
 
     sc, sh, pc, ph = param
 
@@ -478,10 +513,14 @@ def two_BB_obs (param, Teff, Rns, Mns, eph, nphot):
     pc = abs(pc)
     ph = abs(ph)
 
+    #print ('We have received the following parameters: sc = ', sc, ' sh = ', sh, ' pc = ', pc, ' ph = ', ph)
+
     sp_Teff1 = single_BB_obs (pc*Teff, Rns, Mns, eph, nphot)
     sp_Teff2 = single_BB_obs (ph*Teff, Rns, Mns, eph, nphot)
 
     spec = sc * sp_Teff1 + sh * sp_Teff2
+
+    spec = np.asarray(spec, dtype=int)
 
     return spec
 
@@ -520,10 +559,11 @@ def BB_diff_obs (param, Teff, Rns, Mns, spec, eph, nphot):
     res = 0.0
 
     for i in range (0, len(spec)):
-        if (spec[i] > 1):
-            res = res + (spec[i] - spec_synth[i])**2 / (spec[i] + spec_synth[i])
+        if (spec[i] >= 1):
+#            res = res + (spec[i] - spec_synth[i])**2 / (spec[i] + spec_synth[i])
+            res = res + (spec[i] - spec_synth[i])**2 / (spec[i])
 
-    res = res / len(eph)
+#    res = res / len(eph)
 
     return res
 
@@ -539,15 +579,16 @@ def two_BB_diff_obs (param, Teff, Rns, Mns, spec, eph, nphot):
 
     for i in range (0, len(spec)):
 #        if (spec[i] > np.max(spec) / 1e3):
-        if (spec[i] > 1):
+        if (spec[i] >= 1):
 #            res = res + (spec[i] - spec_synth[i])**2.0 / abs(spec[i])**2
 #            res = res + (log(spec[i]) - log(spec_synth[i]))**2.0 / abs(log(spec_synth[i])) - better complete shape fit
 #            res = res + (spec[i] - spec_synth[i])**2 / abs(spec[i])
 #            res = res + (spec[i] - spec_synth[i])**2 / abs(spec_synth[i])
 #            res = res + (spec_n[i] - spec_sn[i])**2 / abs(spec_sn[i])
-            res = res + (spec[i] - spec_synth[i])**2 / (spec[i] + spec_synth[i])           
+#            res = res + (spec[i] - spec_synth[i])**2 / (spec[i] + spec_synth[i])           
+            res = res + (spec[i] - spec_synth[i])**2 / (spec[i])           
 
-    res = res / len(eph)
+#    res = res / len(eph)
 #    res = sqrt(res)
 
     return res

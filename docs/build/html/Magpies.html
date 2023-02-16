@@ -139,6 +139,81 @@
 <div class="line"><br /></div>
 </div>
 <dl class="py function">
+<dt class="sig sig-object py" id="magpies.single_BB_obs">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">single_BB_obs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.single_BB_obs" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate thermal spectra [counts per energy bin] emitted by neutron star with fixed surface temperature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Teff</strong> – effective temperature of neutron star [K]</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>eph</strong> – list of energies where spectra is to be calculated [keV]</p></li>
+<li><p><strong>nphot</strong> – total number of received photons</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="field-list simple">
+<dt class="field-odd">sp</dt>
+<dd class="field-odd"><p>redshifted spectra [counts per energy bin]</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.two_BB_obs">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">two_BB_obs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.two_BB_obs" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate thermal spectra [counts per energy bin] composed of two blackbodies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> – array of four parameters [sc, sh, pc, ph]</p></li>
+<li><p><strong>Teff</strong> – effective temperature of neutron star</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>eph</strong> – list of energies where spectra is to be calculated [keV]</p></li>
+<li><p><strong>nphot</strong> – total number of received photons</p></li>
+</ul>
+</dd>
+<dt class="field-even">Sc</dt>
+<dd class="field-even"><p>fraction of total surface area covered with first hot spot</p>
+</dd>
+<dt class="field-odd">Sh</dt>
+<dd class="field-odd"><p>fraction of total surface area covered with second hot spot</p>
+</dd>
+<dt class="field-even">Pc</dt>
+<dd class="field-even"><p>temperature of first hot spot as a fraction of Teff</p>
+</dd>
+<dt class="field-odd">Ph</dt>
+<dd class="field-odd"><p>temperature of second hot spot as a fraction of Teff</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="field-list simple">
+<dt class="field-odd">sp</dt>
+<dd class="field-odd"><p>redshifted spectra [counts per energy bin]</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
 <dt class="sig sig-object py" id="magpies.get_redshifted_spectra_pole_3D">
 <span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">get_redshifted_spectra_pole_3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.get_redshifted_spectra_pole_3D" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
