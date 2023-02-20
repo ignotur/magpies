@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
     <title>Magpies method list &#8212; Magpies 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -139,12 +139,12 @@
 <div class="line"><br /></div>
 </div>
 <dl class="py function">
-<dt class="sig sig-object py" id="magpies.single_BB_obs">
-<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">single_BB_obs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.single_BB_obs" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="magpies.single_BB_photons">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">single_BB_photons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.single_BB_photons" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Calculate thermal spectra [counts per energy bin] emitted by neutron star with fixed surface temperature.</p>
+<p>Calculate thermal spectra [number of photons per energy bin] emitted by neutron star with fixed surface temperature.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -153,12 +153,13 @@
 <li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
 <li><p><strong>eph</strong> – list of energies where spectra is to be calculated [keV]</p></li>
 <li><p><strong>nphot</strong> – total number of received photons</p></li>
+<li><p><strong>integ</strong> – if True it returns integer counts (0.3 means no counts in a bin), if False it returns fraction of counts as well.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><dl class="field-list simple">
 <dt class="field-odd">sp</dt>
-<dd class="field-odd"><p>redshifted spectra [counts per energy bin]</p>
+<dd class="field-odd"><p>redshifted spectra [number of photons per energy bin]</p>
 </dd>
 </dl>
 </p>
@@ -170,50 +171,12 @@
 <div class="line"><br /></div>
 </div>
 <dl class="py function">
-<dt class="sig sig-object py" id="magpies.BB_diff_obs">
-<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">BB_diff_obs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.BB_diff_obs" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="magpies.two_BB_photons">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">two_BB_photons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.two_BB_photons" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Calculate chi^2 for synthetic spectra [counts per energy bin] composed of single blackbodies.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>param</strong> – array of two parameters [sc, pc]</p></li>
-<li><p><strong>Teff</strong> – effective temperature of neutron star</p></li>
-<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
-<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
-<li><p><strong>eph</strong> – list of energies where spectra is to be calculated [keV]</p></li>
-<li><p><strong>nphot</strong> – total number of received photons</p></li>
-</ul>
-</dd>
-<dt class="field-even">Sc</dt>
-<dd class="field-even"><p>fraction of total surface area covered with first hot spot</p>
-</dd>
-<dt class="field-odd">Pc</dt>
-<dd class="field-odd"><p>temperature of first hot spot as a fraction of Teff</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="field-list simple">
-<dt class="field-odd">sp</dt>
-<dd class="field-odd"><p>chi^2</p>
-</dd>
-</dl>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<dl class="py function">
-<dt class="sig sig-object py" id="magpies.two_BB_obs">
-<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">two_BB_obs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.two_BB_obs" title="Permalink to this definition">¶</a></dt>
-<dd><div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>Calculate thermal spectra [counts per energy bin] composed of two blackbodies.</p>
+<p>Calculate thermal spectra [number of photons per energy bin] composed of two blackbodies.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -240,7 +203,7 @@
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><dl class="field-list simple">
 <dt class="field-odd">sp</dt>
-<dd class="field-odd"><p>redshifted spectra [counts per energy bin]</p>
+<dd class="field-odd"><p>redshifted spectra [number of photons per energy bin]</p>
 </dd>
 </dl>
 </p>
@@ -289,12 +252,12 @@
 <div class="line"><br /></div>
 </div>
 <dl class="py function">
-<dt class="sig sig-object py" id="magpies.get_redshifted_spectra_pole_obs">
-<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">get_redshifted_spectra_pole_obs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.get_redshifted_spectra_pole_obs" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="magpies.get_redshifted_spectra_pole_photons">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">get_redshifted_spectra_pole_photons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.get_redshifted_spectra_pole_photons" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Calculate thermal spectra [integer number of photons per bin] emitted by neutron star observed from its magnetic pole (top row of thermal map).</p>
+<p>Calculate thermal spectra [integer number of photons per energy bin] emitted by neutron star observed from its magnetic pole (top row of thermal map).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -369,7 +332,7 @@
 
 
 <h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Atmos.html">Atmos method list</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Magpies method list</a></li>
@@ -387,7 +350,7 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -409,7 +372,7 @@
       &copy;2023, Dr Andrei P. Igoshev.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
