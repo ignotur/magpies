@@ -1,6 +1,6 @@
 from math import *
 import numpy as np
-
+from scipy.optimize import minimize
 
 def g14 (Rns, Mns):
     """
@@ -239,6 +239,48 @@ def single_BB_obs (Teff, Rns, Mns, eph, nphot):
 
     return res_n
 
+def single_BB_photons (Teff, Rns, Mns, eph, nphot, integ = True):
+    """
+    |
+
+    Calculate thermal spectra [number of photons per energy bin] emitted by neutron star with fixed surface temperature.
+
+    :param Teff: effective temperature of neutron star [K]
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param eph: list of energies where spectra is to be calculated [keV]
+    :param nphot: total number of received photons
+    :param integ: if True it returns integer counts (0.3 means no counts in a bin), if False it returns fraction of counts as well.
+
+    :returns: :sp: redshifted spectra [number of photons per energy bin]
+    
+
+    """
+
+    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
+    kB = 8.617e-8       ## keV / K
+    G = 6.67430e-8    ## cgs
+    Msol = 2e33       ## Solar mass in gramms
+    c   = 2.998e+10   ## speed of light in cm/s
+
+    R = Rns * 1e5
+
+    xg = 2.0 * G * Mns*Msol / R / c / c
+    g14 = G*Mns*Msol / R / R / sqrt(1.0 - xg ) / 1e14 ## Gudmundsson et al. (1983), eq. (2-3)
+
+    Teff_inf = Teff * sqrt(1 - xg)
+
+    res = 15.0*sigma_SB / ( pow(pi, 4) * pow(kB, 4)) * np.power(eph, 2) / (np.exp(eph / (kB *Teff_inf)) - 1.0) / (1.0 - xg) 
+
+    coeff = nphot / np.sum(res)
+
+    if integ:
+        res_n = np.asarray(np.asarray(res) * coeff, dtype=int)
+        return res_n
+    else:
+        return np.asarray(res) * coeff
+
+
 
 def get_redshifted_spectra_pole_3D (theta, phi, Tmap, Rns, Mns):
     """
@@ -356,6 +398,64 @@ def get_redshifted_spectra_pole_obs (theta, phi, Tmap, Rns, Mns, eph, nphot):
             if al < pi / 2.0:
                 Df = D_factor (cos(theta[j]), Rns, Mns)
                 sp_red = sp_red +  Df * 15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta[j]) * np.cos(al)  * np.power(eph, 3) / (np.exp(eph / kB / Ts_inf[i,j]) - 1.0) * dtheta * dphi
+                map_of_visible[i,j] = Ts_inf[i, j]
+
+    coeff = nphot / np.sum(sp_red)
+
+    sp_red_n = np.asarray(sp_red * coeff, dtype=int)
+
+
+    return [sp_red_n, map_of_visible]
+
+def get_redshifted_spectra_pole_photons (theta, phi, Tmap, Rns, Mns, eph, nphot):
+    """
+    |
+
+    Calculate thermal spectra [integer number of photons per energy bin] emitted by neutron star observed from its magnetic pole (top row of thermal map).
+
+    :param Tmap: two dimensional array describing the surface thermal map [K]
+    :param theta: list of magnetic latitude [radians] where Tmap is provided
+    :param phi: list of magnetic longuitudets [radians] where Tmap is provided
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param eph: list energies where spectra should be computed [keV]
+    :param nphot: total number of photons to be generated
+
+    :returns: :sp: number of photons per energy bin
+              :visible_map: two-dimensional array which contains only the temperature distribution on visible hemisphere
+    
+
+    """
+
+    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
+    kB = 8.617e-8       ## keV / K
+    G = 6.67430e-8    ## cgs
+    Msol = 2e33       ## Solar mass in gramms
+    c   = 2.998e+10   ## speed of light in cm/s
+
+    map_of_visible = np.zeros ((len(phi), len(theta)))
+
+    R = Rns * 1e5
+
+    xg = 2.0 * G * Mns*Msol / R / c / c
+
+    Ts_inf = Tmap * sqrt(1 - xg)
+
+    ## Here we prepare variables for integration over the visible hemisphere
+
+    sp_red = np.zeros(len(eph))
+
+    dtheta = theta[1] - theta[0]
+    dphi   = phi[1] - phi[0]
+
+    for i in range (0, len(phi)):
+        for j in range (0, len(theta)):
+            al = alpha (cos(theta[j]), Rns, Mns)
+
+
+            if al < pi / 2.0:
+                Df = D_factor (cos(theta[j]), Rns, Mns)
+                sp_red = sp_red +  Df * 15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta[j]) * np.cos(al)  * np.power(eph, 2) / (np.exp(eph / kB / Ts_inf[i,j]) - 1.0) * dtheta * dphi
                 map_of_visible[i,j] = Ts_inf[i, j]
 
     coeff = nphot / np.sum(sp_red)
@@ -484,11 +584,11 @@ def two_BB (param, Teff, Rns, Mns):
 
     return [eph, spec]
 
-def two_BB_obs (param, Teff, Rns, Mns, eph, nphot):
+def two_BB_photons (param, Teff, Rns, Mns, eph, nphot, integ=True):
     """
     |
 
-    Calculate thermal spectra [counts per energy bin] composed of two blackbodies.
+    Calculate thermal spectra [number of photons per energy bin] composed of two blackbodies.
 
     :param param: array of four parameters [sc, sh, pc, ph]
     :sc: fraction of total surface area covered with first hot spot
@@ -501,7 +601,7 @@ def two_BB_obs (param, Teff, Rns, Mns, eph, nphot):
     :param eph: list of energies where spectra is to be calculated [keV]
     :param nphot: total number of received photons
 
-    :returns: :sp: redshifted spectra [counts per energy bin]
+    :returns: :sp: redshifted spectra [number of photons per energy bin]
     
 
     """
@@ -515,83 +615,221 @@ def two_BB_obs (param, Teff, Rns, Mns, eph, nphot):
 
     #print ('We have received the following parameters: sc = ', sc, ' sh = ', sh, ' pc = ', pc, ' ph = ', ph)
 
-    sp_Teff1 = single_BB_obs (pc*Teff, Rns, Mns, eph, nphot)
-    sp_Teff2 = single_BB_obs (ph*Teff, Rns, Mns, eph, nphot)
+    sp_Teff1 = single_BB_photons (pc*Teff, Rns, Mns, eph, nphot)
+    sp_Teff2 = single_BB_photons (ph*Teff, Rns, Mns, eph, nphot)
 
     spec = sc * sp_Teff1 + sh * sp_Teff2
 
-    spec = np.asarray(spec, dtype=int)
+    spec = spec / np.sum(spec) * nphot
+
+    if integ:
+        spec = np.asarray(spec, dtype=int)
 
     return spec
 
 
 
-def two_BB_diff (param, Teff, Rns, Mns, spec):
+#def chi2_2BB (param, Teff, Rns, Mns, spec):
 
-    eph, spec_synth = two_BB (param, Teff, Rns, Mns)
+#    eph, spec_synth = two_BB (param, Teff, Rns, Mns)
 
-    res = 0.0
+#    res = 0.0
 
-    spec_n  = np.asarray(spec) / np.max(spec)
-    spec_sn = np.asarray(spec_synth) / np.max(spec) 
+#    spec_n  = np.asarray(spec) / np.max(spec)
+#    spec_sn = np.asarray(spec_synth) / np.max(spec) 
 
-    for i in range (0, len(spec)):
+#    for i in range (0, len(spec)):
 #        if (spec[i] > np.max(spec) / 1e3):
-        if (spec[i] > 1):
-#            res = res + (spec[i] - spec_synth[i])**2.0 / abs(spec[i])**2
-#            res = res + (log(spec[i]) - log(spec_synth[i]))**2.0 / abs(log(spec_synth[i])) - better complete shape fit
-#            res = res + (spec[i] - spec_synth[i])**2 / abs(spec[i])
-#            res = res + (spec[i] - spec_synth[i])**2 / abs(spec_synth[i])
-#            res = res + (spec_n[i] - spec_sn[i])**2 / abs(spec_sn[i])
-            res = res + (spec[i] - spec_synth[i])**2 / (spec[i] + spec_synth[i])           
-
-    res = res / 142.0
-    res = sqrt(res)
-
-    return res
-
-def BB_diff_obs (param, Teff, Rns, Mns, spec, eph, nphot):
-
-    sc, pc = param
-
-    spec_synth = single_BB_obs (sc*Teff, Rns, Mns, eph, nphot*pc)
-
-    res = 0.0
-
-    for i in range (0, len(spec)):
-        if (spec[i] >= 1):
-#            res = res + (spec[i] - spec_synth[i])**2 / (spec[i] + spec_synth[i])
-            res = res + (spec[i] - spec_synth[i])**2 / (spec[i])
-
-#    res = res / len(eph)
-
-    return res
-
-
-
-
-
-def two_BB_diff_obs (param, Teff, Rns, Mns, spec, eph, nphot):
-
-    spec_synth = two_BB_obs (param, Teff, Rns, Mns, eph, nphot)
-
-    res = 0.0
-
-    for i in range (0, len(spec)):
-#        if (spec[i] > np.max(spec) / 1e3):
-        if (spec[i] >= 1):
+#        if (spec[i] > 1):
 #            res = res + (spec[i] - spec_synth[i])**2.0 / abs(spec[i])**2
 #            res = res + (log(spec[i]) - log(spec_synth[i]))**2.0 / abs(log(spec_synth[i])) - better complete shape fit
 #            res = res + (spec[i] - spec_synth[i])**2 / abs(spec[i])
 #            res = res + (spec[i] - spec_synth[i])**2 / abs(spec_synth[i])
 #            res = res + (spec_n[i] - spec_sn[i])**2 / abs(spec_sn[i])
 #            res = res + (spec[i] - spec_synth[i])**2 / (spec[i] + spec_synth[i])           
-            res = res + (spec[i] - spec_synth[i])**2 / (spec[i])           
 
-#    res = res / len(eph)
+#    res = res / 142.0
 #    res = sqrt(res)
 
+#    return res
+
+def chi2_1BB (sc, Teff, Rns, Mns, spec, eph, nphot):
+    """
+    |
+
+    Calculate chi^2 for synthetic spectra [counts per energy bin] composed of single blackbody.
+
+    :param param: array of two parameters [sc, pc]
+    :sc: fraction of total surface area covered with first hot spot
+    :pc: temperature of first hot spot as a fraction of Teff 
+    :param Teff: effective temperature of neutron star
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param eph: list of energies where spectra is to be calculated [keV]
+    :param nphot: total number of received photons
+
+    :returns: chi^2
+    
+
+    """
+
+    spec_synth = single_BB_photons (sc*Teff, Rns, Mns, eph, nphot)
+
+    res = 0.0
+
+    for i in range (0, len(spec)):
+        if (spec[i] >= 1):
+            res = res + (spec[i] - spec_synth[i])**2 / (spec[i])
+
+
     return res
+
+def Cstat_1BB (sc, Teff, Rns, Mns, spec, eph, nphot):
+    """
+    |
+
+    Calculate C-statistics for synthetic spectra [counts per energy bin] composed of single blackbody.
+
+    :param param: array of two parameters [sc, pc]
+    :sc: fraction of total surface area covered with first hot spot
+    :pc: temperature of first hot spot as a fraction of Teff 
+    :param Teff: effective temperature of neutron star
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param eph: list of energies where spectra is to be calculated [keV]
+    :param nphot: total number of received photons
+
+    :returns: C-stat
+    
+
+    """
+
+    spec_synth = single_BB_photons (sc*Teff, Rns, Mns, eph, nphot, integ=False)
+
+    res = 0.0
+
+    for i in range (0, len(spec)):
+        if (spec[i] >= 1) and (spec_synth[i] > 0):
+            res = res + 2.0 * ( spec_synth[i] - spec[i] + spec[i] * (log(spec[i]) - log(spec_synth[i])))
+        elif (spec_synth[i] <= 0):
+            res = res + np.inf
+
+
+    return res
+
+
+
+
+
+def chi2_2BB (param, Teff, Rns, Mns, spec, eph, nphot):
+    """
+    |
+
+    Calculate chi^2 for synthetic spectra [number of photons per energy bin] composed of two blackbody.
+
+    :param param: array of two parameters [sc, sh, pc, ph]
+    :sc: fraction of total surface area covered with first hot spot
+    :pc: temperature of first hot spot as a fraction of Teff 
+    :param Teff: effective temperature of neutron star
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param eph: list of energies where spectra is to be calculated [keV]
+    :param nphot: total number of received photons
+
+    :returns: chi^2
+    
+
+    """
+
+
+    spec_synth = two_BB_photons (param, Teff, Rns, Mns, eph, nphot)
+
+    res = 0.0
+
+    for i in range (0, len(spec)):
+        if (spec[i] >= 1):
+            res = res + (spec[i] - spec_synth[i])**2 / (spec[i])          
+
+    return res
+
+def Cstat_2BB (param, Teff, Rns, Mns, spec, eph, nphot):
+    """
+    |
+
+    Calculate C-statistics for synthetic spectra [number of photons per energy bin] composed of two blackbody.
+
+    :param param: array of two parameters [sc, sh, pc, ph]
+    :sc: fraction of total surface area covered with first hot spot
+    :pc: temperature of first hot spot as a fraction of Teff 
+    :param Teff: effective temperature of neutron star
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param eph: list of energies where spectra is to be calculated [keV]
+    :param nphot: total number of received photons
+
+    :returns: C-stat
+    
+
+    """
+
+
+    spec_synth = two_BB_photons (param, Teff, Rns, Mns, eph, nphot, integ=False)
+
+    res = 0.0
+
+    for i in range (0, len(spec)):
+        if (spec[i] >= 1) and (spec_synth[i] > 0):
+            res = res + 2.0 * ( spec_synth[i] - spec[i] + spec[i] * (log(spec[i]) - log(spec_synth[i])))
+        elif (spec[i] >= 1) and (spec_synth[i] <= 0):
+            res = res + np.inf
+
+
+    return res
+
+
+
+def fit_spectral_model_chi2 (Teff, Rns, Mns, spec, eph, nphot):
+
+    x2 = [0.2, 0.3, 0.9, 1.4]
+
+    x1 = [1.3]
+
+    res_1BB = minimize (chi2_1BB,     x1, method = 'Nelder-Mead',args=(Teff, Rns, Mns, spec, eph, nphot))
+    res_2BB = minimize (chi2_2BB, x2, method = 'Nelder-Mead',args=(Teff, Rns, Mns, spec, eph, nphot))
+
+
+   
+    if res_2BB.fun < (res_1BB.fun - 2.7): ## 2BB model is significantly better
+
+        return [res_2BB.x[0], res_2BB.x[1], res_2BB.x[2], res_2BB.x[3], res_1BB.fun, res_2BB.fun]
+
+    else: ## 1BB model is as good
+
+        return [0.5, 0.5, res_1BB.x[0], res_1BB.x[0], res_1BB.fun, res_2BB.fun]
+
+
+def fit_spectral_model_Cstat (Teff, Rns, Mns, spec, eph, nphot):
+
+    x2 = [0.2, 0.3, 0.9, 1.4]
+
+    x1 = [1.3]
+
+    res_1BB = minimize (Cstat_1BB,     x1, method = 'Nelder-Mead',args=(Teff, Rns, Mns, spec, eph, nphot))
+    res_2BB = minimize (Cstat_2BB, x2, method = 'Nelder-Mead',args=(Teff, Rns, Mns, spec, eph, nphot))
+
+
+   
+    if res_2BB.fun < (res_1BB.fun - 2.7): ## 2BB model is significantly better
+
+        return [res_2BB.x[0], res_2BB.x[1], res_2BB.x[2], res_2BB.x[3], res_1BB.fun, res_2BB.fun]
+
+    else: ## 1BB model is as good
+
+        return [0.5, 0.5, res_1BB.x[0], res_1BB.x[0], res_1BB.fun, res_2BB.fun]
+
+
+
+
 
 
 ## Auxiliary function to compute the multiplication factors for lightcurve efficiently

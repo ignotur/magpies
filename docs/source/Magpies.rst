@@ -23,6 +23,10 @@ Here we briefly describe most functions implemented in the Magpies python librar
 
 |
 
+.. autofunction:: magpies.BB_diff_obs
+
+|
+
 .. autofunction:: magpies.two_BB_obs
 
 |
