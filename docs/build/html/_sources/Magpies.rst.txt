@@ -11,6 +11,10 @@ Here we briefly describe most functions implemented in the Magpies python librar
 
 |
 
+.. autofunction:: magpies.compute_L_param
+
+|
+
 .. autofunction:: magpies.compute_Teff
 
 |
@@ -24,6 +28,26 @@ Here we briefly describe most functions implemented in the Magpies python librar
 |
 
 .. autofunction:: magpies.two_BB_photons
+
+|
+
+.. autofunction:: magpies.examine_spectral_fit_1BB_photons
+
+|
+
+.. autofunction:: magpies.examine_spectral_fit_2BB_photons
+
+|
+
+.. autofunction:: magpies.Cstat_1BB
+
+|
+
+.. autofunction:: magpies.Cstat_2BB
+
+|
+
+.. autofunction:: magpies.fit_spectral_model_Cstat
 
 |
 

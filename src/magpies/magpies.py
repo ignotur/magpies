@@ -237,45 +237,6 @@ def single_BB (Teff, Rns, Mns):
 
     return [Eph, res]
 
-## Single blackbody spectra
-## Result is computed in units: number of photons with fixed energy per energy bin
-#def single_BB_obs (Teff, Rns, Mns, eph, nphot):
-#    """
-#    |
-#
-#    Calculate thermal spectra [counts per energy bin] emitted by neutron star with fixed surface temperature.
-#
-#    :param Teff: effective temperature of neutron star [K]
-#    :param Rns: radius of neutron star [km]
-#    :param Mns: mass of neutron star [Solar mass]
-#    :param eph: list of energies where spectra is to be calculated [keV]
-#    :param nphot: total number of received photons
-#
-#    :returns: :sp: redshifted spectra [counts per energy bin]
-#    
-#
-#    """
-
-#    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
-#    kB = 8.617e-8       ## keV / K
-#    G = 6.67430e-8    ## cgs
-#    Msol = 2e33       ## Solar mass in gramms
-#    c   = 2.998e+10   ## speed of light in cm/s
-#
-#    R = Rns * 1e5
-#
-#    xg = 2.0 * G * Mns*Msol / R / c / c
-#    g14 = G*Mns*Msol / R / R / sqrt(1.0 - xg ) / 1e14 ## Gudmundsson et al. (1983), eq. (2-3)
-#
-#    Teff_inf = Teff * sqrt(1 - xg)
-#
-#    res = 15.0*sigma_SB / ( pow(pi, 4) * pow(kB, 4)) * np.power(eph, 3) / (np.exp(eph / (kB *Teff_inf)) - 1.0) / (1.0 - xg) 
-#
-#    coeff = nphot / np.sum(res)
-#
-#    res_n = np.asarray(np.asarray(res) * coeff, dtype=int)
-#
-#    return res_n
 
 def single_BB_photons (Teff, Rns, Mns, eph, nphot, integ = True):
     """
@@ -290,7 +251,7 @@ def single_BB_photons (Teff, Rns, Mns, eph, nphot, integ = True):
     :param nphot: total number of received photons
     :param integ: if True it returns integer counts (0.3 means no counts in a bin), if False it returns fraction of counts as well.
 
-    :returns: :sp: redshifted spectra [number of photons per energy bin]
+    :returns: redshifted spectra [number of photons per energy bin]
     
 
     """
@@ -308,21 +269,9 @@ def single_BB_photons (Teff, Rns, Mns, eph, nphot, integ = True):
 
     Teff_inf = Teff * sqrt(1 - xg)
 
-    res = 15.0*sigma_SB / ( pow(pi, 4) * pow(kB, 4)) * np.power(eph, 2) / (np.exp(eph / (kB *Teff_inf)) - 1.0) / (1.0 - xg) 
+    spec = 15.0*sigma_SB / ( pow(pi, 4) * pow(kB, 4)) * np.power(eph, 2) / (np.exp(eph / (kB *Teff_inf)) - 1.0) / (1.0 - xg) 
 
-    #Lcomp = s * sigma_SB * R*R * 4.0 * pi * pow(Teff, 4)
-
-    #print ('Lcomp = ', Lcomp)
-
-    #coeff = nphot / np.sum(res) #* Lcomp / L 
-
-    spec = np.asarray(res) / np.sum(res) * nphot
-
-    #if integ:
-    #    res_n = np.asarray(np.asarray(res) * coeff, dtype=int)
-    #    return res_n
-    #else:
-    #    return np.asarray(res) * coeff
+    spec = spec / np.sum(spec) * nphot
 
     if integ:
         spec = np.asarray(spec, dtype=int)
@@ -331,11 +280,33 @@ def single_BB_photons (Teff, Rns, Mns, eph, nphot, integ = True):
 
 def examine_spectral_fit_1BB_photons (param, Teff, Rns, Mns, eph, nphot, L, integ = True):
 
-    spec = single_BB_photons (Teff, Rns, Mns, eph, nphot, integ = False)
+    """
+    |
+
+    Function to examine the quality of single blackbody fit [number of photons per energy bin] in comparison the neutron star spectra.
+
+    :param param: :sc: relative area of hot region, :pc: relative temperature of hot region
+    :param Teff: effective temperature of neutron star [K]
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param eph: list of energies where spectra is to be calculated [keV]
+    :param nphot: total number of received photons
+    :param L: luminosity of neutron star
+    :param integ: if True it returns integer counts (0.3 means no counts in a bin), if False it returns fraction of counts as well.
+
+    :returns: redshifted spectra [number of photons per energy bin]
+
+
+    """
+
+
+    spec = single_BB_photons (param[1]*Teff, Rns, Mns, eph, nphot, integ = False)
 
     Lcomp = compute_L_param (param, Teff, Rns, Mns)
 
-    spec = param[0] * spec * Lcomp / L
+    #print ('Lcomp = ', Lcomp)
+
+    spec =  spec * Lcomp / L
 
     if integ:
         spec = np.asarray(spec, dtype=int)
@@ -376,18 +347,12 @@ def two_BB_photons (param, Teff, Rns, Mns, eph, nphot, integ=True):
     pc = abs(pc)
     ph = abs(ph)
 
-    #print ('We have received the following parameters: sc = ', sc, ' sh = ', sh, ' pc = ', pc, ' ph = ', ph)
-
-    sp_Teff1 = single_BB_photons (pc*Teff, Rns, Mns, eph, nphot)
-    sp_Teff2 = single_BB_photons (ph*Teff, Rns, Mns, eph, nphot)
+    sp_Teff1 = single_BB_photons (pc*Teff, Rns, Mns, eph, nphot, integ=False)
+    sp_Teff2 = single_BB_photons (ph*Teff, Rns, Mns, eph, nphot, integ=False)
 
     spec = sc * sp_Teff1 +  sh * sp_Teff2
 
-    #Lcomp = sigma_SB * R*R * 4.0 * pi * (sc * pow(pc*Teff, 4) + sh * pow(ph*Teff, 4))
-
-    #print ('Lcomp = ', Lcomp)
-
-    spec = spec / np.sum(spec) * nphot #* Lcomp / L
+    spec = spec / np.sum(spec) * nphot 
 
     if integ:
         spec = np.asarray(spec, dtype=int)
@@ -396,11 +361,31 @@ def two_BB_photons (param, Teff, Rns, Mns, eph, nphot, integ=True):
 
 def examine_spectral_fit_2BB_photons (param, Teff, Rns, Mns, eph, nphot, L, integ = True):
 
+    """
+    |
+
+    Function to examine the quality of two blackbody fit [number of photons per energy bin] in comparison the neutron star spectra.
+
+    :param param: :sc: relative area of hot region, :pc: relative temperature of hot region
+    :param Teff: effective temperature of neutron star [K]
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param eph: list of energies where spectra is to be calculated [keV]
+    :param nphot: total number of received photons
+    :param L: luminosity of neutron star
+    :param integ: if True it returns integer counts (0.3 means no counts in a bin), if False it returns fraction of counts as well.
+
+    :returns: redshifted spectra [number of photons per energy bin]
+
+
+    """
+
+
     spec = two_BB_photons (param, Teff, Rns, Mns, eph, nphot, integ = False)
 
     Lcomp = compute_L_param (param, Teff, Rns, Mns)
 
-    spec = spec * Lcomp / L
+    spec = np.asarray(spec) * Lcomp / L
 
     if integ:
         spec = np.asarray(spec, dtype=int)
@@ -791,19 +776,21 @@ def Cstat_1BB (param, Teff, Rns, Mns, spec, eph, nphot, L):
 
     """
 
-    sc, pc = param
+#    sc, pc = param
 
-    R = Rns * 1e5
+#    R = Rns * 1e5
 
-    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
+#    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
 
-    spec_synth = single_BB_photons (pc*Teff, Rns, Mns, eph, nphot, integ=False)
+#    spec_synth = single_BB_photons (pc*Teff, Rns, Mns, eph, nphot, integ=False)
 
-    Lcomp = sigma_SB * R*R * 4.0 * pi * sc * pow(pc*Teff, 4)
+#    Lcomp = sigma_SB * R*R * 4.0 * pi * sc * pow(pc*Teff, 4)
 
-    spec_synth = spec_synth * Lcomp / L
+#    spec_synth = spec_synth * Lcomp / L
     
     #print ('Lcomp = ', Lcomp)
+
+    spec_synth = examine_spectral_fit_1BB_photons (param, Teff, Rns, Mns, eph, nphot, L, integ=False)
 
     res = 0.0
 
@@ -876,17 +863,19 @@ def Cstat_2BB (param, Teff, Rns, Mns, spec, eph, nphot, L):
 
     #sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
 
-    spec_synth = two_BB_photons (param, Teff, Rns, Mns, eph, nphot, integ=False)
+    #spec_synth = two_BB_photons (param, Teff, Rns, Mns, eph, nphot, integ=False)
 
     #sc, sh, pc, ph = param
 
     #Lcomp = sigma_SB * R*R * 4.0 * pi * (sc * pow(pc*Teff, 4) + sh * pow(ph*Teff, 4))
 
-    Lcomp = compute_L_param (param, Teff, Rns, Mns)
+    #Lcomp = compute_L_param (param, Teff, Rns, Mns)
 
     #print ('Lcomp = ', Lcomp)
 
-    spec_synth = spec_synth * Lcomp / L
+    #spec_synth = spec_synth * Lcomp / L
+
+    spec_synth = examine_spectral_fit_2BB_photons (param, Teff, Rns, Mns, eph, nphot, L, integ=False)
 
     res = 0.0
 
@@ -902,6 +891,25 @@ def Cstat_2BB (param, Teff, Rns, Mns, spec, eph, nphot, L):
 
 
 def fit_spectral_model_chi2 (Teff, Rns, Mns, spec, eph, nphot):
+    """
+    |
+
+    Fit spectra [spec] with two models: (1) single blackbody model and (2) sum of two blackbody model and choose the best model
+
+    :param Teff: effective temperature of neutron star
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param spec: spectra which we try to fit
+    :param eph: list of energies where spectra was calculated [keV]
+    :param nphot: total number of received photons
+    :param L: luminosity of neutron star which we try to fit
+
+    :returns: C-stat
+    
+
+    """
+
+
 
     x2 = [0.2, 0.3, 0.9, 1.4]
 
@@ -922,6 +930,24 @@ def fit_spectral_model_chi2 (Teff, Rns, Mns, spec, eph, nphot):
 
 
 def fit_spectral_model_Cstat (Teff, Rns, Mns, spec, eph, nphot, L):
+    """
+    |
+
+    Fit spectra [spec] with two models: (1) single blackbody model and (2) sum of two blackbody model and choose the best model using C-statistics
+
+    :param Teff: effective temperature of neutron star
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param spec: spectra which we try to fit
+    :param eph: list of energies where spectra was calculated [keV]
+    :param nphot: total number of received photons
+    :param L: luminosity of neutron star which we try to fit
+
+    :returns: list [s1, s2, p1, p2, Cstat BB1, Cstat BB2]
+    
+
+    """
+
 
     x2 = [0.2, 0.8, 1.6, 1.3]
 
