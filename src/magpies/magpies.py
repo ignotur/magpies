@@ -314,13 +314,20 @@ def single_BB_photons (Teff, Rns, Mns, eph, nphot, integ = True):
 
     #print ('Lcomp = ', Lcomp)
 
-    coeff = nphot / np.sum(res) #* Lcomp / L 
+    #coeff = nphot / np.sum(res) #* Lcomp / L 
+
+    spec = np.asarray(res) / np.sum(res) * nphot
+
+    #if integ:
+    #    res_n = np.asarray(np.asarray(res) * coeff, dtype=int)
+    #    return res_n
+    #else:
+    #    return np.asarray(res) * coeff
 
     if integ:
-        res_n = np.asarray(np.asarray(res) * coeff, dtype=int)
-        return res_n
-    else:
-        return np.asarray(res) * coeff
+        spec = np.asarray(spec, dtype=int)
+
+    return spec
 
 def examine_spectral_fit_1BB_photons (param, Teff, Rns, Mns, eph, nphot, L, integ = True):
 
@@ -328,7 +335,10 @@ def examine_spectral_fit_1BB_photons (param, Teff, Rns, Mns, eph, nphot, L, inte
 
     Lcomp = compute_L_param (param, Teff, Rns, Mns)
 
-    spec = spec * Lcomp / L
+    spec = param[0] * spec * Lcomp / L
+
+    if integ:
+        spec = np.asarray(spec, dtype=int)
 
     return spec
 
@@ -391,6 +401,9 @@ def examine_spectral_fit_2BB_photons (param, Teff, Rns, Mns, eph, nphot, L, inte
     Lcomp = compute_L_param (param, Teff, Rns, Mns)
 
     spec = spec * Lcomp / L
+
+    if integ:
+        spec = np.asarray(spec, dtype=int)
 
     return spec
 
