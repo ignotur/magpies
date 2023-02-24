@@ -1,6 +1,34 @@
 from math import *
 import numpy as np
+import sys
 from scipy.optimize import minimize
+
+def xg (Rns, Mns):
+    """
+    |
+
+    Compute compactenss parameters of neutron star.
+
+    :param Rns: neutron star radius [km]
+    :param Mns: neutron star mass [Solar mass]
+
+    :returns: compactness parameter [uniteless]
+
+
+    """
+
+    G = 6.67430e-8   ## cgs
+    Msol = 2e33      ## Solar mass in gramms
+    R = Rns * 1e5    ## cm
+    M = Mns * Msol
+    c   = 2.998e+10  ## speed of light in cm/s
+
+    res = 2.0 * G * M / R / c / c
+
+
+    return res
+
+
 
 def g14 (Rns, Mns):
     """
@@ -949,7 +977,7 @@ def fit_spectral_model_Cstat (Teff, Rns, Mns, spec, eph, nphot, L):
     """
 
 
-    x2 = [0.2, 0.8, 1.6, 1.3]
+    x2 = [0.2, 0.8, 0.9, 1.3]
 
     x1 = [0.7, 1.3]
 
