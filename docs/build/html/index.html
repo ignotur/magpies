@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
     <title>Magpies package documentation &#8212; Magpies 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -34,14 +34,80 @@
             
   <section id="magpies-package-documentation">
 <h1>Magpies package documentation<a class="headerlink" href="#magpies-package-documentation" title="Permalink to this headline">¶</a></h1>
-<p><strong>Magpies</strong> (Magnetar polarisation, intensity and spectra) Python package to convert magnetic and thermal maps into synthetic X-ray observations.</p>
+<p><strong>Magpies</strong> (Magnetar polarisation, intensity and spectra) Python package to convert magnetic and thermal maps into synthetic X-ray observations.
+These synthtic observations include the thermal lightcurves for arbitrary orientation of neutron star, spectra and polarisation.</p>
+<p>The package requires surface magnetic and thermal maps.
+In the case of simple dipole configuration the surface
+thermal map can be created by using the Atmos collection
+of numerical fits.</p>
+<p>Below we show simple example of the usage. The more advance
+examples are provided in tutorial section.</p>
+<section id="simple-examples">
+<h2>Simple examples<a class="headerlink" href="#simple-examples" title="Permalink to this headline">¶</a></h2>
+<p>In order to work with the package we recommend to import
+the following blocks and packages:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">magpies</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">atmos</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>First we specify mass and radius of neutron star. These
+parameters will enter nearly every function because they
+enter the compactness parameter and affect how light
+is emitted and propagated in close vicinity of the neutron star.
+Following the usual practise of the field mass is specified
+in units of solar mass and radius is in km. It is also
+useful to choose polar magnetic field Bp [G] and temperature
+in deep layers of neutron stars Tb [K].</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Radius and mass of neutron star</span>
+<span class="n">Rns</span> <span class="o">=</span> <span class="mi">12</span>  <span class="c1">## km</span>
+<span class="n">Mns</span> <span class="o">=</span> <span class="mf">1.4</span> <span class="c1">## M_solar</span>
+<span class="n">Tb</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">7.1730</span><span class="p">)</span>  <span class="c1">## K</span>
+<span class="n">Bp</span> <span class="o">=</span> <span class="mf">1e11</span> <span class="c1">## G</span>
+</pre></div>
+</div>
+<p>Now we compute free fall acceleration and initialise
+the iron atmosphere following fit from Potekhin et al. (2003)
+article for dipolar magnetic field.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g14c</span> <span class="o">=</span> <span class="n">g14</span> <span class="p">(</span><span class="n">Rns</span><span class="p">,</span> <span class="n">Mns</span><span class="p">)</span> <span class="c1">## computing the free fall acceleration</span>
+<span class="n">atm_iron_2003</span> <span class="o">=</span> <span class="n">NS_atmosphere</span> <span class="p">(</span><span class="s1">&#39;Potekhin_2003_iron&#39;</span><span class="p">,</span> <span class="n">g14c</span><span class="p">,</span> <span class="n">Tb</span><span class="p">,</span> <span class="n">Bp</span><span class="p">)</span>
+<span class="n">atm_iron_2003</span><span class="o">.</span><span class="n">describe</span> <span class="p">()</span>
+</pre></div>
+</div>
+<p>The function <cite>g14</cite> is a part of Magpies library while <cite>NS_atmosphere</cite> is a class
+from the Atmos library. The method <cite>describe</cite> simply provide more details
+about the fit and relevant literature reference.</p>
+<p>Further we create a latitude and longitude grid where the temperatures are computed.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1">## theta coordinates</span>
+<span class="n">phi</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span> <span class="c1">## phi coordinates</span>
+
+<span class="n">theta1</span><span class="p">,</span> <span class="n">phi1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span> <span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+
+<span class="n">Ts</span> <span class="o">=</span> <span class="n">atm_iron_2003</span><span class="o">.</span><span class="n">Ts</span> <span class="p">(</span><span class="n">theta1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The method <cite>Ts</cite> creates array with temperatures following
+the prescribed compactness and deep crust temperature. We can plot the surface
+thermal map in Aitoff projection using standard matplotlib tools:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">frame</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;aitoff&#39;</span><span class="p">)</span>
+<span class="n">bc</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">contourf</span> <span class="p">(</span><span class="n">phi</span><span class="o">-</span><span class="n">pi</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">theta</span><span class="o">-</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">Ts</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+<span class="n">frame</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">([])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We normally transpose the temperature array using numpy method <cite>.T</cite>. The result
+is shown below.</p>
+<img alt="_images/surface_temperature_map.png" src="_images/surface_temperature_map.png" />
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Atmos.html">Atmos method list</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Magpies.html">Magpies method list</a></li>
 </ul>
 </div>
+</section>
 </section>
 <section id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
@@ -69,7 +135,7 @@
 
 
 <h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Atmos.html">Atmos method list</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Magpies.html">Magpies method list</a></li>
@@ -87,7 +153,7 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -109,7 +175,7 @@
       &copy;2023, Dr Andrei P. Igoshev.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
