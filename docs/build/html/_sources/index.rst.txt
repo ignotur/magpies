@@ -86,7 +86,7 @@ Further we create a latitude and longitude grid where the temperatures are compu
 
     Ts = atm_iron_2003.Ts (theta1)
 
-The method `Ts` creates array with temperatures following
+The method ``Ts()`` creates array with temperatures following
 the prescribed compactness and deep crust temperature. We can plot the surface 
 thermal map in Aitoff projection using standard matplotlib tools:
 

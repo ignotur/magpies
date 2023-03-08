@@ -46,7 +46,11 @@ examples are provided in tutorial section.</p>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Tutorials.html">Magpies tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorials.html">Magpies tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Fit_spectra_bb.html">Fitting X-ray lightcurve with blackbody</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Collection_of_lightcurves.html">Prepare lightcurves for different neutron star orientations</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="Atmos.html">Atmos method list</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Magpies.html">Magpies method list</a></li>
 </ul>
@@ -96,7 +100,7 @@ about the fit and relevant literature reference.</p>
 <span class="n">Ts</span> <span class="o">=</span> <span class="n">atm_iron_2003</span><span class="o">.</span><span class="n">Ts</span> <span class="p">(</span><span class="n">theta1</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The method <cite>Ts</cite> creates array with temperatures following
+<p>The method <code class="docutils literal notranslate"><span class="pre">Ts()</span></code> creates array with temperatures following
 the prescribed compactness and deep crust temperature. We can plot the surface
 thermal map in Aitoff projection using standard matplotlib tools:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
