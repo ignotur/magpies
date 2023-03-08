@@ -13,9 +13,10 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Atmos method list" href="Atmos.html" />
+    <link rel="next" title="Magpies tutorials" href="Tutorials.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -42,8 +43,16 @@ thermal map can be created by using the Atmos collection
 of numerical fits.</p>
 <p>Below we show simple example of the usage. The more advance
 examples are provided in tutorial section.</p>
-<section id="simple-examples">
-<h2>Simple examples<a class="headerlink" href="#simple-examples" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Tutorials.html">Magpies tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Atmos.html">Atmos method list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Magpies.html">Magpies method list</a></li>
+</ul>
+</div>
+<section id="simple-example">
+<h2>Simple example<a class="headerlink" href="#simple-example" title="Permalink to this headline">¶</a></h2>
 <p>In order to work with the package we recommend to import
 the following blocks and packages:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">magpies</span> <span class="kn">import</span> <span class="o">*</span>
@@ -75,8 +84,8 @@ article for dipolar magnetic field.</p>
 <span class="n">atm_iron_2003</span><span class="o">.</span><span class="n">describe</span> <span class="p">()</span>
 </pre></div>
 </div>
-<p>The function <cite>g14</cite> is a part of Magpies library while <cite>NS_atmosphere</cite> is a class
-from the Atmos library. The method <cite>describe</cite> simply provide more details
+<p>The function <code class="docutils literal notranslate"><span class="pre">g14()</span></code> is a part of Magpies library while <code class="docutils literal notranslate"><span class="pre">NS_atmosphere()</span></code> is a class
+from the Atmos library. The method <code class="docutils literal notranslate"><span class="pre">describe()</span></code> simply provide more details
 about the fit and relevant literature reference.</p>
 <p>Further we create a latitude and longitude grid where the temperatures are computed.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1">## theta coordinates</span>
@@ -97,16 +106,48 @@ thermal map in Aitoff projection using standard matplotlib tools:</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>We normally transpose the temperature array using numpy method <cite>.T</cite>. The result
+<p>We normally transpose the temperature array using numpy method <code class="docutils literal notranslate"><span class="pre">.T</span></code>. The result
 is shown below.</p>
 <img alt="_images/surface_temperature_map.png" src="_images/surface_temperature_map.png" />
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="Atmos.html">Atmos method list</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Magpies.html">Magpies method list</a></li>
-</ul>
+<p>Now when the surface thermal map is prepared we can try different functions
+from the Magpies package. For example the package has basic functionality
+which allows fast calculations of total thermal luminosity and effective temperature</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">L</span>    <span class="o">=</span> <span class="n">compute_L</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">Rns</span><span class="p">,</span> <span class="n">Ts</span><span class="p">)</span>
+<span class="n">Teff</span> <span class="o">=</span> <span class="n">compute_Teff</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">Rns</span><span class="p">,</span> <span class="n">Ts</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;L = &#39;</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="s1">&#39; Teff = &#39;</span><span class="p">,</span> <span class="n">Teff</span><span class="p">)</span>
+</pre></div>
 </div>
+<p>This function gives <span class="math notranslate nohighlight">\(L = 6.7\times 10^{30}\)</span> erg/s and <span class="math notranslate nohighlight">\(T_\mathrm{eff} = 2.8\times 10^5\)</span> K.
+Advanced methods available in <em>Magpies</em> package allows to compute the spectra:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">eph</span><span class="p">,</span> <span class="n">spect</span><span class="p">,</span> <span class="n">visib</span> <span class="o">=</span> <span class="n">get_redshifted_spectra_pole_3D</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">Ts</span><span class="p">,</span> <span class="n">Rns</span><span class="p">,</span> <span class="n">Mns</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here <code class="docutils literal notranslate"><span class="pre">eph</span></code> is list of energies where the spectra is computed, <code class="docutils literal notranslate"><span class="pre">spect</span></code> is the
+effective spectral flux and <code class="docutils literal notranslate"><span class="pre">visib</span></code> shows the temperature distribution over the
+visible hemisphere. We can plot the resulting spectra as the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span> <span class="p">(</span><span class="n">eph</span><span class="p">,</span> <span class="n">spect</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;E (keV)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;H (erg s$^{-1}$ cm$^{-2}$ keV$^{-1}$)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Which gives us the following plot.</p>
+<img alt="_images/polar_spectra.png" src="_images/polar_spectra.png" />
+<p>The visible map looks like the following:</p>
+<img alt="_images/visib.png" src="_images/visib.png" />
+<p>It is possible to create a lightcurve.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">phases</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">pi</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">intens</span> <span class="o">=</span> <span class="n">lightcurve</span> <span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">Ts</span><span class="p">,</span> <span class="n">Rns</span><span class="p">,</span> <span class="n">Mns</span><span class="p">,</span> <span class="n">phases</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">intens_rel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intens</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">intens</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span> <span class="p">(</span><span class="n">phases</span><span class="p">,</span> <span class="n">intens_rel</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\Phi$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Relative intensity&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/lightcurve.png" src="_images/lightcurve.png" />
 </section>
 </section>
 <section id="indices-and-tables">
@@ -137,6 +178,7 @@ is shown below.</p>
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="Tutorials.html">Magpies tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Atmos.html">Atmos method list</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Magpies.html">Magpies method list</a></li>
 </ul>
@@ -145,7 +187,7 @@ is shown below.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="Atmos.html" title="next chapter">Atmos method list</a></li>
+      <li>Next: <a href="Tutorials.html" title="next chapter">Magpies tutorials</a></li>
   </ul></li>
 </ul>
 </div>

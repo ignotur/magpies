@@ -17,8 +17,20 @@ of numerical fits.
 Below we show simple example of the usage. The more advance 
 examples are provided in tutorial section.
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   Tutorials
+
+   Atmos
+
+   Magpies
+
+
+
 =================
-Simple examples
+Simple example
 =================
 
 In order to work with the package we recommend to import 
@@ -59,8 +71,8 @@ article for dipolar magnetic field.
     atm_iron_2003 = NS_atmosphere ('Potekhin_2003_iron', g14c, Tb, Bp)
     atm_iron_2003.describe ()
 
-The function `g14` is a part of Magpies library while `NS_atmosphere` is a class
-from the Atmos library. The method `describe` simply provide more details
+The function ``g14()`` is a part of Magpies library while ``NS_atmosphere()`` is a class
+from the Atmos library. The method ``describe()`` simply provide more details
 about the fit and relevant literature reference.
 
 Further we create a latitude and longitude grid where the temperatures are computed.
@@ -86,19 +98,63 @@ thermal map in Aitoff projection using standard matplotlib tools:
     frame.axes.xaxis.set_ticklabels([])
     plt.tight_layout()
 
-We normally transpose the temperature array using numpy method `.T`. The result
+We normally transpose the temperature array using numpy method ``.T``. The result
 is shown below.
 
 .. image:: ../images/surface_temperature_map.png
 
+Now when the surface thermal map is prepared we can try different functions 
+from the Magpies package. For example the package has basic functionality 
+which allows fast calculations of total thermal luminosity and effective temperature
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+.. code-block:: python
 
-   Atmos
+    L    = compute_L(theta, phi, Rns, Ts)
+    Teff = compute_Teff(theta, phi, Rns, Ts)
+    print ('L = ', L, ' Teff = ', Teff)
 
-   Magpies
+This function gives :math:`L = 6.7\times 10^{30}` erg/s and :math:`T_\mathrm{eff} = 2.8\times 10^5` K.
+Advanced methods available in *Magpies* package allows to compute the spectra:
+
+.. code-block:: python
+ 
+    eph, spect, visib = get_redshifted_spectra_pole_3D(theta, phi, Ts, Rns, Mns)
+
+Here ``eph`` is list of energies where the spectra is computed, ``spect`` is the 
+effective spectral flux and ``visib`` shows the temperature distribution over the
+visible hemisphere. We can plot the resulting spectra as the following:
+
+.. code-block:: python
+
+    plt.plot (eph, spect)
+    plt.xlabel('E (keV)')
+    plt.ylabel(r'H (erg s$^{-1}$ cm$^{-2}$ keV$^{-1}$)')
+    plt.xscale('log')
+    plt.yscale('log')
+
+Which gives us the following plot.
+
+.. image:: ../images/polar_spectra.png
+
+The visible map looks like the following:
+
+.. image:: ../images/visib.png
+
+It is possible to create a lightcurve. 
+
+.. code-block:: python
+
+    phases = np.linspace (0, 4*pi, 400)
+    intens = lightcurve (theta, phi, Ts, Rns, Mns, phases, 0, pi/4)
+
+    intens_rel = np.asarray(intens) / np.mean(intens)
+
+    plt.plot (phases, intens_rel)
+    plt.xlabel(r'$\Phi$')
+    plt.ylabel('Relative intensity')
+
+
+.. image:: ../images/lightcurve.png
 
 
 Indices and tables
