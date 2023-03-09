@@ -1,2 +1,2 @@
-Fitting X-ray lightcurve with blackbody
-=======================================
+Fitting X-ray lightcurve with blackbody model
+=============================================
