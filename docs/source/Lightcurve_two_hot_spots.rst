@@ -4,7 +4,8 @@ Lightcurve produced by two opposite hotspots
 Here we model lightcurves produced by two opposite hot spots following 
 article [1]_. 
 
-As usual we import ``Magpies`` and other useful packages:
+We import ``Magpies`` and ``numpy``, ``math`` and ``matplotlib`` packages which
+are typically handful:
 
 .. code-block:: python
 

@@ -1,6 +1,8 @@
 Magpies tutorials
 ===================
 
+In following examples we consider typical applications of ``Magpies`` code.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

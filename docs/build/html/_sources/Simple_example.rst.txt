@@ -1,5 +1,5 @@
-Simple example
-=================
+Simple example for computing spectra and lightcurve
+======================================================
 
 All examples are available in ``examples`` folder.
 In order to work with the package we recommend to import 

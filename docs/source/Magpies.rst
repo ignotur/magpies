@@ -59,4 +59,8 @@ Here we briefly describe most functions implemented in the Magpies python librar
 
 |
 
+.. autofunction:: magpies.get_redshifted_spectra_equator_photons
+
+|
+
 .. autofunction:: magpies.lightcurve
