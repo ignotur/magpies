@@ -608,52 +608,6 @@ def get_redshifted_spectra_equator_3D (theta, phi, Tmap, Rns, Mns):
     return [Eph, sp_red, map_of_visible]
 
 
-#def get_redshifted_spectra_equator_obs (theta, phi, Tmap, Rns, Mns, eph, nphot):
-#    
-#    map_of_visible = np.zeros ((len(phi), len(theta)))
-    
-#    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
-#    kB = 8.617e-8       ## keV / K
-#    G = 6.67430e-8    ## cgs
-#    Msol = 2e33       ## Solar mass in gramms
-#    Bp = 1e14         ## G
-#    c   = 2.998e+10   ## speed of light in cm/s
-    
-#    R = Rns * 1e5
-
-#    xg = 2.0 * G * Mns*Msol / R / c / c
-#    g14 = G*Mns*Msol / R / R / sqrt(1.0 - xg ) / 1e14 ## Gudmundsson et al. (1983), eq. (2-3)
-    
-    #print ('xg = ', xg, ' log_10 of  mean non-redshifted Ts = ', log10(np.mean(Tmap)))
-    
-#    Ts_inf = Tmap * sqrt(1 - xg)
-    
-    ## Here we prepare variables for integration over the visible hemisphere
-    
-#    sp_red = np.zeros(len(eph))
-
-#    dtheta = theta[1] - theta[0]
-#    dphi   = phi[1] - phi[0] 
-
-#    for i in range (0, len(phi)):
-#        for j in range (0, len(theta)):
-#            new_theta = sin(theta[j])*cos(phi[i])
-#            al = alpha (new_theta, Rns, Mns)
-            
-            
-            
-            #print (phi[i], theta[j], al)
-#            if al < pi / 2.0:
-#                Df = D_factor (new_theta, Rns, Mns)
-#                sp_red = sp_red +  Df * 15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta[j]) * np.cos(al) * np.power(eph, 3) / (np.exp(eph / kB / Ts_inf[i,j]) - 1.0) * dtheta * dphi            
-#                map_of_visible[i,j] = Ts_inf[i, j]
-
-#    coeff = nphot / np.sum(sp_red)
-
-#    sp_red_n = np.asarray(sp_red * coeff, dtype=int)
-                
-#    return [sp_red_n, map_of_visible]
-
 def get_redshifted_spectra_equator_photons (theta, phi, Tmap, Rns, Mns, eph, nphot):
     """
     |
@@ -717,6 +671,142 @@ def get_redshifted_spectra_equator_photons (theta, phi, Tmap, Rns, Mns, eph, nph
     sp_red_n = np.asarray(sp_red * coeff, dtype=int)
 
     return [sp_red_n, map_of_visible]
+
+def get_redshifted_spectra_any_photons (theta, phi, Tmap, Rns, Mns, phase, chi, inc, eph, nphot):
+    """
+    |
+
+    Calculate thermal spectra [integer number of photons per energy bin] emitted by neutron star.
+
+    :param Tmap: two dimensional array describing the surface thermal map [K]
+    :param theta: list of magnetic latitude [radians] where Tmap is provided
+    :param phi: list of magnetic longuitudets [radians] where Tmap is provided
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param phase: rotational phase [radian] 
+    :param chi:  magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)
+    :param inc: inclination of the observer with respect to the rotational axis.
+    :param eph: list energies where spectra should be computed [keV]
+    :param nphot: total number of photons to be generated
+
+    :returns: :sp: number of photons per energy bin
+              :visible_map: two-dimensional array which contains only the temperature distribution on visible hemisphere
+    
+
+    """
+
+    map_of_visible = np.zeros ((len(phi), len(theta)))
+
+    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
+    kB = 8.617e-8       ## keV / K
+    G = 6.67430e-8    ## cgs
+    Msol = 2e33       ## Solar mass in gramms
+    Bp = 1e14         ## G
+    c   = 2.998e+10   ## speed of light in cm/s
+
+    R = Rns * 1e5
+
+    xg = 2.0 * G * Mns*Msol / R / c / c
+    g14 = G*Mns*Msol / R / R / sqrt(1.0 - xg ) / 1e14 ## Gudmundsson et al. (1983), eq. (2-3)
+
+    #print ('xg = ', xg, ' log_10 of  mean non-redshifted Ts = ', log10(np.mean(Tmap)))
+
+    Ts_inf = Tmap * sqrt(1 - xg)
+
+    ## Here we prepare variables for integration over the visible hemisphere
+
+    sp_red = np.zeros(len(eph))
+
+    dtheta = theta[1] - theta[0]
+    dphi   = phi[1] - phi[0]
+
+    theta1, phi1 = np.meshgrid (theta, phi)
+
+
+## ==============================================
+#    factor_int = sigma_SB * R * R * np.power(Ts_inf, 4.0) * np.sin(theta1) / pi * dtheta * dphi
+#
+#    res_int = []
+#
+#    for i in range (0, len(phases)):
+#        Dcosalpha = precompute_Dcos2_alpha (Rns, Mns, chi, inc, phases[i], phi1, theta1)
+#        res_int.append (np.sum(factor_int * Dcosalpha))
+
+## ==============================================
+
+    factor_int =   15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta1) * dtheta * dphi
+
+    #np.power(eph, 2) / (np.exp(eph / kB / Ts_inf) - 1.0)
+
+    #print ('Shape of factor_int is ', factor_int.shape)
+
+    Dcosalpha = precompute_Dcos2_alpha (Rns, Mns, chi, inc, phase, phi1, theta1)
+
+    #res_int = np.sum(factor_int * Dcosalpha)
+
+    #res_int = Dcosalpha * 
+
+    sp_red_en = np.zeros(len(eph))
+
+    for i in range (0, len(eph)):
+
+        sp_red_en[i] = np.sum (factor_int * Dcosalpha * np.power(eph[i], 2) / (np.exp(eph[i] / kB / Ts_inf) - 1.0))
+
+
+
+#    for i in range (0, len(phi)):
+#        for j in range (0, len(theta)):
+#            new_theta = sin(theta[j])*cos(phi[i])
+#            al = alpha (new_theta, Rns, Mns)
+
+
+
+            #print (phi[i], theta[j], al)
+#            if al < pi / 2.0:
+#                Df = D_factor (new_theta, Rns, Mns)
+#                sp_red = sp_red +  Df * 15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta[j]) * np.cos(al) * np.power(eph, 2) / (np.exp(eph / kB / Ts_inf[i,j]) - 1.0) * dtheta * dphi
+#                map_of_visible[i,j] = Ts_inf[i, j]
+
+    coeff = nphot / np.sum(sp_red_en)
+
+    sp_red_n = np.asarray(sp_red_en * coeff, dtype=int)
+
+    return [sp_red_n, Dcosalpha * Ts_inf]
+
+def get_redshifted_phase_resolved_spectroscopy_photons (theta, phi, Tmap, Rns, Mns, phases, chi, inc, eph, nphot):
+    """
+    |
+
+    Calculate thermal spectra [integer number of photons per energy bin] emitted by neutron star.
+
+    :param Tmap: two dimensional array describing the surface thermal map [K]
+    :param theta: list of magnetic latitude [radians] where Tmap is provided
+    :param phi: list of magnetic longuitudets [radians] where Tmap is provided
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param phases: rotational phases [radian] 
+    :param chi:  magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)
+    :param inc: inclination of the observer with respect to the rotational axis.
+    :param eph: list energies where spectra should be computed [keV]
+    :param nphot: total number of photons to be generated
+
+    :returns: :sp: number of photons per energy bin
+    
+
+    """
+
+    sp_ph = []
+
+    for i in range (0, len(phases)):
+        res, vis = get_redshifted_spectra_any_photons (theta, phi, Tmap, Rns, Mns, phases[i], chi, inc, eph, nphot)
+        sp_ph.append (res)
+
+    sp_ph = np.asarray(sp_ph)
+
+    return sp_ph
+
+
+
 
 
 def two_BB (param, Teff, Rns, Mns):
@@ -1008,13 +1098,31 @@ def fit_spectral_model_Cstat (Teff, Rns, Mns, spec, eph, nphot, L):
 ## Auxiliary function to compute the multiplication factors for lightcurve efficiently
 
 def precompute_Dcos_alpha (Rns, Mns, chi, inc, phase, phi1, theta1):
+
+    """
+    |
+
+    Calculate :math:`D \\cos\\alpha` factor. 
+
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param chi:  magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)
+    :param inc: inclination of the observer with respect to the rotational axis.
+    :param phase: rotational phase [radian] 
+    :param phi1: list of magnetic longuitudets [radians] where Tmap is provided
+    :param theta1: list magnetic latitude [radians] where Tmap is provided
+
+    :returns: list of D cos alpha factors
     
+
+    """
+
     cospsi = (np.sin(chi)*np.cos(theta1) + np.sin(theta1)*np.cos(chi)*np.cos(phi1))*np.sin(inc)*np.cos(phase) + (-np.sin(chi)*np.sin(theta1)*np.cos(phi1) + np.cos(chi)*np.cos(theta1))*np.cos(inc) + np.sin(inc)*np.sin(phase)*np.sin(phi1)*np.sin(theta1)
     Dfact = D_factor (cospsi, Rns, Mns)
     Dfact = np.nan_to_num (Dfact, copy = False)
     cos_al = cos_alpha (cospsi, Rns, Mns)
     cos_al = np.nan_to_num(cos_al, copy = False)
-    b = (cos_al > 0).astype(int)
+    b = (cos_al > 0).astype(int) ## masking invisible part of neutron star 
     b = np.nan_to_num (b, copy = False)
     return b*Dfact * cos_al 
 
