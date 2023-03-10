@@ -3,6 +3,10 @@ Magpies method list
 
 Here we briefly describe most functions implemented in the Magpies python library.
 
+.. autofunction:: magpies.xg
+
+|
+
 .. autofunction:: magpies.g14
 
 |

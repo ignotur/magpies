@@ -9,6 +9,8 @@ def xg (Rns, Mns):
 
     Compute compactenss parameters of neutron star.
 
+    :math:`x_g = 2 G M / (R c^2)`
+
     :param Rns: neutron star radius [km]
     :param Mns: neutron star mass [Solar mass]
 
@@ -36,6 +38,8 @@ def g14 (Rns, Mns):
 
     Calculate the **free fall acceleration** at the surface of neutron star.
 
+    :math:`g_{14} = G M / (R^2 \sqrt{1 - x_g}) / 10^{14}`
+
     :param Rns: neutron star radius [km]
     :param Mns: neutron star mass [Solar mass]
 
@@ -61,6 +65,8 @@ def compute_L (theta, phi, Rns, Tmap):
     |
 
     Calculate the **total thermal X-ray luminosity** of neutron star.
+
+    :math:`L = \sigma_\mathrm{SB} R_\mathrm{NS}^2 \int_{4\pi} T_s^4 (\\theta, \\phi) \\sin \\theta d\\theta d\\phi`
 
     :param Tmap: Tmap is the surface thermal map [K]
     :param theta: list magnetic latitude [radians] where Tmap is provided 

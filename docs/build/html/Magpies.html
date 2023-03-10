@@ -13,6 +13,7 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Atmos method list" href="Atmos.html" />
@@ -36,12 +37,37 @@
 <h1>Magpies method list<a class="headerlink" href="#magpies-method-list" title="Permalink to this headline">¶</a></h1>
 <p>Here we briefly describe most functions implemented in the Magpies python library.</p>
 <dl class="py function">
+<dt class="sig sig-object py" id="magpies.xg">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">xg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.xg" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Compute compactenss parameters of neutron star.</p>
+<p><span class="math notranslate nohighlight">\(x_g = 2 G M / (R c^2)\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Rns</strong> – neutron star radius [km]</p></li>
+<li><p><strong>Mns</strong> – neutron star mass [Solar mass]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>compactness parameter [uniteless]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
 <dt class="sig sig-object py" id="magpies.g14">
 <span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">g14</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.g14" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line"><br /></div>
 </div>
 <p>Calculate the <strong>free fall acceleration</strong> at the surface of neutron star.</p>
+<p><span class="math notranslate nohighlight">\(g_{14} = G M / (R^2 \sqrt{1 - x_g}) / 10^{14}\)</span></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -65,6 +91,7 @@
 <div class="line"><br /></div>
 </div>
 <p>Calculate the <strong>total thermal X-ray luminosity</strong> of neutron star.</p>
+<p><span class="math notranslate nohighlight">\(L = \sigma_\mathrm{SB} R_\mathrm{NS}^2 \int_{4\pi} T_s^4 (\theta, \phi) \sin \theta d\theta d\phi\)</span></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

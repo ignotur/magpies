@@ -25,16 +25,22 @@ class NS_atmosphere:
 
         :param model_name: is the fit type for surface temperature distribution, options are as the following:
 
-        **Potekhin_2015** is for Potekhin, Pons & Page (2015) for iron envelope 2015SSRv..191..239P
+        **Potekhin_2015** is for Potekhin, Pons & Page (2015) [1]_ for iron envelope 
 
-        **Potekhin_2003_iron** is for Potekhin, Yakovlev, Chabrier & Gnedin (2003) for iron envelope 2003ApJ...594..404P 
-        this is the same fit as provided by Beznogov, Potekhin & Yakovlev (2021) for iron envelope 2021PhR...919....1B
+        **Potekhin_2003_iron** is for Potekhin, Yakovlev, Chabrier & Gnedin (2003) [2]_ for iron envelope, same as [3]_ 
 
-        **Potekhin_Yakovlev_2001_iron** is for Potekhin & Yakovlev (2001) for iron envelope 2001A&A...374..213P
+        **Potekhin_Yakovlev_2001_iron** is for Potekhin & Yakovlev (2001) [4]_ for iron envelope 
 
-        **Potekhin_2003_accr** is for Potekhin, Yakovlev, Chabrier & Gnedin (2003) for fully accreted envelope 2003ApJ...594..404P
+        **Potekhin_2003_accr** is for Potekhin, Yakovlev, Chabrier & Gnedin (2003) [2]_ for fully accreted envelope 
 
         :returns: class member
+
+        :References:
+
+        .. [1] Potekhin, Pons & Page (2015), Space Science Reviews, Volume 191, Issue 1-4, pp. 239-291 https://ui.adsabs.harvard.edu/abs/2015SSRv..191..239P/abstract
+        .. [2] Potekhin, Yakovlev, Chabrier & Gnedin (2003), The Astrophysical Journal, Volume 594, Issue 1, pp. 404-418 https://ui.adsabs.harvard.edu/abs/2003ApJ...594..404P/abstract
+        .. [3] Beznogov, Potekhin & Yakovlev (2021), Physics Reports, Volume 919, p. 1-68 https://ui.adsabs.harvard.edu/abs/2021PhR...919....1B/abstract
+        .. [4] Potekhin & Yakovlev (2001) Astronomy and Astrophysics, v.374, p.213-226 (2001) https://ui.adsabs.harvard.edu/abs/2001A%26A...374..213P/abstract
 
 
         """
@@ -261,7 +267,6 @@ class NS_atmosphere:
             print ("Surface temperatures for magnetised envelope of NS")
             print ("Following fit from Potekhin, Yakovlev, Chabrier & Gnedin (2003) for fully accreted envelope")
             print ("The Astrophysical Journal, Volume 594, Issue 1, pp. 404-418  2003ApJ...594..404P")
-
 
 
 
