@@ -10,6 +10,7 @@ class Tmap:
 
         This class allows to generate and store a surface thermal map efficiently.
         Depending on provided arguments the bevaviour of the class initialisation differs.
+        The thermal map is stored as Ts[:math:`\\phi`, :math:`\\theta`]
 
         :param usage: text string which determines the class behaviour:
 
