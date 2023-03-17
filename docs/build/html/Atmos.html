@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
     <title>Atmos method list &#8212; Magpies 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -13,6 +13,7 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Magpies method list" href="Magpies.html" />
@@ -37,12 +38,66 @@
 <h1>Atmos method list<a class="headerlink" href="#atmos-method-list" title="Permalink to this headline">¶</a></h1>
 <p>A selection of functions to model temperature distribution over the neutron star surface</p>
 <dl class="py function">
+<dt class="sig sig-object py" id="atmos.Tmap.__init__">
+<span class="sig-prename descclassname"><span class="pre">atmos.Tmap.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'zero'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ntheta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nphi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">99</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ns_atm_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#atmos.Tmap.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>This class allows to generate and store a surface thermal map efficiently.
+Depending on provided arguments the bevaviour of the class initialisation differs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>usage</strong> – text string which determines the class behaviour:</p>
+</dd>
+</dl>
+<p><strong>‘zero’</strong> surface temperatures are zero and map is defined at magnetic latitudes <span class="math notranslate nohighlight">\(\theta_i\)</span> 
+and longuitudes <span class="math notranslate nohighlight">\(\phi_i\)</span>. This is useful when the surface temperature map is simply composed of
+a few compact hot regions which can be edited after the surface thermal map is created.</p>
+<p><strong>‘NS_atm’</strong> member of NS_atmosphere class is provided as an optional argument. The surface thermal
+map is defined at uniform grid of magnetic latitudes with Ntheta grid points and Nphi longuitudes.</p>
+<p><strong>‘Ts’</strong> list of magnetic latitudes and longuitudes as well as list of respective temeperature is 
+directly provided as arguments of the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Ntheta</strong> – number of grid points for magnetic latitudes</p></li>
+<li><p><strong>Nphi</strong> – number of grid points for magnetic longuitudes</p></li>
+<li><p><strong>theta</strong> – list magnetic latitude [radians] where Tmap is provided</p></li>
+<li><p><strong>phi</strong> – list of magnetic longuitudets [radians] where Tmap is provided</p></li>
+<li><p><strong>Ts</strong> – the surface thermal map [K]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Ns_atm_method</dt>
+<dd class="field-even"><p>class member of NS_atmosphere</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>class member</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="atmos.Tmap.plot_Ts">
+<span class="sig-prename descclassname"><span class="pre">atmos.Tmap.</span></span><span class="sig-name descname"><span class="pre">plot_Ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#atmos.Tmap.plot_Ts" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Plot the surface temperature distrubituion using Aitoff projection</p>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
 <dt class="sig sig-object py" id="atmos.NS_atmosphere">
 <span class="sig-prename descclassname"><span class="pre">atmos.</span></span><span class="sig-name descname"><span class="pre">NS_atmosphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#atmos.NS_atmosphere" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Class which simulates the surface temperature distribution for different types of magnetised atmospheres</p>
+<p>Class which simulates or stores the surface temperature distribution for different types of magnetised atmospheres</p>
 <p>OUTPUT: class member describing the surface temperature distribution</p>
 </dd></dl>
 
@@ -132,7 +187,7 @@
 
 
 <h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Tutorials.html">Magpies tutorials</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Atmos method list</a></li>
@@ -152,7 +207,7 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -174,7 +229,7 @@
       &copy;2023, Dr Andrei P. Igoshev.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -1,11 +1,83 @@
 from math import *
 import numpy as np
+import matplotlib.pyplot as plt
+
+class Tmap:
+    
+    def __init__(self, usage='zero', Ntheta=100, Nphi=99, ns_atm_method=None, theta=None, phi=None, Ts = None):
+        """
+        |
+
+        This class allows to generate and store a surface thermal map efficiently.
+        Depending on provided arguments the bevaviour of the class initialisation differs.
+
+        :param usage: text string which determines the class behaviour:
+
+        **'zero'** surface temperatures are zero and map is defined at magnetic latitudes :math:`\\theta_i` 
+        and longuitudes :math:`\\phi_i`. This is useful when the surface temperature map is simply composed of
+        a few compact hot regions which can be edited after the surface thermal map is created.
+
+        **'NS_atm'** member of NS_atmosphere class is provided as an optional argument. The surface thermal
+        map is defined at uniform grid of magnetic latitudes with Ntheta grid points and Nphi longuitudes.
+
+        **'Ts'** list of magnetic latitudes and longuitudes as well as list of respective temeperature is 
+        directly provided as arguments of the class.
+
+        :param Ntheta: number of grid points for magnetic latitudes
+        :param Nphi: number of grid points for magnetic longuitudes
+        :ns_atm_method: class member of NS_atmosphere
+        :param theta: list magnetic latitude [radians] where Tmap is provided
+        :param phi: list of magnetic longuitudets [radians] where Tmap is provided
+        :param Ts: the surface thermal map [K]
+        :returns: class member
+
+        """
+
+        if usage == 'zero':
+
+            if (Ntheta <= 0) or (Nphi <= 0):
+                print ('Error of Tmap initialisation, Ntheta and Nphi should be positive integers')
+
+            self.theta = np.linspace (0, pi, Ntheta)
+            self.phi = np.linspace (0, 2.0*pi, Nphi)
+            self.Ts = np.zeros ((len(self.phi), len(self.theta))) 
+
+        if usage == 'NS_atm':
+
+            self.theta = np.linspace (0, pi, Ntheta)
+            self.phi = np.linspace (0, 2.0*pi, Nphi)
+            theta1, phi1 = np.meshgrid (self.theta, self.phi)
+            self.Ts = ns_atm_method.Ts (theta1)
+
+        if usage == 'Ts':
+
+            self.theta = theta
+            self.phi = phi
+            self.Ts = Ts
+           
+
+
+    def plot_Ts (self):
+        """
+        |
+
+        Plot the surface temperature distrubituion using Aitoff projection
+
+        """
+
+        frame = plt.subplot(111, projection='aitoff')
+        bc = plt.contourf (self.phi-pi, -(self.theta-pi/2), self.Ts.T, 40, cmap='plasma')
+        frame.axes.xaxis.set_ticklabels([])
+        plt.tight_layout()
+        
+
+
 
 class NS_atmosphere:
     """
     |
 
-    Class which simulates the surface temperature distribution for different types of magnetised atmospheres
+    Class which simulates or stores the surface temperature distribution for different types of magnetised atmospheres
 
     OUTPUT: class member describing the surface temperature distribution
     

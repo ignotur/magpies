@@ -55,6 +55,10 @@ Here we briefly describe most functions implemented in the Magpies python librar
 
 |
 
+.. autofunction:: magpies.spectra_pole
+
+|
+
 .. autofunction:: magpies.get_redshifted_spectra_pole_3D
 
 |
