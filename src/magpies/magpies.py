@@ -482,7 +482,7 @@ def get_redshifted_spectra_pole_3D (theta, phi, Tmap, Rns, Mns):
             al = alpha (cos(theta[j]), Rns, Mns)
 
 
-            if al < pi / 2.0:
+            if (al < pi / 2.0) and (al > -pi / 2):
                 Df = D_factor (cos(theta[j]), Rns, Mns)
                 sp_red = sp_red +  Df * 15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta[j]) * np.cos(al)  * np.power(Eph, 3) / (np.exp(Eph / kB / Ts_inf[i,j]) - 1.0) * dtheta * dphi
                 map_of_visible[i,j] = Ts_inf[i, j]
@@ -777,29 +777,13 @@ def spectra_any (Tmap, Rns, Mns, phase, chi, inc, eph):
 
     factor_int =   15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta1) * dtheta * dphi
 
-    Dcosalpha = precompute_Dcos2_alpha (Rns, Mns, chi, inc, phase, phi1, theta1)
+    Dcosalpha = precompute_Dcos_alpha (Rns, Mns, chi, inc, phase, phi1, theta1)
 
     sp_red_en = np.zeros(len(eph))
 
     for i in range (0, len(eph)):
 
         sp_red_en[i] = np.sum (factor_int * Dcosalpha * np.power(eph[i], 3) / (np.exp(eph[i] / kB / Ts_inf) - 1.0))
-
-
-##================================================================
-##      for i in range (0, len(phi)):
-##        for j in range (0, len(theta)):
-##            al = alpha (cos(theta[j]), Rns, Mns)
-
-
-##            if al < pi / 2.0:
-##                Df = D_factor (cos(theta[j]), Rns, Mns)
-##                sp_red = sp_red +  Df * 15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta[j]) * np.cos(al)  * np.power(Eph, 3) / (np.exp(Eph / kB / Ts_inf[i,j]) - 1.0) * dtheta * dphi
-##                map_of_visible[i,j] = Ts_inf[i, j]
-## 
-##
-##
-###
 
 
     return [sp_red_en, Dcosalpha * Ts_inf]
@@ -1257,12 +1241,18 @@ def precompute_Dcos_alpha (Rns, Mns, chi, inc, phase, phi1, theta1):
     """
 
     cospsi = (np.sin(chi)*np.cos(theta1) + np.sin(theta1)*np.cos(chi)*np.cos(phi1))*np.sin(inc)*np.cos(phase) + (-np.sin(chi)*np.sin(theta1)*np.cos(phi1) + np.cos(chi)*np.cos(theta1))*np.cos(inc) + np.sin(inc)*np.sin(phase)*np.sin(phi1)*np.sin(theta1)
+
+    #print ('Comparison: cospsi = ', cospsi, ' cos theta = ', np.cos(theta1))
+
+
+
     Dfact = D_factor (cospsi, Rns, Mns)
     Dfact = np.nan_to_num (Dfact, copy = False)
     cos_al = cos_alpha (cospsi, Rns, Mns)
     cos_al = np.nan_to_num(cos_al, copy = False)
     b = (cos_al > 0).astype(int) ## masking invisible part of neutron star 
     b = np.nan_to_num (b, copy = False)
+
     return b*Dfact * cos_al 
 
 ## Auxiliary function to compute the multiplication factors for lightcurve efficiently taking into account cos^2 beaming
