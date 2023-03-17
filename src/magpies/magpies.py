@@ -728,6 +728,89 @@ def get_redshifted_spectra_equator_photons (theta, phi, Tmap, Rns, Mns, eph, nph
 
     return [sp_red_n, map_of_visible]
 
+
+## ++++
+def spectra_any (Tmap, Rns, Mns, phase, chi, inc, eph):
+    """
+    |
+
+
+    Calculate redshifted thermal spectra [erg s^-1 cm^-2 keV^-1] emitted by neutron star observed from arbitrary orientation.
+
+    :math:`H_E^\\infty = \\frac{15 \\sigma_{SB}}{\\pi^5 k_B^4} \\int_\\mathrm{viz} \\frac{E^3 \\cos \\alpha \\; \\mathcal{D} \\sin \\theta d\\theta d\\phi}{\\exp(E/(k_B T_s^\\infty)) - 1}`
+
+    :param Tmap: member of Tmap class containing surface temperature map.
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param phase: rotational phase [radian] 
+    :param chi:  magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)
+    :param inc: inclination of the observer with respect to the rotational axis.
+    :param eph: list containing energy mesh :math:`E` [keV]
+
+    :returns: :sp: redshifted spectra [erg s^-1 cm^-2 keV^-1]
+              :visible_map: two-dimensional array which contains only the temperature distribution on visible hemisphere
+
+    """
+
+    map_of_visible = np.zeros ((len(Tmap.phi), len(Tmap.theta)))
+
+    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
+    kB = 8.617e-8       ## keV / K
+    G = 6.67430e-8    ## cgs
+    Msol = 2e33       ## Solar mass in gramms
+    Bp = 1e14         ## G
+    c   = 2.998e+10   ## speed of light in cm/s
+
+    R = Rns * 1e5
+
+    xg = 2.0 * G * Mns*Msol / R / c / c
+    g14 = G*Mns*Msol / R / R / sqrt(1.0 - xg ) / 1e14 ## Gudmundsson et al. (1983), eq. (2-3)
+
+    Ts_inf = Tmap.Ts * sqrt(1 - xg)
+
+    ## Here we prepare variables for integration over the visible hemisphere
+
+    dtheta = Tmap.theta[1] - Tmap.theta[0]
+    dphi   = Tmap.phi[1] - Tmap.phi[0]
+
+    theta1, phi1 = np.meshgrid (Tmap.theta, Tmap.phi)
+
+    factor_int =   15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta1) * dtheta * dphi
+
+    Dcosalpha = precompute_Dcos2_alpha (Rns, Mns, chi, inc, phase, phi1, theta1)
+
+    sp_red_en = np.zeros(len(eph))
+
+    for i in range (0, len(eph)):
+
+        sp_red_en[i] = np.sum (factor_int * Dcosalpha * np.power(eph[i], 3) / (np.exp(eph[i] / kB / Ts_inf) - 1.0))
+
+
+##================================================================
+##      for i in range (0, len(phi)):
+##        for j in range (0, len(theta)):
+##            al = alpha (cos(theta[j]), Rns, Mns)
+
+
+##            if al < pi / 2.0:
+##                Df = D_factor (cos(theta[j]), Rns, Mns)
+##                sp_red = sp_red +  Df * 15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta[j]) * np.cos(al)  * np.power(Eph, 3) / (np.exp(Eph / kB / Ts_inf[i,j]) - 1.0) * dtheta * dphi
+##                map_of_visible[i,j] = Ts_inf[i, j]
+## 
+##
+##
+###
+
+
+    return [sp_red_en, Dcosalpha * Ts_inf]
+
+
+
+
+
+
+
+
 def get_redshifted_spectra_any_photons (theta, phi, Tmap, Rns, Mns, phase, chi, inc, eph, nphot):
     """
     |
