@@ -175,17 +175,19 @@
 <dd><div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Calculate the lensing factor following the article Poutanen (2020) A&amp;A 640, A24 (2020)</p>
+<p>Calculate the lensing factor following the article Poutanen (2020) A&amp;A 640, A24 (2020).</p>
+<p><span class="math notranslate nohighlight">\(\mathcal D = 1 + \frac{3 u^2 y^2}{112} - \frac{e}{100} uy \left[ 2 \log \left( 1 - \frac{y}{2} \right) + y \frac{1-3y/4}{1-y/2}\right]\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(u = \frac{Rg}{R_\mathrm{NS}}\)</span> and <span class="math notranslate nohighlight">\(y = 1 - \cos\psi\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cospsi</strong> – cosine of propagation angle</p></li>
+<li><p><strong>cospsi</strong> – cosine of propagation angle <span class="math notranslate nohighlight">\(\cos\psi\)</span></p></li>
 <li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
 <li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Dimensionless lensing factor</p>
+<dd class="field-even"><p>Dimensionless lensing factor <span class="math notranslate nohighlight">\(\mathcal D\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -672,12 +674,45 @@
 <div class="line"><br /></div>
 </div>
 <dl class="py function">
+<dt class="sig sig-object py" id="magpies.phase_resolved_spectroscopy">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">phase_resolved_spectroscopy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.phase_resolved_spectroscopy" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate phase-resolved spectroscopy for neutron star.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Tmap</strong> – member of Tmap class containing surface temperature map.</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>phases</strong> – rotational phases [radian]</p></li>
+<li><p><strong>chi</strong> – magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)</p></li>
+<li><p><strong>inc</strong> – inclination of the observer with respect to the rotational axis.</p></li>
+<li><p><strong>eph</strong> – list energies where spectra should be computed [keV]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="field-list simple">
+<dt class="field-odd">sp</dt>
+<dd class="field-odd"><p>number of photons per energy bin</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
 <dt class="sig sig-object py" id="magpies.precompute_Dcos_alpha">
 <span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">precompute_Dcos_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.precompute_Dcos_alpha" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line"><br /></div>
 </div>
-<p>Calculate <span class="math notranslate nohighlight">\(D \cos\alpha\)</span> factor.</p>
+<p>Calculate <span class="math notranslate nohighlight">\(\mathcal D \cos\alpha\)</span> factor for all points of the mesh at the neutron star surface.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -691,7 +726,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list of D cos alpha factors</p>
+<dd class="field-even"><p>array of <span class="math notranslate nohighlight">\(\mathcal D \cos\alpha\)</span> factors</p>
 </dd>
 </dl>
 </dd></dl>

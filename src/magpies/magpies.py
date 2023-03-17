@@ -179,13 +179,17 @@ def D_factor (cospsi, Rns, Mns):
     """
     |
 
-    Calculate the lensing factor following the article Poutanen (2020) A&A 640, A24 (2020)
+    Calculate the lensing factor following the article Poutanen (2020) A&A 640, A24 (2020).
 
-    :param cospsi: cosine of propagation angle
+    :math:`\\mathcal D = 1 + \\frac{3 u^2 y^2}{112} - \\frac{e}{100} uy \\left[ 2 \\log \\left( 1 - \\frac{y}{2} \\right) + y \\frac{1-3y/4}{1-y/2}\\right]`
+
+    where :math:`u = \\frac{Rg}{R_\\mathrm{NS}}` and :math:`y = 1 - \\cos\\psi`.
+
+    :param cospsi: cosine of propagation angle :math:`\\cos\\psi`
     :param Rns: radius of neutron star [km]
     :param Mns: mass of neutron star [Solar mass] 
 
-    :returns: Dimensionless lensing factor
+    :returns: Dimensionless lensing factor :math:`\\mathcal D`
     
 
     """
@@ -928,6 +932,36 @@ def get_redshifted_phase_resolved_spectroscopy_photons (theta, phi, Tmap, Rns, M
 
     return sp_ph
 
+def phase_resolved_spectroscopy (Tmap, Rns, Mns, phases, chi, inc, eph):
+    """
+    |
+
+    Calculate phase-resolved spectroscopy for neutron star.
+
+    :param Tmap: member of Tmap class containing surface temperature map.
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param phases: rotational phases [radian] 
+    :param chi:  magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)
+    :param inc: inclination of the observer with respect to the rotational axis.
+    :param eph: list energies where spectra should be computed [keV]
+
+    :returns: :sp: number of photons per energy bin
+    
+
+    """
+
+    sp_ph = []
+
+    for i in range (0, len(phases)):
+
+        res, vis = spectra_any(Tmap, Rns, Mns, phases[i], chi, inc, eph)
+        sp_ph.append (res)
+
+    sp_ph = np.asarray(sp_ph)
+
+    return sp_ph.T
+
 
 
 
@@ -1225,7 +1259,7 @@ def precompute_Dcos_alpha (Rns, Mns, chi, inc, phase, phi1, theta1):
     """
     |
 
-    Calculate :math:`D \\cos\\alpha` factor. 
+    Calculate :math:`\\mathcal D \\cos\\alpha` factor for all points of the mesh at the neutron star surface. 
 
     :param Rns: radius of neutron star [km]
     :param Mns: mass of neutron star [Solar mass]
@@ -1235,16 +1269,12 @@ def precompute_Dcos_alpha (Rns, Mns, chi, inc, phase, phi1, theta1):
     :param phi1: list of magnetic longuitudets [radians] where Tmap is provided
     :param theta1: list magnetic latitude [radians] where Tmap is provided
 
-    :returns: list of D cos alpha factors
+    :returns: array of :math:`\\mathcal D \\cos\\alpha` factors
     
 
     """
 
     cospsi = (np.sin(chi)*np.cos(theta1) + np.sin(theta1)*np.cos(chi)*np.cos(phi1))*np.sin(inc)*np.cos(phase) + (-np.sin(chi)*np.sin(theta1)*np.cos(phi1) + np.cos(chi)*np.cos(theta1))*np.cos(inc) + np.sin(inc)*np.sin(phase)*np.sin(phi1)*np.sin(theta1)
-
-    #print ('Comparison: cospsi = ', cospsi, ' cos theta = ', np.cos(theta1))
-
-
 
     Dfact = D_factor (cospsi, Rns, Mns)
     Dfact = np.nan_to_num (Dfact, copy = False)

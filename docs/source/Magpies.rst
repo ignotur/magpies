@@ -83,4 +83,8 @@ Here we briefly describe most functions implemented in the Magpies python librar
 
 |
 
+.. autofunction:: magpies.phase_resolved_spectroscopy
+
+|
+
 .. autofunction:: magpies.precompute_Dcos_alpha
