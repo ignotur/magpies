@@ -88,3 +88,7 @@ Here we briefly describe most functions implemented in the Magpies python librar
 |
 
 .. autofunction:: magpies.precompute_Dcos_alpha
+
+|
+
+.. autofunction:: magpies.flux_to_photons

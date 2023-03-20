@@ -1377,6 +1377,34 @@ def lightcurve_cos2 (theta, phi, Tmap, Rns, Mns, phases, chi, inc):
 
     return res_int
 
+def flux_to_photons (flx, eph, nph):
+
+    """
+    |
+
+    Convert fluxes into number of photons
+
+    :math:`N_\\mathrm{phot} = \\frac{F}{E}`
+
+    :param flx: spectral fluxes [...]
+    :param eph: mesh of energies [keV]
+    :param nph: total number of photons received by X-ray telescope.
+
+    :returns: number of photons per energy bin
+
+
+    """
+
+    Np = np.asarray(flx) / eph
+
+    res = np.asarray(Np / np.sum(Np) * nph, dtype=int)
+
+    return res
+
+
+
+
+
 
 
 
