@@ -17,4 +17,4 @@ In following examples we consider typical applications of ``Magpies`` code.
 
    Collection_of_lightcurves
 
-
+   Phased_resolved_spectroscopy
