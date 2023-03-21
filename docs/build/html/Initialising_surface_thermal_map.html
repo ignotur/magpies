@@ -85,6 +85,31 @@ surface thermal map in Aitoff projection.</p>
 </div>
 <img alt="_images/Ts_71_11.png" src="_images/Ts_71_11.png" />
 </section>
+<section id="creating-isolated-hot-spots">
+<h2>Creating isolated hot spots<a class="headerlink" href="#creating-isolated-hot-spots" title="Permalink to this headline">¶</a></h2>
+<p>Isolated hot spots can be created by direcly editing Tm.Ts array. So,
+it is possible to initialise empy <code class="xref py py-mod docutils literal notranslate"><span class="pre">atmos.Tmap</span></code> class with necessary size and add
+a hot region <span class="math notranslate nohighlight">\(T = 10^6\)</span> K close to the pole.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Tm</span> <span class="o">=</span> <span class="n">Tmap</span> <span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="s1">&#39;zero&#39;</span><span class="p">,</span>  <span class="n">Ntheta</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">Nphi</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">Tm</span><span class="o">.</span><span class="n">Ts</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e6</span>
+<span class="n">Tm</span><span class="o">.</span><span class="n">plot_Ts</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/Ts_single_hot_spot.png" src="_images/Ts_single_hot_spot.png" />
+<p>Here we work with low resolution surface thermal map that is why the single pixel hot spot seems relatively large.
+Poisiton and size of hot spots needs to be coordinated with the surface thermal map resolution.</p>
+</section>
+<section id="constracting-the-surface-thermal-map">
+<h2>Constracting the surface thermal map<a class="headerlink" href="#constracting-the-surface-thermal-map" title="Permalink to this headline">¶</a></h2>
+<p>If a surface thermal map is stored in some external
+file, it is possible to pass this map as parameters
+while creating the <code class="xref py py-mod docutils literal notranslate"><span class="pre">atmos.Tmap</span></code> class.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Tm</span> <span class="o">=</span> <span class="n">Tmap</span> <span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="s1">&#39;Ts&#39;</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta_list</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi_list</span><span class="p">,</span> <span class="n">Ts</span> <span class="o">=</span> <span class="n">Ts</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The array storing the map should have the following structure <span class="math notranslate nohighlight">\(\mathrm{Ts}[\phi, \theta]\)</span>.
+All functions assume that surface mesh is uniform.</p>
+</section>
 </section>
 
 
@@ -110,6 +135,8 @@ surface thermal map in Aitoff projection.</p>
 <li class="toctree-l2"><a class="reference internal" href="Simple_example.html">Simple example for computing spectra and lightcurve</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Initialising the surface thermal map</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#using-ns-atmospheric-model">Using NS atmospheric model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-isolated-hot-spots">Creating isolated hot spots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constracting-the-surface-thermal-map">Constracting the surface thermal map</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="Lightcurve_two_hot_spots.html">Lightcurve produced by two opposite hotspots</a></li>

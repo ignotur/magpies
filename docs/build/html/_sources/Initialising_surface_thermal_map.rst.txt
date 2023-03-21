@@ -65,3 +65,37 @@ surface thermal map in Aitoff projection.
 
 .. image:: ../images/Ts_71_11.png
 
+----------------------------------------
+Creating isolated hot spots
+----------------------------------------
+
+Isolated hot spots can be created by direcly editing Tm.Ts array. So, 
+it is possible to initialise empy :py:mod:`atmos.Tmap` class with necessary size and add
+a hot region :math:`T = 10^6` K close to the pole.
+
+.. code-block:: python
+
+    Tm = Tmap (usage='zero',  Ntheta = 20, Nphi = 10)
+    Tm.Ts[2, 2] = 1e6
+    Tm.plot_Ts()
+
+.. image:: ../images/Ts_single_hot_spot.png
+
+Here we work with low resolution surface thermal map that is why the single pixel hot spot seems relatively large.
+Poisiton and size of hot spots needs to be coordinated with the surface thermal map resolution.
+
+-----------------------------------------------
+Constracting the surface thermal map
+-----------------------------------------------
+
+If a surface thermal map is stored in some external
+file, it is possible to pass this map as parameters
+while creating the :py:mod:`atmos.Tmap` class. 
+
+.. code-block:: python
+
+   Tm = Tmap (usage='Ts', theta=theta_list, phi=phi_list, Ts = Ts)
+
+The array storing the map should have the following structure :math:`\mathrm{Ts}[\phi, \theta]`.
+All functions assume that surface mesh is uniform. 
+

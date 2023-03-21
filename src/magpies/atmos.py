@@ -34,11 +34,11 @@ class Tmap:
         :returns: class member
 
         """
+        if (Ntheta <= 0) or (Nphi <= 0):
+            print ('Error of Tmap initialisation, Ntheta and Nphi should be positive integers')
+            sys.exit(1)
 
         if usage == 'zero':
-
-            if (Ntheta <= 0) or (Nphi <= 0):
-                print ('Error of Tmap initialisation, Ntheta and Nphi should be positive integers')
 
             self.theta = np.linspace (0, pi, Ntheta)
             self.phi = np.linspace (0, 2.0*pi, Nphi)
