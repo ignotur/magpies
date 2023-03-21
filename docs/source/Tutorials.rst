@@ -9,6 +9,8 @@ In following examples we consider typical applications of ``Magpies`` code.
 
    Simple_example
 
+   Initialising_surface_thermal_map
+
    Lightcurve_two_hot_spots
 
    Fit_spectra_bb

@@ -1,10 +1,11 @@
+import sys
 from math import *
 import numpy as np
 import matplotlib.pyplot as plt
 
 class Tmap:
     
-    def __init__(self, usage='zero', Ntheta=100, Nphi=99, ns_atm_method=None, theta=None, phi=None, Ts = None):
+    def __init__(self, usage='zero', Ntheta=100, Nphi=99, ns_atm=None, theta=None, phi=None, Ts = None):
         """
         |
 
@@ -26,7 +27,7 @@ class Tmap:
 
         :param Ntheta: number of grid points for magnetic latitudes
         :param Nphi: number of grid points for magnetic longuitudes
-        :ns_atm_method: class member of NS_atmosphere
+        :ns_atm: class member of NS_atmosphere
         :param theta: list magnetic latitude [radians] where Tmap is provided
         :param phi: list of magnetic longuitudets [radians] where Tmap is provided
         :param Ts: the surface thermal map [K]
@@ -43,26 +44,32 @@ class Tmap:
             self.phi = np.linspace (0, 2.0*pi, Nphi)
             self.Ts = np.zeros ((len(self.phi), len(self.theta))) 
 
-        if usage == 'NS_atm':
+        elif usage == 'NS_atm':
 
             self.theta = np.linspace (0, pi, Ntheta)
             self.phi = np.linspace (0, 2.0*pi, Nphi)
             theta1, phi1 = np.meshgrid (self.theta, self.phi)
-            self.Ts = ns_atm_method.Ts (theta1)
+            self.Ts = ns_atm.Ts (theta1)
 
-        if usage == 'Ts':
+        elif usage == 'Ts':
 
             self.theta = theta
             self.phi = phi
             self.Ts = Ts
+
+        else:
+            print ('usage option is not chosen correctly')
+            sys.exit(1)
            
 
 
-    def plot_Ts (self):
+    def plot_Ts (self, filename=None):
         """
         |
 
         Plot the surface temperature distrubituion using Aitoff projection
+
+        :param filename: store the figure using filename
 
         """
 
@@ -70,6 +77,9 @@ class Tmap:
         bc = plt.contourf (self.phi-pi, -(self.theta-pi/2), self.Ts.T, 40, cmap='plasma')
         frame.axes.xaxis.set_ticklabels([])
         plt.tight_layout()
+
+        if filename:
+            plt.savefig(filename)
         
 
 
