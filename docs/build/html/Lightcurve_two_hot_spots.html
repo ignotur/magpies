@@ -17,7 +17,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Fitting X-ray lightcurve with blackbody model" href="Fit_spectra_bb.html" />
-    <link rel="prev" title="Simple example for computing spectra and lightcurve" href="Simple_example.html" />
+    <link rel="prev" title="Initialising the surface thermal map" href="Initialising_surface_thermal_map.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -41,6 +41,7 @@ article <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
 <p>We import <code class="docutils literal notranslate"><span class="pre">Magpies</span></code> and <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">math</span></code> and <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> packages which
 are typically handful:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">magpies</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">atmos</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -54,19 +55,17 @@ are typically handful:</p>
 </pre></div>
 </div>
 <p>Further we create a surface thermal map with which is filled with zeros. We place two
-hot spots (areas with temperature <span class="math notranslate nohighlight">\(T = 10^6\)</span> K) at opposite locations.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">phi</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>           <span class="c1">## phi coordinates</span>
-<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>             <span class="c1">## theta coordinates</span>
-<span class="n">Ts</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">theta</span><span class="p">)))</span>    <span class="c1">## Surface thermal map</span>
-<span class="n">Ts</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1e6</span>               <span class="c1">## First hot spot located at phi = 0, theta = pi/2</span>
-<span class="n">Ts</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1e6</span> <span class="c1">## Second antipodal hot spot, phi = pi, theta = pi/2</span>
+hot spots (areas with temperature <span class="math notranslate nohighlight">\(T = 10^6\)</span> K) at opposite locations.
+You can find more details about the <a class="reference internal" href="Atmos.html#atmos.Tmap.__init__" title="atmos.Tmap.__init__"><code class="xref py py-mod docutils literal notranslate"><span class="pre">atmos.Tmap.__init__</span></code></a> in <a class="reference internal" href="Initialising_surface_thermal_map.html#temp"><span class="std std-ref">Initialising the surface thermal map</span></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Tm</span> <span class="o">=</span> <span class="n">Tmap</span> <span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="s1">&#39;zero&#39;</span><span class="p">)</span>                              <span class="c1">## Surface thermal map filled with zeros</span>
+<span class="n">Tm</span><span class="o">.</span><span class="n">Ts</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Tm</span><span class="o">.</span><span class="n">theta</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1e6</span>                  <span class="c1">## First hot spot located at phi = 0, theta = pi/2</span>
+<span class="n">Tm</span><span class="o">.</span><span class="n">Ts</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Tm</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Tm</span><span class="o">.</span><span class="n">theta</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1e6</span> <span class="c1">## Second antipodal hot spot, phi = pi, theta = pi/2</span>
 </pre></div>
 </div>
-<p>We choose the size of array <code class="docutils literal notranslate"><span class="pre">phi</span></code> as 99 because it allows us to get a better numerical accuracy.
-Next, we create array where we store all rotational phases. We also compute the lightcurve
+<p>Next, we create array where we store all rotational phases. We also compute the lightcurve
 using function <a class="reference internal" href="Magpies.html#magpies.lightcurve" title="magpies.lightcurve"><code class="xref py py-mod docutils literal notranslate"><span class="pre">magpies.lightcurve()</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">phases</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">pi</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span> <span class="c1">## Phases where we compute the lightcurve</span>
-<span class="n">intens</span> <span class="o">=</span> <span class="n">lightcurve</span> <span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">Ts</span><span class="p">,</span> <span class="n">Rns</span><span class="p">,</span> <span class="n">Mns</span><span class="p">,</span> <span class="n">phases</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="c1">## last two arguments are chi and inclination</span>
+<span class="n">intens</span> <span class="o">=</span> <span class="n">lightcurve</span> <span class="p">(</span><span class="n">Tm</span><span class="p">,</span> <span class="n">Rns</span><span class="p">,</span> <span class="n">Mns</span><span class="p">,</span> <span class="n">phases</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="c1">## last two arguments are chi and inclination</span>
 
 <span class="n">phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">phases</span><span class="p">)</span> <span class="o">/</span> <span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="c1">## converting phase angle to phase</span>
 
@@ -82,7 +81,7 @@ the same.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">## Radius and mass of neutron star</span>
 <span class="n">Rns</span> <span class="o">=</span> <span class="mi">13</span>  <span class="c1">## km</span>
 <span class="n">Mns</span> <span class="o">=</span> <span class="mf">1.4</span> <span class="c1">## M_solar</span>
-<span class="n">intens</span> <span class="o">=</span> <span class="n">lightcurve</span> <span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">Ts</span><span class="p">,</span> <span class="n">Rns</span><span class="p">,</span> <span class="n">Mns</span><span class="p">,</span> <span class="n">phases</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="c1">## last two arguments are chi and inclination</span>
+<span class="n">intens</span> <span class="o">=</span> <span class="n">lightcurve</span> <span class="p">(</span><span class="n">Tm</span><span class="p">,</span> <span class="n">Rns</span><span class="p">,</span> <span class="n">Mns</span><span class="p">,</span> <span class="n">phases</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="c1">## last two arguments are chi and inclination</span>
 
 <span class="n">phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">phases</span><span class="p">)</span> <span class="o">/</span> <span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="c1">## converting phase angle to phase</span>
 
@@ -123,9 +122,11 @@ the same.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="Tutorials.html">Magpies tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="Simple_example.html">Simple example for computing spectra and lightcurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Initialising_surface_thermal_map.html">Initialising the surface thermal map</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Lightcurve produced by two opposite hotspots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Fit_spectra_bb.html">Fitting X-ray lightcurve with blackbody model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Collection_of_lightcurves.html">Prepare lightcurves for different neutron star orientations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phased_resolved_spectroscopy.html">Phased-resolved spectroscopy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Atmos.html">Atmos method list</a></li>
@@ -137,7 +138,7 @@ the same.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="Tutorials.html">Magpies tutorials</a><ul>
-      <li>Previous: <a href="Simple_example.html" title="previous chapter">Simple example for computing spectra and lightcurve</a></li>
+      <li>Previous: <a href="Initialising_surface_thermal_map.html" title="previous chapter">Initialising the surface thermal map</a></li>
       <li>Next: <a href="Fit_spectra_bb.html" title="next chapter">Fitting X-ray lightcurve with blackbody model</a></li>
   </ul></li>
   </ul></li>

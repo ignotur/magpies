@@ -10,6 +10,7 @@ are typically handful:
 .. code-block:: python
 
     from magpies import *
+    from atmos import *
     import numpy as np
     from math import *
     import matplotlib.pyplot as plt
@@ -25,23 +26,21 @@ We initialse basic neutron star properties.
 
 Further we create a surface thermal map with which is filled with zeros. We place two
 hot spots (areas with temperature :math:`T = 10^6` K) at opposite locations.
+You can find more details about the :py:mod:`atmos.Tmap.__init__` in :ref:`temp`.
 
 .. code-block:: python
 
-    phi   = np.linspace (0, 2*pi, 99)           ## phi coordinates
-    theta = np.linspace (0, pi, 100)             ## theta coordinates
-    Ts    = np.zeros ((len(phi), len(theta)))    ## Surface thermal map
-    Ts[0, int(len(theta)/2)] = 1e6               ## First hot spot located at phi = 0, theta = pi/2
-    Ts[int(len(phi)/2), int(len(theta)/2)] = 1e6 ## Second antipodal hot spot, phi = pi, theta = pi/2
+    Tm = Tmap (usage='zero')                              ## Surface thermal map filled with zeros
+    Tm.Ts[0, int(len(Tm.theta)/2)] = 1e6                  ## First hot spot located at phi = 0, theta = pi/2
+    Tm.Ts[int(len(Tm.phi)/2), int(len(Tm.theta)/2)] = 1e6 ## Second antipodal hot spot, phi = pi, theta = pi/2
 
-We choose the size of array ``phi`` as 99 because it allows us to get a better numerical accuracy.
 Next, we create array where we store all rotational phases. We also compute the lightcurve 
 using function :py:mod:`magpies.lightcurve()`.
 
 .. code-block:: python
 
     phases = np.linspace (0, 4*pi, 400) ## Phases where we compute the lightcurve
-    intens = lightcurve (theta, phi, Ts, Rns, Mns, phases, 0, pi/2) ## last two arguments are chi and inclination
+    intens = lightcurve (Tm, Rns, Mns, phases, 0, pi/2) ## last two arguments are chi and inclination
 
     phase = np.asarray(phases) / pi / 2 ## converting phase angle to phase
 
@@ -60,7 +59,7 @@ the same.
     ## Radius and mass of neutron star
     Rns = 13  ## km
     Mns = 1.4 ## M_solar
-    intens = lightcurve (theta, phi, Ts, Rns, Mns, phases, 0, pi/2) ## last two arguments are chi and inclination
+    intens = lightcurve (Tm, Rns, Mns, phases, 0, pi/2) ## last two arguments are chi and inclination
 
     phase = np.asarray(phases) / pi / 2 ## converting phase angle to phase
 
