@@ -1,5 +1,8 @@
+.. _temp:
+
 Initialising the surface thermal map
 =====================================
+
 
 The code provides a few distinct ways to create surface thermal map.
 Here we consider all important options. 

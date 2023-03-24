@@ -16,7 +16,7 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Lightcurve produced by two opposite hotspots" href="Lightcurve_two_hot_spots.html" />
+    <link rel="next" title="Initialising the surface thermal map" href="Initialising_surface_thermal_map.html" />
     <link rel="prev" title="Magpies tutorials" href="Tutorials.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -36,7 +36,7 @@
             
   <section id="simple-example-for-computing-spectra-and-lightcurve">
 <h1>Simple example for computing spectra and lightcurve<a class="headerlink" href="#simple-example-for-computing-spectra-and-lightcurve" title="Permalink to this headline">¶</a></h1>
-<p>All examples are available in <code class="docutils literal notranslate"><span class="pre">examples</span></code> folder.
+<p>All examples are available in <code class="docutils literal notranslate"><span class="pre">examples</span></code> folder as jupyter notebooks.
 In order to work with the package we recommend to import
 the following blocks and packages:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">magpies</span> <span class="kn">import</span> <span class="o">*</span>
@@ -47,7 +47,7 @@ the following blocks and packages:</p>
 </div>
 <p>First we specify mass and radius of neutron star. These
 parameters will enter nearly every function because they
-enter the compactness parameter and affect how light
+define the compactness parameter and affect how light
 is emitted and propagated in close vicinity of the neutron star.
 Following the usual practise of the field mass is specified
 in units of solar mass and radius is in km. It is also
@@ -71,23 +71,16 @@ article for dipolar magnetic field.</p>
 <p>The function <code class="docutils literal notranslate"><span class="pre">g14()</span></code> is a part of Magpies library while <code class="docutils literal notranslate"><span class="pre">NS_atmosphere()</span></code> is a class
 from the Atmos library. The method <code class="docutils literal notranslate"><span class="pre">describe()</span></code> simply provide more details
 about the fit and relevant literature reference.</p>
-<p>Further we create a latitude and longitude grid where the temperatures are computed.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1">## theta coordinates</span>
-<span class="n">phi</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span> <span class="c1">## phi coordinates</span>
-
-<span class="n">theta1</span><span class="p">,</span> <span class="n">phi1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span> <span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
-
-<span class="n">Ts</span> <span class="o">=</span> <span class="n">atm_iron_2003</span><span class="o">.</span><span class="n">Ts</span> <span class="p">(</span><span class="n">theta1</span><span class="p">)</span>
+<p>Further we create a surface temperature distribution map, see more details in <a class="reference internal" href="Initialising_surface_thermal_map.html#temp"><span class="std std-ref">Initialising the surface thermal map</span></a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Tm</span> <span class="o">=</span> <span class="n">Tmap</span> <span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="s1">&#39;NS_atm&#39;</span><span class="p">,</span> <span class="n">ns_atm</span><span class="o">=</span><span class="n">atm_iron_2003</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The method <code class="docutils literal notranslate"><span class="pre">Ts()</span></code> creates array with temperatures following
-the prescribed compactness and deep crust temperature. We can plot the surface
-thermal map in Aitoff projection using standard matplotlib tools:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">frame</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;aitoff&#39;</span><span class="p">)</span>
-<span class="n">bc</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">contourf</span> <span class="p">(</span><span class="n">phi</span><span class="o">-</span><span class="n">pi</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">theta</span><span class="o">-</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">Ts</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
-<span class="n">frame</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">([])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<p>The class <code class="docutils literal notranslate"><span class="pre">Tmap</span></code> creates a member which stores coordinates of the surface mesh and
+values of the temperature in these points. In this particular case, the class uses <code class="docutils literal notranslate"><span class="pre">NS_atmosphere</span></code>
+to compute values of temperature.
+We can plot the surface
+thermal map in Aitoff projection using method <a class="reference internal" href="Atmos.html#atmos.Tmap.plot_Ts" title="atmos.Tmap.plot_Ts"><code class="xref py py-mod docutils literal notranslate"><span class="pre">atmos.Tmap.plot_Ts</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Tm</span><span class="o">.</span><span class="n">plot_Ts</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>We normally transpose the temperature array using numpy method <code class="docutils literal notranslate"><span class="pre">.T</span></code>. The result
@@ -96,14 +89,16 @@ is shown below.</p>
 <p>Now when the surface thermal map is prepared we can try different functions
 from the Magpies package. For example the package has basic functionality
 which allows fast calculations of total thermal luminosity and effective temperature</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">L</span>    <span class="o">=</span> <span class="n">compute_L</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">Rns</span><span class="p">,</span> <span class="n">Ts</span><span class="p">)</span>
-<span class="n">Teff</span> <span class="o">=</span> <span class="n">compute_Teff</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">Rns</span><span class="p">,</span> <span class="n">Ts</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">L</span>    <span class="o">=</span> <span class="n">compute_L</span><span class="p">(</span><span class="n">Tm</span><span class="p">,</span> <span class="n">Rns</span><span class="p">)</span>
+<span class="n">Teff</span> <span class="o">=</span> <span class="n">compute_Teff</span><span class="p">(</span><span class="n">Tm</span><span class="p">,</span> <span class="n">Rns</span><span class="p">)</span>
 <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;L = &#39;</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="s1">&#39; Teff = &#39;</span><span class="p">,</span> <span class="n">Teff</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This function gives <span class="math notranslate nohighlight">\(L = 6.7\times 10^{30}\)</span> erg/s and <span class="math notranslate nohighlight">\(T_\mathrm{eff} = 2.8\times 10^5\)</span> K.
 Advanced methods available in <em>Magpies</em> package allows to compute the spectra:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">eph</span><span class="p">,</span> <span class="n">spect</span><span class="p">,</span> <span class="n">visib</span> <span class="o">=</span> <span class="n">get_redshifted_spectra_pole_3D</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">Ts</span><span class="p">,</span> <span class="n">Rns</span><span class="p">,</span> <span class="n">Mns</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">eph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.62</span><span class="p">,</span> <span class="mi">142</span><span class="p">)</span> <span class="c1">## keV</span>
+
+<span class="n">spect</span><span class="p">,</span> <span class="n">visib</span> <span class="o">=</span> <span class="n">spectra_pole</span> <span class="p">(</span><span class="n">Tm</span><span class="p">,</span> <span class="n">Rns</span><span class="p">,</span> <span class="n">Mns</span><span class="p">,</span> <span class="n">eph</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Here <code class="docutils literal notranslate"><span class="pre">eph</span></code> is list of energies where the spectra is computed, <code class="docutils literal notranslate"><span class="pre">spect</span></code> is the
@@ -112,6 +107,7 @@ visible hemisphere. We can plot the resulting spectra as the following:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span> <span class="p">(</span><span class="n">eph</span><span class="p">,</span> <span class="n">spect</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;E (keV)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;H (erg s$^{-1}$ cm$^{-2}$ keV$^{-1}$)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1e20</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
 </pre></div>
@@ -122,13 +118,14 @@ visible hemisphere. We can plot the resulting spectra as the following:</p>
 <img alt="_images/visib.png" src="_images/visib.png" />
 <p>It is possible to create a lightcurve.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">phases</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">pi</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
-<span class="n">intens</span> <span class="o">=</span> <span class="n">lightcurve</span> <span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">Ts</span><span class="p">,</span> <span class="n">Rns</span><span class="p">,</span> <span class="n">Mns</span><span class="p">,</span> <span class="n">phases</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">intens</span> <span class="o">=</span> <span class="n">lightcurve</span> <span class="p">(</span><span class="n">Tm</span><span class="p">,</span> <span class="n">Rns</span><span class="p">,</span> <span class="n">Mns</span><span class="p">,</span> <span class="n">phases</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
 
 <span class="n">intens_rel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intens</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">intens</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span> <span class="p">(</span><span class="n">phases</span><span class="p">,</span> <span class="n">intens_rel</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\Phi$&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Relative intensity&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;lightcurve.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="_images/lightcurve.png" src="_images/lightcurve.png" />
@@ -155,9 +152,11 @@ visible hemisphere. We can plot the resulting spectra as the following:</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="Tutorials.html">Magpies tutorials</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Simple example for computing spectra and lightcurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Initialising_surface_thermal_map.html">Initialising the surface thermal map</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Lightcurve_two_hot_spots.html">Lightcurve produced by two opposite hotspots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Fit_spectra_bb.html">Fitting X-ray lightcurve with blackbody model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Collection_of_lightcurves.html">Prepare lightcurves for different neutron star orientations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phased_resolved_spectroscopy.html">Phased-resolved spectroscopy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Atmos.html">Atmos method list</a></li>
@@ -170,7 +169,7 @@ visible hemisphere. We can plot the resulting spectra as the following:</p>
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="Tutorials.html">Magpies tutorials</a><ul>
       <li>Previous: <a href="Tutorials.html" title="previous chapter">Magpies tutorials</a></li>
-      <li>Next: <a href="Lightcurve_two_hot_spots.html" title="next chapter">Lightcurve produced by two opposite hotspots</a></li>
+      <li>Next: <a href="Initialising_surface_thermal_map.html" title="next chapter">Initialising the surface thermal map</a></li>
   </ul></li>
   </ul></li>
 </ul>

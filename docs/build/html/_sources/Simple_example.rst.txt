@@ -1,7 +1,7 @@
 Simple example for computing spectra and lightcurve
 ======================================================
 
-All examples are available in ``examples`` folder.
+All examples are available in ``examples`` folder as jupyter notebooks. 
 In order to work with the package we recommend to import 
 the following blocks and packages:
 
@@ -14,7 +14,7 @@ the following blocks and packages:
 
 First we specify mass and radius of neutron star. These
 parameters will enter nearly every function because they
-enter the compactness parameter and affect how light
+define the compactness parameter and affect how light
 is emitted and propagated in close vicinity of the neutron star.
 Following the usual practise of the field mass is specified
 in units of solar mass and radius is in km. It is also
@@ -44,28 +44,21 @@ The function ``g14()`` is a part of Magpies library while ``NS_atmosphere()`` is
 from the Atmos library. The method ``describe()`` simply provide more details
 about the fit and relevant literature reference.
 
-Further we create a latitude and longitude grid where the temperatures are computed.
+Further we create a surface temperature distribution map, see more details in :ref:`temp` 
 
 .. code-block:: python
 
-    theta = np.linspace (0, pi, 100)  ## theta coordinates
-    phi   = np.linspace (0, 2*pi, 99) ## phi coordinates
+   Tm = Tmap (usage='NS_atm', ns_atm=atm_iron_2003)
 
-    theta1, phi1 = np.meshgrid (theta, phi)
-
-    Ts = atm_iron_2003.Ts (theta1)
-
-The method ``Ts()`` creates array with temperatures following
-the prescribed compactness and deep crust temperature. We can plot the surface 
-thermal map in Aitoff projection using standard matplotlib tools:
+The class ``Tmap`` creates a member which stores coordinates of the surface mesh and 
+values of the temperature in these points. In this particular case, the class uses ``NS_atmosphere`` 
+to compute values of temperature.
+We can plot the surface 
+thermal map in Aitoff projection using method :py:mod:`atmos.Tmap.plot_Ts`:
 
 .. code-block:: python
-
-    import matplotlib.pyplot as plt
-    frame = plt.subplot(111, projection='aitoff')
-    bc = plt.contourf (phi-pi, -(theta-pi/2), Ts.T, 40)
-    frame.axes.xaxis.set_ticklabels([])
-    plt.tight_layout()
+  
+   Tm.plot_Ts()
 
 We normally transpose the temperature array using numpy method ``.T``. The result
 is shown below.
@@ -78,8 +71,8 @@ which allows fast calculations of total thermal luminosity and effective tempera
 
 .. code-block:: python
 
-    L    = compute_L(theta, phi, Rns, Ts)
-    Teff = compute_Teff(theta, phi, Rns, Ts)
+    L    = compute_L(Tm, Rns)
+    Teff = compute_Teff(Tm, Rns)
     print ('L = ', L, ' Teff = ', Teff)
 
 This function gives :math:`L = 6.7\times 10^{30}` erg/s and :math:`T_\mathrm{eff} = 2.8\times 10^5` K.
@@ -87,7 +80,9 @@ Advanced methods available in *Magpies* package allows to compute the spectra:
 
 .. code-block:: python
  
-    eph, spect, visib = get_redshifted_spectra_pole_3D(theta, phi, Ts, Rns, Mns)
+    eph = np.logspace (-1.2, 1.62, 142) ## keV
+
+    spect, visib = spectra_pole (Tm, Rns, Mns, eph)
 
 Here ``eph`` is list of energies where the spectra is computed, ``spect`` is the 
 effective spectral flux and ``visib`` shows the temperature distribution over the
@@ -98,6 +93,7 @@ visible hemisphere. We can plot the resulting spectra as the following:
     plt.plot (eph, spect)
     plt.xlabel('E (keV)')
     plt.ylabel(r'H (erg s$^{-1}$ cm$^{-2}$ keV$^{-1}$)')
+    plt.ylim([1, 1e20])
     plt.xscale('log')
     plt.yscale('log')
 
@@ -114,13 +110,13 @@ It is possible to create a lightcurve.
 .. code-block:: python
 
     phases = np.linspace (0, 4*pi, 400)
-    intens = lightcurve (theta, phi, Ts, Rns, Mns, phases, 0, pi/4)
+    intens = lightcurve (Tm, Rns, Mns, phases, 0, pi/4)
 
-    intens_rel = np.asarray(intens) / np.mean(intens)
+    intens_rel = np.asarray(intens) / np.mean(intens) 
 
     plt.plot (phases, intens_rel)
     plt.xlabel(r'$\Phi$')
     plt.ylabel('Relative intensity')
-
+    plt.savefig('lightcurve.png')
 
 .. image:: ../images/lightcurve.png
