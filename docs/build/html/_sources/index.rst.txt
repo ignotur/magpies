@@ -15,6 +15,7 @@ thermal map can be created by using the Atmos collection
 of numerical fits.
 
 
+
 .. toctree::
    :maxdepth: 3
    :caption: Contents:
@@ -24,6 +25,16 @@ of numerical fits.
    Atmos
 
    Magpies
+
+-----------------------------------
+Code is under development
+-----------------------------------
+
+At the moment code can create thermal X-ray lightcurves, spectra and phase-resolved
+spectroscopy. The functionality of the code is developped at the moment.
+
+If you found a bug or want to participate in code development you can open issue 
+in the github or contact Dr. Andrei Igoshev ignotur[at]gmail.com
 
 
 

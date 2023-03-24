@@ -60,7 +60,7 @@ def g14 (Rns, Mns):
 
 ## Function to compute the luminosity of neutron star
 
-def compute_L (theta, phi, Rns, Tmap):
+def compute_L (Tmap, Rns):
     """
     |
 
@@ -68,9 +68,7 @@ def compute_L (theta, phi, Rns, Tmap):
 
     :math:`L = \sigma_\mathrm{SB} R_\mathrm{NS}^2 \int_{4\pi} T_s^4 (\\theta, \\phi) \\sin \\theta d\\theta d\\phi`
 
-    :param Tmap: Tmap is the surface thermal map [K]
-    :param theta: list magnetic latitude [radians] where Tmap is provided 
-    :param phi: list of magnetic longuitudets [radians] where Tmap is provided
+    :param Tmap: member of Tmap class containing surface temperature map.
     :param Rns: radius of neutron star [km]
            
     The thermal map can be one dimensional (in the case of axisymmetric temperature distribution) or two-dimensional.
@@ -89,22 +87,22 @@ def compute_L (theta, phi, Rns, Tmap):
     
     R = Rns * 1e5     ## cm
     
-    dtheta = theta[1] - theta[0]
-    dphi   = phi[1] - phi[0] 
+    dtheta = Tmap.theta[1] - Tmap.theta[0]
+    dphi   = Tmap.phi[1] - Tmap.phi[0] 
     
     L = 0
 
-    if len(Tmap.shape) == 1:
+    if len(Tmap.Ts.shape) == 1:
 
-        for i in range (0, len(phi)):
-            for j in range (0, len(theta)):
-                L = L + sigma_SB * pow(R, 2.0) * sin(theta[j]) * pow(Tmap [j], 4) * dphi * dtheta 
+        for i in range (0, len(Tmap.phi)):
+            for j in range (0, len(Tmap.theta)):
+                L = L + sigma_SB * pow(R, 2.0) * sin(Tmap.theta[j]) * pow(Tmap.Ts [j], 4) * dphi * dtheta 
 
-    elif len(Tmap.shape) == 2:
+    elif len(Tmap.Ts.shape) == 2:
 
-        for i in range (0, len(phi)):
-            for j in range (0, len(theta)):
-                L = L + sigma_SB * pow(R, 2.0) * sin(theta[j]) * pow(Tmap [i,j], 4) * dphi * dtheta 
+        for i in range (0, len(Tmap.phi)):
+            for j in range (0, len(Tmap.theta)):
+                L = L + sigma_SB * pow(R, 2.0) * sin(Tmap.theta[j]) * pow(Tmap.Ts [i,j], 4) * dphi * dtheta 
 
             
     return L
@@ -149,15 +147,13 @@ def compute_L_param (param, Teff, Rns, Mns):
 
 ## Function to compute the effective temperature
 
-def compute_Teff (theta, phi, Rns, Tmap):
+def compute_Teff (Tmap, Rns):
     """
     |
 
     Calculate the effective temperature of neutron star.
 
-    :param Tmap: Tmap is the surface thermal map [K]
-    :param theta: list magnetic latitude [radians] where Tmap is provided 
-    :param phi: list of magnetic longuitudets [radians] where Tmap is provided
+    :param Tmap: member of Tmap class containing surface temperature map.
     :param Rns: radius of neutron star [km]
 
     The thermal map can be one dimensional (in the case of axisymmetric temperature distribution) or two-dimensional.
@@ -170,7 +166,7 @@ def compute_Teff (theta, phi, Rns, Tmap):
 
     sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
 
-    Lns = compute_L (theta, phi, Rns, Tmap)
+    Lns = compute_L (Tmap, Rns)
     return (pow(Lns / (4.0 * pi * sigma_SB * pow(Rns*1e5, 2)) , 1.0 / 4.0))
 
 ## Lensing factor following the article Poutanen (2020) A&A 640, A24 (2020)
