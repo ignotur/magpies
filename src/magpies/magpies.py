@@ -338,8 +338,6 @@ def examine_spectral_fit_1BB_photons (param, Teff, Rns, Mns, eph, nphot, L, inte
 
     Lcomp = compute_L_param (param, Teff, Rns, Mns)
 
-    #print ('Lcomp = ', Lcomp)
-
     spec =  spec * Lcomp / L
 
     if integ:
@@ -551,63 +549,63 @@ def spectra_pole (Tmap, Rns, Mns, eph):
 
 
 
-def get_redshifted_spectra_pole_photons (theta, phi, Tmap, Rns, Mns, eph, nphot):
-    """
-    |
+#def get_redshifted_spectra_pole_photons (theta, phi, Tmap, Rns, Mns, eph, nphot):
+#    """
+#    |
+#
+#    Calculate thermal spectra [integer number of photons per energy bin] emitted by neutron star observed from its magnetic pole (top row of thermal map).
+#
+#    :param Tmap: two dimensional array describing the surface thermal map [K]
+#    :param theta: list of magnetic latitude [radians] where Tmap is provided
+#    :param phi: list of magnetic longuitudets [radians] where Tmap is provided
+#    :param Rns: radius of neutron star [km]
+#    :param Mns: mass of neutron star [Solar mass]
+#    :param eph: list energies where spectra should be computed [keV]
+#    :param nphot: total number of photons to be generated
 
-    Calculate thermal spectra [integer number of photons per energy bin] emitted by neutron star observed from its magnetic pole (top row of thermal map).
+#    :returns: :sp: number of photons per energy bin
+#              :visible_map: two-dimensional array which contains only the temperature distribution on visible hemisphere
+#    
+#
+#    """
+#
+#    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
+#    kB = 8.617e-8       ## keV / K
+#    G = 6.67430e-8    ## cgs
+#    Msol = 2e33       ## Solar mass in gramms
+#    c   = 2.998e+10   ## speed of light in cm/s
 
-    :param Tmap: two dimensional array describing the surface thermal map [K]
-    :param theta: list of magnetic latitude [radians] where Tmap is provided
-    :param phi: list of magnetic longuitudets [radians] where Tmap is provided
-    :param Rns: radius of neutron star [km]
-    :param Mns: mass of neutron star [Solar mass]
-    :param eph: list energies where spectra should be computed [keV]
-    :param nphot: total number of photons to be generated
+#    map_of_visible = np.zeros ((len(phi), len(theta)))
 
-    :returns: :sp: number of photons per energy bin
-              :visible_map: two-dimensional array which contains only the temperature distribution on visible hemisphere
-    
+#    R = Rns * 1e5
 
-    """
+#    xg = 2.0 * G * Mns*Msol / R / c / c
 
-    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
-    kB = 8.617e-8       ## keV / K
-    G = 6.67430e-8    ## cgs
-    Msol = 2e33       ## Solar mass in gramms
-    c   = 2.998e+10   ## speed of light in cm/s
+#    Ts_inf = Tmap * sqrt(1 - xg)
 
-    map_of_visible = np.zeros ((len(phi), len(theta)))
+#    ## Here we prepare variables for integration over the visible hemisphere
 
-    R = Rns * 1e5
+#    sp_red = np.zeros(len(eph))
 
-    xg = 2.0 * G * Mns*Msol / R / c / c
+#    dtheta = theta[1] - theta[0]
+#    dphi   = phi[1] - phi[0]
 
-    Ts_inf = Tmap * sqrt(1 - xg)
-
-    ## Here we prepare variables for integration over the visible hemisphere
-
-    sp_red = np.zeros(len(eph))
-
-    dtheta = theta[1] - theta[0]
-    dphi   = phi[1] - phi[0]
-
-    for i in range (0, len(phi)):
-        for j in range (0, len(theta)):
-            al = alpha (cos(theta[j]), Rns, Mns)
-
-
-            if al < pi / 2.0:
-                Df = D_factor (cos(theta[j]), Rns, Mns)
-                sp_red = sp_red +  Df * 15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta[j]) * np.cos(al)  * np.power(eph, 2) / (np.exp(eph / kB / Ts_inf[i,j]) - 1.0) * dtheta * dphi
-                map_of_visible[i,j] = Ts_inf[i, j]
-
-    coeff = nphot / np.sum(sp_red)
-
-    sp_red_n = np.asarray(sp_red * coeff, dtype=int)
+#    for i in range (0, len(phi)):
+#        for j in range (0, len(theta)):
+#            al = alpha (cos(theta[j]), Rns, Mns)
 
 
-    return [sp_red_n, map_of_visible]
+#            if al < pi / 2.0:
+#                Df = D_factor (cos(theta[j]), Rns, Mns)
+#                sp_red = sp_red +  Df * 15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta[j]) * np.cos(al)  * np.power(eph, 2) / (np.exp(eph / kB / Ts_inf[i,j]) - 1.0) * dtheta * dphi
+#                map_of_visible[i,j] = Ts_inf[i, j]
+#
+#    coeff = nphot / np.sum(sp_red)
+
+#    sp_red_n = np.asarray(sp_red * coeff, dtype=int)
+
+
+#    return [sp_red_n, map_of_visible]
 
 
 def get_redshifted_spectra_equator_3D (theta, phi, Tmap, Rns, Mns):
@@ -729,7 +727,6 @@ def get_redshifted_spectra_equator_photons (theta, phi, Tmap, Rns, Mns, eph, nph
     return [sp_red_n, map_of_visible]
 
 
-## ++++
 def spectra_any (Tmap, Rns, Mns, phase, chi, inc, eph):
     """
     |
@@ -795,55 +792,55 @@ def spectra_any (Tmap, Rns, Mns, phase, chi, inc, eph):
 
 
 
-def get_redshifted_spectra_any_photons (theta, phi, Tmap, Rns, Mns, phase, chi, inc, eph, nphot):
-    """
-    |
-
-    Calculate thermal spectra [integer number of photons per energy bin] emitted by neutron star.
-
-    :param Tmap: two dimensional array describing the surface thermal map [K]
-    :param theta: list of magnetic latitude [radians] where Tmap is provided
-    :param phi: list of magnetic longuitudets [radians] where Tmap is provided
-    :param Rns: radius of neutron star [km]
-    :param Mns: mass of neutron star [Solar mass]
-    :param phase: rotational phase [radian] 
-    :param chi:  magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)
-    :param inc: inclination of the observer with respect to the rotational axis.
-    :param eph: list energies where spectra should be computed [keV]
-    :param nphot: total number of photons to be generated
-
-    :returns: :sp: number of photons per energy bin
-              :visible_map: two-dimensional array which contains only the temperature distribution on visible hemisphere
-    
-
-    """
-
-    map_of_visible = np.zeros ((len(phi), len(theta)))
-
-    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
-    kB = 8.617e-8       ## keV / K
-    G = 6.67430e-8    ## cgs
-    Msol = 2e33       ## Solar mass in gramms
-    Bp = 1e14         ## G
-    c   = 2.998e+10   ## speed of light in cm/s
-
-    R = Rns * 1e5
-
-    xg = 2.0 * G * Mns*Msol / R / c / c
-    g14 = G*Mns*Msol / R / R / sqrt(1.0 - xg ) / 1e14 ## Gudmundsson et al. (1983), eq. (2-3)
-
-    #print ('xg = ', xg, ' log_10 of  mean non-redshifted Ts = ', log10(np.mean(Tmap)))
-
-    Ts_inf = Tmap * sqrt(1 - xg)
-
-    ## Here we prepare variables for integration over the visible hemisphere
-
-    sp_red = np.zeros(len(eph))
-
-    dtheta = theta[1] - theta[0]
-    dphi   = phi[1] - phi[0]
-
-    theta1, phi1 = np.meshgrid (theta, phi)
+#def get_redshifted_spectra_any_photons (theta, phi, Tmap, Rns, Mns, phase, chi, inc, eph, nphot):
+#    """
+#    |
+#
+#    Calculate thermal spectra [integer number of photons per energy bin] emitted by neutron star.
+#
+#    :param Tmap: two dimensional array describing the surface thermal map [K]
+#    :param theta: list of magnetic latitude [radians] where Tmap is provided
+#    :param phi: list of magnetic longuitudets [radians] where Tmap is provided
+#    :param Rns: radius of neutron star [km]
+#    :param Mns: mass of neutron star [Solar mass]
+#    :param phase: rotational phase [radian] 
+#    :param chi:  magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)
+#    :param inc: inclination of the observer with respect to the rotational axis.
+#    :param eph: list energies where spectra should be computed [keV]
+#    :param nphot: total number of photons to be generated
+#
+#    :returns: :sp: number of photons per energy bin
+#              :visible_map: two-dimensional array which contains only the temperature distribution on visible hemisphere
+#    
+##
+#    """
+#
+#    map_of_visible = np.zeros ((len(phi), len(theta)))
+#
+#    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
+#    kB = 8.617e-8       ## keV / K
+#    G = 6.67430e-8    ## cgs
+#    Msol = 2e33       ## Solar mass in gramms
+#    Bp = 1e14         ## G
+#    c   = 2.998e+10   ## speed of light in cm/s
+#
+#    R = Rns * 1e5
+#
+#    xg = 2.0 * G * Mns*Msol / R / c / c
+#    g14 = G*Mns*Msol / R / R / sqrt(1.0 - xg ) / 1e14 ## Gudmundsson et al. (1983), eq. (2-3)
+#
+#    #print ('xg = ', xg, ' log_10 of  mean non-redshifted Ts = ', log10(np.mean(Tmap)))
+#
+#    Ts_inf = Tmap * sqrt(1 - xg)
+#
+#    ## Here we prepare variables for integration over the visible hemisphere
+#
+#    sp_red = np.zeros(len(eph))
+#
+#    dtheta = theta[1] - theta[0]
+#    dphi   = phi[1] - phi[0]
+#
+#    theta1, phi1 = np.meshgrid (theta, phi)
 
 
 ## ==============================================
@@ -857,23 +854,23 @@ def get_redshifted_spectra_any_photons (theta, phi, Tmap, Rns, Mns, phase, chi, 
 
 ## ==============================================
 
-    factor_int =   15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta1) * dtheta * dphi
+#    factor_int =   15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta1) * dtheta * dphi
 
     #np.power(eph, 2) / (np.exp(eph / kB / Ts_inf) - 1.0)
 
     #print ('Shape of factor_int is ', factor_int.shape)
 
-    Dcosalpha = precompute_Dcos2_alpha (Rns, Mns, chi, inc, phase, phi1, theta1)
+#    Dcosalpha = precompute_Dcos2_alpha (Rns, Mns, chi, inc, phase, phi1, theta1)
 
     #res_int = np.sum(factor_int * Dcosalpha)
 
     #res_int = Dcosalpha * 
 
-    sp_red_en = np.zeros(len(eph))
+#    sp_red_en = np.zeros(len(eph))
 
-    for i in range (0, len(eph)):
-
-        sp_red_en[i] = np.sum (factor_int * Dcosalpha * np.power(eph[i], 2) / (np.exp(eph[i] / kB / Ts_inf) - 1.0))
+#    for i in range (0, len(eph)):
+#
+#        sp_red_en[i] = np.sum (factor_int * Dcosalpha * np.power(eph[i], 2) / (np.exp(eph[i] / kB / Ts_inf) - 1.0))
 
 
 
@@ -890,11 +887,11 @@ def get_redshifted_spectra_any_photons (theta, phi, Tmap, Rns, Mns, phase, chi, 
 #                sp_red = sp_red +  Df * 15.0 * sigma_SB / ( pow(pi, 5) * pow(kB, 4)) * np.sin(theta[j]) * np.cos(al) * np.power(eph, 2) / (np.exp(eph / kB / Ts_inf[i,j]) - 1.0) * dtheta * dphi
 #                map_of_visible[i,j] = Ts_inf[i, j]
 
-    coeff = nphot / np.sum(sp_red_en)
-
-    sp_red_n = np.asarray(sp_red_en * coeff, dtype=int)
-
-    return [sp_red_n, Dcosalpha * Ts_inf]
+#    coeff = nphot / np.sum(sp_red_en)
+#
+#    sp_red_n = np.asarray(sp_red_en * coeff, dtype=int)
+#
+#    return [sp_red_n, Dcosalpha * Ts_inf]
 
 def get_redshifted_phase_resolved_spectroscopy_photons (theta, phi, Tmap, Rns, Mns, phases, chi, inc, eph, nphot):
     """
@@ -1053,20 +1050,6 @@ def Cstat_1BB (param, Teff, Rns, Mns, spec, eph, nphot, L):
 
     """
 
-#    sc, pc = param
-
-#    R = Rns * 1e5
-
-#    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
-
-#    spec_synth = single_BB_photons (pc*Teff, Rns, Mns, eph, nphot, integ=False)
-
-#    Lcomp = sigma_SB * R*R * 4.0 * pi * sc * pow(pc*Teff, 4)
-
-#    spec_synth = spec_synth * Lcomp / L
-    
-    #print ('Lcomp = ', Lcomp)
-
     spec_synth = examine_spectral_fit_1BB_photons (param, Teff, Rns, Mns, eph, nphot, L, integ=False)
 
     res = 0.0
@@ -1206,7 +1189,7 @@ def fit_spectral_model_chi2 (Teff, Rns, Mns, spec, eph, nphot):
         return [0.5, 0.5, res_1BB.x[0], res_1BB.x[0], res_1BB.fun, res_2BB.fun]
 
 
-def fit_spectral_model_Cstat (Teff, Rns, Mns, spec, eph, nphot, L):
+def fit_spectral_model_Cstat (Teff, Rns, Mns, spec, eph, nphot, L, significance=2.7):
     """
     |
 
@@ -1219,6 +1202,7 @@ def fit_spectral_model_Cstat (Teff, Rns, Mns, spec, eph, nphot, L):
     :param eph: list of energies where spectra was calculated [keV]
     :param nphot: total number of received photons
     :param L: luminosity of neutron star which we try to fit
+    :param significance: Critical value of :math:`\Delta C` to make a choice between single and two-blackbody model
 
     :returns: list [s1, s2, p1, p2, Cstat BB1, Cstat BB2]
     

@@ -395,7 +395,7 @@
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="magpies.fit_spectral_model_Cstat">
-<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">fit_spectral_model_Cstat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.fit_spectral_model_Cstat" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">fit_spectral_model_Cstat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">significance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.7</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.fit_spectral_model_Cstat" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -410,6 +410,7 @@
 <li><p><strong>eph</strong> – list of energies where spectra was calculated [keV]</p></li>
 <li><p><strong>nphot</strong> – total number of received photons</p></li>
 <li><p><strong>L</strong> – luminosity of neutron star which we try to fit</p></li>
+<li><p><strong>significance</strong> – Critical value of <span class="math notranslate nohighlight">\(\Delta C\)</span> to make a choice between single and two-blackbody model</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -479,117 +480,6 @@
 <dd class="field-even"><p><dl class="field-list simple">
 <dt class="field-odd">sp</dt>
 <dd class="field-odd"><p>redshifted spectra [erg s^-1 cm^-2 keV^-1]</p>
-</dd>
-<dt class="field-even">visible_map</dt>
-<dd class="field-even"><p>two-dimensional array which contains only the temperature distribution on visible hemisphere</p>
-</dd>
-</dl>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<dl class="py function">
-<dt class="sig sig-object py" id="magpies.get_redshifted_spectra_pole_photons">
-<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">get_redshifted_spectra_pole_photons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.get_redshifted_spectra_pole_photons" title="Permalink to this definition">¶</a></dt>
-<dd><div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>Calculate thermal spectra [integer number of photons per energy bin] emitted by neutron star observed from its magnetic pole (top row of thermal map).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Tmap</strong> – two dimensional array describing the surface thermal map [K]</p></li>
-<li><p><strong>theta</strong> – list of magnetic latitude [radians] where Tmap is provided</p></li>
-<li><p><strong>phi</strong> – list of magnetic longuitudets [radians] where Tmap is provided</p></li>
-<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
-<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
-<li><p><strong>eph</strong> – list energies where spectra should be computed [keV]</p></li>
-<li><p><strong>nphot</strong> – total number of photons to be generated</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="field-list simple">
-<dt class="field-odd">sp</dt>
-<dd class="field-odd"><p>number of photons per energy bin</p>
-</dd>
-<dt class="field-even">visible_map</dt>
-<dd class="field-even"><p>two-dimensional array which contains only the temperature distribution on visible hemisphere</p>
-</dd>
-</dl>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<dl class="py function">
-<dt class="sig sig-object py" id="magpies.get_redshifted_spectra_equator_photons">
-<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">get_redshifted_spectra_equator_photons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.get_redshifted_spectra_equator_photons" title="Permalink to this definition">¶</a></dt>
-<dd><div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>Calculate thermal spectra [integer number of photons per energy bin] emitted by neutron star observed from its magnetic equator (top row of thermal map).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Tmap</strong> – two dimensional array describing the surface thermal map [K]</p></li>
-<li><p><strong>theta</strong> – list of magnetic latitude [radians] where Tmap is provided</p></li>
-<li><p><strong>phi</strong> – list of magnetic longuitudets [radians] where Tmap is provided</p></li>
-<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
-<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
-<li><p><strong>eph</strong> – list energies where spectra should be computed [keV]</p></li>
-<li><p><strong>nphot</strong> – total number of photons to be generated</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="field-list simple">
-<dt class="field-odd">sp</dt>
-<dd class="field-odd"><p>number of photons per energy bin</p>
-</dd>
-<dt class="field-even">visible_map</dt>
-<dd class="field-even"><p>two-dimensional array which contains only the temperature distribution on visible hemisphere</p>
-</dd>
-</dl>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<dl class="py function">
-<dt class="sig sig-object py" id="magpies.get_redshifted_spectra_any_photons">
-<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">get_redshifted_spectra_any_photons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.get_redshifted_spectra_any_photons" title="Permalink to this definition">¶</a></dt>
-<dd><div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>Calculate thermal spectra [integer number of photons per energy bin] emitted by neutron star.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Tmap</strong> – two dimensional array describing the surface thermal map [K]</p></li>
-<li><p><strong>theta</strong> – list of magnetic latitude [radians] where Tmap is provided</p></li>
-<li><p><strong>phi</strong> – list of magnetic longuitudets [radians] where Tmap is provided</p></li>
-<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
-<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
-<li><p><strong>phase</strong> – rotational phase [radian]</p></li>
-<li><p><strong>chi</strong> – magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)</p></li>
-<li><p><strong>inc</strong> – inclination of the observer with respect to the rotational axis.</p></li>
-<li><p><strong>eph</strong> – list energies where spectra should be computed [keV]</p></li>
-<li><p><strong>nphot</strong> – total number of photons to be generated</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="field-list simple">
-<dt class="field-odd">sp</dt>
-<dd class="field-odd"><p>number of photons per energy bin</p>
 </dd>
 <dt class="field-even">visible_map</dt>
 <dd class="field-even"><p>two-dimensional array which contains only the temperature distribution on visible hemisphere</p>

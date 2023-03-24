@@ -38,25 +38,20 @@ from article [1]_ implemented in ``atmos`` package.
 .. code-block:: python
 
     atm_iron_2003 = NS_atmosphere ('Potekhin_2003_iron', g14c, Tb, Bp)
-    theta = np.linspace (0, pi, 100)  ## theta coordinates
-    phi   = np.linspace (0, 2*pi, 99) ## phi coordinates
 
-    theta1, phi1 = np.meshgrid (theta, phi)
+    Tm = Tmap (usage='NS_atm', ns_atm=atm_iron_2003)
 
-    Ts = atm_iron_2003.Ts (theta1) ## Surface temperatures
-
-    frame = plt.subplot(111, projection='aitoff')
-    bc = plt.contourf (phi-pi, -(theta-pi/2), Ts.T, 40)
-    frame.axes.xaxis.set_ticklabels([])
+    Tm.plot_Ts(filename='surface_temperature_72_14.png')
 
 .. image:: ../images/surface_temperature_72_14.png
 
 We produce the spectra of neutron star if it is visible from equatorial direction.
-For this we use the method :py:mod:`magpies.get_redshifted_spectra_equator_photons`:
+For this we use the method :py:mod:`magpies.spectra_pole`:
 
 .. code-block:: python
 
-    sp_red_n_eq, map_of_visible = get_redshifted_spectra_equator_photons (theta, phi, Ts, Rns, Mns, eph, nphot)
+    sp_red, map_of_visible = spectra_pole (Tm, Rns, Mns, eph)
+    sp_red_n = flux_to_photons (sp_red, eph, nphot) ## convert to photons
     Teff = compute_Teff (theta, phi, Rns, Ts)
 
 In order to fit blackbody model we use method :py:mod:`magpies.fit_spectral_model_Cstat`. This method 
