@@ -4,6 +4,7 @@ Python package to convert magnetic and thermal maps into synthetic X-ray observa
 
 ## Code is under development
 
-This current version of the code contains limited functionality, documentation and tested only partially
+This current version of the code contains limited functionality, documentation and tested only partially.
 
+The documentation is available here: [https://ignotur.github.io/magpies/](https://ignotur.github.io/magpies/)
 
