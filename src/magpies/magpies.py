@@ -1313,8 +1313,8 @@ def lightcurve (Tmap, Rns, Mns, phases, chi, inc):
 
     Ts_inf = Tmap.Ts * sqrt(1 - xg)
 
-    dtheta = Tmap.theta[10] - Tmap.theta[9]
-    dphi   = Tmap.phi[10] - Tmap.phi[9]
+    dtheta = Tmap.theta[2] - Tmap.theta[1]
+    dphi   = Tmap.phi[2] - Tmap.phi[1]
 
     factor_int = sigma_SB * R * R * np.power(Ts_inf, 4.0) * np.sin(theta1) / pi * dtheta * dphi
 
