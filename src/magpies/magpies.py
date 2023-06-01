@@ -1326,7 +1326,23 @@ def lightcurve (Tmap, Rns, Mns, phases, chi, inc):
 
     return res_int
 
-def lightcurve_cos2 (theta, phi, Tmap, Rns, Mns, phases, chi, inc):
+def lightcurve_cos2 (Tmap, Rns, Mns, phases, chi, inc):
+    """
+    |
+
+    Calculate soft X-ray lightcurve with a beaming proportional to :math:`\cos^2 \alpha`
+
+    :param Tmap: member of Tmap class containing surface temperature map.
+    :param Rns: radius of neutron star [km]
+    :param Mns: mass of neutron star [Solar mass]
+    :param phases: list of phases [radian] 
+    :param chi:  magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)
+    :param inc: inclination of the observer with respect to the rotational axis.
+
+    :returns: Soft X-ray lightcurve in units of intensity for each rotational phase [erg/s]
+    
+
+    """
 
     sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
     kB = 8.617e-8       ## keV / K
@@ -1334,16 +1350,16 @@ def lightcurve_cos2 (theta, phi, Tmap, Rns, Mns, phases, chi, inc):
     Msol = 2e33       ## Solar mass in gramms
     c   = 2.998e+10   ## speed of light in cm/s
 
-    theta1, phi1 = np.meshgrid (theta, phi)
+    theta1, phi1 = np.meshgrid (Tmap.theta, Tmap.phi)
 
     R = Rns * 1e5
 
     xg = 2.0 * G * Mns*Msol / R / c / c
 
-    Ts_inf = Tmap * sqrt(1 - xg)
+    Ts_inf = Tmap.Ts * sqrt(1 - xg)
 
-    dtheta = theta[10] - theta[9]
-    dphi   = phi[10] - phi[9]
+    dtheta = Tmap.theta[2] - Tmap.theta[1]
+    dphi   = Tmap.phi[2] - Tmap.phi[1]
 
     factor_int = sigma_SB * R * R * np.power(Ts_inf, 4.0) * np.sin(theta1) / pi * dtheta * dphi
 
@@ -1354,6 +1370,36 @@ def lightcurve_cos2 (theta, phi, Tmap, Rns, Mns, phases, chi, inc):
         res_int.append (np.sum(factor_int * Dcosalpha))
 
     return res_int
+
+
+#def lightcurve_cos2 (theta, phi, Tmap, Rns, Mns, phases, chi, inc):
+
+#    sigma_SB = 5.670e-5 ## erg⋅cm^{−2}⋅s^{−1}⋅K^{−4}.
+#    kB = 8.617e-8       ## keV / K
+#    G = 6.67430e-8    ## cgs
+#    Msol = 2e33       ## Solar mass in gramms
+#    c   = 2.998e+10   ## speed of light in cm/s
+#
+#    theta1, phi1 = np.meshgrid (theta, phi)
+#
+#    R = Rns * 1e5
+#
+#    xg = 2.0 * G * Mns*Msol / R / c / c
+#
+#    Ts_inf = Tmap * sqrt(1 - xg)
+#
+#    dtheta = theta[10] - theta[9]
+#    dphi   = phi[10] - phi[9]
+
+#    factor_int = sigma_SB * R * R * np.power(Ts_inf, 4.0) * np.sin(theta1) / pi * dtheta * dphi
+#
+#    res_int = []
+
+#    for i in range (0, len(phases)):
+#        Dcosalpha = precompute_Dcos2_alpha (Rns, Mns, chi, inc, phases[i], phi1, theta1)
+#        res_int.append (np.sum(factor_int * Dcosalpha))
+#
+#    return res_int
 
 def flux_to_photons (flx, eph, nph):
 
