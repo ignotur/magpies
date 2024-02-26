@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('../../src/magpies/'))
 # -- Project information -----------------------------------------------------
 
 project = 'Magpies'
-copyright = '2023, Dr Andrei P. Igoshev'
+copyright = '2023-2024, Dr Andrei P. Igoshev'
 author = 'Dr Andrei P. Igoshev'
 
 # The full version, including alpha/beta/rc tags
