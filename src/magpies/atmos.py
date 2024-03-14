@@ -74,8 +74,11 @@ class Tmap:
         """
 
         frame = plt.subplot(111, projection='aitoff')
-        bc = plt.contourf (self.phi-pi, -(self.theta-pi/2), self.Ts.T, 40, cmap='plasma')
+        #bc = plt.contourf (self.phi-pi, -(self.theta-pi/2), self.Ts.T, 40, cmap='plasma')
+        bc = plt.pcolormesh (self.phi-pi, -(self.theta-pi/2), self.Ts.T, cmap='plasma', rasterized=True)
+
         frame.axes.xaxis.set_ticklabels([])
+        frame.axes.yaxis.set_ticklabels([])
         ticks = np.linspace (np.min(self.Ts.T), np.max(self.Ts.T), 5, endpoint=True)
         cb = plt.colorbar(bc, shrink=0.5, ticks=ticks)
         cb.formatter.set_powerlimits((0, 0))
