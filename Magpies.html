@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Magpies method list &#8212; Magpies 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Atmos method list" href="Atmos.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="magpies-method-list">
+<h1>Magpies method list<a class="headerlink" href="#magpies-method-list" title="Link to this heading">¶</a></h1>
+<p>Here we briefly describe most functions implemented in the Magpies python library.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.xg">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">xg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.xg" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Compute compactenss parameters of neutron star.</p>
+<p><span class="math notranslate nohighlight">\(x_g = 2 G M / (R c^2)\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Rns</strong> – neutron star radius [km]</p></li>
+<li><p><strong>Mns</strong> – neutron star mass [Solar mass]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>compactness parameter [uniteless]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.g14">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">g14</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.g14" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate the <strong>free fall acceleration</strong> at the surface of neutron star.</p>
+<p><span class="math notranslate nohighlight">\(g_{14} = G M / (R^2 \sqrt{1 - x_g}) / 10^{14}\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Rns</strong> – neutron star radius [km]</p></li>
+<li><p><strong>Mns</strong> – neutron star mass [Solar mass]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>free fall acceleration at the surface of neutron star [g/1e14 cm/s/s]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.compute_L">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">compute_L</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.compute_L" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate the <strong>total thermal X-ray luminosity</strong> of neutron star.</p>
+<p><span class="math notranslate nohighlight">\(L = \sigma_\mathrm{SB} R_\mathrm{NS}^2 \int_{4\pi} T_s^4 (\theta, \phi) \sin \theta d\theta d\phi\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Tmap</strong> – member of Tmap class containing surface temperature map.</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+</ul>
+</dd>
+</dl>
+<p>The thermal map can be one dimensional (in the case of axisymmetric temperature distribution) or two-dimensional.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>total thermal luminosity [erg/s]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.compute_L_param">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">compute_L_param</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.compute_L_param" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate the <strong>total thermal X-ray luminosity</strong> produced by single/two or more parameter blackbody.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> – list of areas and relative temperatures</p></li>
+<li><p><strong>Teff</strong> – effective temperature</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>total thermal luminosity [erg/s]</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>compute_L_param ([1, 1], 1e6, 12, 1.4) computes luminosity of neutron star with surface temperature 1 MK, radius 12 km and mass 1.4 solar mass</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.compute_Teff">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">compute_Teff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.compute_Teff" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate the effective temperature of neutron star.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Tmap</strong> – member of Tmap class containing surface temperature map.</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+</ul>
+</dd>
+</dl>
+<p>The thermal map can be one dimensional (in the case of axisymmetric temperature distribution) or two-dimensional.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Effective temperature [K]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.D_factor">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">D_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cospsi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.D_factor" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate the lensing factor following the article Poutanen (2020) A&amp;A 640, A24 (2020).</p>
+<p><span class="math notranslate nohighlight">\(\mathcal D = 1 + \frac{3 u^2 y^2}{112} - \frac{e}{100} uy \left[ 2 \log \left( 1 - \frac{y}{2} \right) + y \frac{1-3y/4}{1-y/2}\right]\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(u = \frac{Rg}{R_\mathrm{NS}}\)</span> and <span class="math notranslate nohighlight">\(y = 1 - \cos\psi\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cospsi</strong> – cosine of propagation angle <span class="math notranslate nohighlight">\(\cos\psi\)</span></p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dimensionless lensing factor <span class="math notranslate nohighlight">\(\mathcal D\)</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.single_BB_photons">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">single_BB_photons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.single_BB_photons" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate thermal spectra [number of photons per energy bin] emitted by neutron star with fixed surface temperature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Teff</strong> – effective temperature of neutron star [K]</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>eph</strong> – list of energies where spectra is to be calculated [keV]</p></li>
+<li><p><strong>nphot</strong> – total number of received photons</p></li>
+<li><p><strong>integ</strong> – if True it returns integer counts (0.3 means no counts in a bin), if False it returns fraction of counts as well.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>redshifted spectra [number of photons per energy bin]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.two_BB_photons">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">two_BB_photons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.two_BB_photons" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate thermal spectra [number of photons per energy bin] composed of two blackbodies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> – array of four parameters [sc, sh, pc, ph]</p></li>
+<li><p><strong>Teff</strong> – effective temperature of neutron star</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>eph</strong> – list of energies where spectra is to be calculated [keV]</p></li>
+<li><p><strong>nphot</strong> – total number of received photons</p></li>
+<li><p><strong>integ</strong> – integ = True correspond to integer result and integ = False corresponds to float result</p></li>
+</ul>
+</dd>
+<dt class="field-even">Sc<span class="colon">:</span></dt>
+<dd class="field-even"><p>fraction of total surface area covered with first hot spot</p>
+</dd>
+<dt class="field-odd">Sh<span class="colon">:</span></dt>
+<dd class="field-odd"><p>fraction of total surface area covered with second hot spot</p>
+</dd>
+<dt class="field-even">Pc<span class="colon">:</span></dt>
+<dd class="field-even"><p>temperature of first hot spot as a fraction of Teff</p>
+</dd>
+<dt class="field-odd">Ph<span class="colon">:</span></dt>
+<dd class="field-odd"><p>temperature of second hot spot as a fraction of Teff</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="field-list simple">
+<dt class="field-odd">sp<span class="colon">:</span></dt>
+<dd class="field-odd"><p>redshifted spectra [number of photons per energy bin]</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.examine_spectral_fit_1BB_photons">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">examine_spectral_fit_1BB_photons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.examine_spectral_fit_1BB_photons" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Function to examine the quality of single blackbody fit [number of photons per energy bin] in comparison the neutron star spectra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> – <dl class="field-list simple">
+<dt class="field-odd">sc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>relative area of hot region, :pc: relative temperature of hot region</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>Teff</strong> – effective temperature of neutron star [K]</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>eph</strong> – list of energies where spectra is to be calculated [keV]</p></li>
+<li><p><strong>nphot</strong> – total number of received photons</p></li>
+<li><p><strong>L</strong> – luminosity of neutron star</p></li>
+<li><p><strong>integ</strong> – if True it returns integer counts (0.3 means no counts in a bin), if False it returns fraction of counts as well.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>redshifted spectra [number of photons per energy bin]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.examine_spectral_fit_2BB_photons">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">examine_spectral_fit_2BB_photons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.examine_spectral_fit_2BB_photons" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Function to examine the quality of two blackbody fit [number of photons per energy bin] in comparison the neutron star spectra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> – <dl class="field-list simple">
+<dt class="field-odd">sc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>relative area of hot region, :pc: relative temperature of hot region</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>Teff</strong> – effective temperature of neutron star [K]</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>eph</strong> – list of energies where spectra is to be calculated [keV]</p></li>
+<li><p><strong>nphot</strong> – total number of received photons</p></li>
+<li><p><strong>L</strong> – luminosity of neutron star</p></li>
+<li><p><strong>integ</strong> – if True it returns integer counts (0.3 means no counts in a bin), if False it returns fraction of counts as well.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>redshifted spectra [number of photons per energy bin]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.Cstat_1BB">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">Cstat_1BB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.Cstat_1BB" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate C-statistics for synthetic spectra [counts per energy bin] composed of single blackbody.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sc</strong> – fraction of total surface area covered with hot spot</p></li>
+<li><p><strong>Teff</strong> – effective temperature of hot spot</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>eph</strong> – list of energies where spectra is to be calculated [keV]</p></li>
+<li><p><strong>nphot</strong> – total number of received photons</p></li>
+<li><p><strong>L</strong> – luminosity of neutron star which we try to model</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>C-stat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.Cstat_2BB">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">Cstat_2BB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.Cstat_2BB" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate C-statistics for synthetic spectra [number of photons per energy bin] composed of two blackbody.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> – array of two parameters [sc, sh, pc, ph]</p></li>
+<li><p><strong>Teff</strong> – effective temperature of neutron star</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>eph</strong> – list of energies where spectra is to be calculated [keV]</p></li>
+<li><p><strong>nphot</strong> – total number of received photons</p></li>
+<li><p><strong>L</strong> – luminosity of neutron star which we try to fit</p></li>
+</ul>
+</dd>
+<dt class="field-even">Sc<span class="colon">:</span></dt>
+<dd class="field-even"><p>fraction of total surface area covered with first hot spot</p>
+</dd>
+<dt class="field-odd">Pc<span class="colon">:</span></dt>
+<dd class="field-odd"><p>temperature of first hot spot as a fraction of Teff</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>C-stat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.fit_spectral_model_Cstat">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">fit_spectral_model_Cstat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Teff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nphot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">significance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.7</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.fit_spectral_model_Cstat" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Fit spectra [spec] with two models: (1) single blackbody model and (2) sum of two blackbody model and choose the best model using C-statistics</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Teff</strong> – effective temperature of neutron star</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>spec</strong> – spectra which we try to fit</p></li>
+<li><p><strong>eph</strong> – list of energies where spectra was calculated [keV]</p></li>
+<li><p><strong>nphot</strong> – total number of received photons</p></li>
+<li><p><strong>L</strong> – luminosity of neutron star which we try to fit</p></li>
+<li><p><strong>significance</strong> – Critical value of <span class="math notranslate nohighlight">\(\Delta C\)</span> to make a choice between single and two-blackbody model</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list [s1, s2, p1, p2, Cstat BB1, Cstat BB2]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.spectra_pole">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">spectra_pole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.spectra_pole" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate redshifted thermal spectra [erg s^-1 cm^-2 keV^-1] emitted by neutron star observed from its magnetic pole (top row of thermal map).</p>
+<p><span class="math notranslate nohighlight">\(H_E^\infty = \frac{15 \sigma_{SB}}{\pi^5 k_B^4} \int_\mathrm{viz} \frac{E^3 \cos \alpha \; \mathcal{D} \sin \theta d\theta d\phi}{\exp(E/(k_B T_s^\infty)) - 1}\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Tmap</strong> – member of Tmap class containing surface temperature map.</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>eph</strong> – list containing energy mesh <span class="math notranslate nohighlight">\(E\)</span> [keV]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="field-list simple">
+<dt class="field-odd">sp<span class="colon">:</span></dt>
+<dd class="field-odd"><p>redshifted spectra [erg s^-1 cm^-2 keV^-1]</p>
+</dd>
+<dt class="field-even">visible_map<span class="colon">:</span></dt>
+<dd class="field-even"><p>two-dimensional array which contains only the temperature distribution on visible hemisphere</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.spectra_any">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">spectra_any</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.spectra_any" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate redshifted thermal spectra [erg s^-1 cm^-2 keV^-1] emitted by neutron star observed from arbitrary orientation.</p>
+<p><span class="math notranslate nohighlight">\(H_E^\infty = \frac{15 \sigma_{SB}}{\pi^5 k_B^4} \int_\mathrm{viz} \frac{E^3 \cos \alpha \; \mathcal{D} \sin \theta d\theta d\phi}{\exp(E/(k_B T_s^\infty)) - 1}\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Tmap</strong> – member of Tmap class containing surface temperature map.</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>phase</strong> – rotational phase [radian]</p></li>
+<li><p><strong>chi</strong> – magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)</p></li>
+<li><p><strong>inc</strong> – inclination of the observer with respect to the rotational axis.</p></li>
+<li><p><strong>eph</strong> – list containing energy mesh <span class="math notranslate nohighlight">\(E\)</span> [keV]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="field-list simple">
+<dt class="field-odd">sp<span class="colon">:</span></dt>
+<dd class="field-odd"><p>redshifted spectra [erg s^-1 cm^-2 keV^-1]</p>
+</dd>
+<dt class="field-even">visible_map<span class="colon">:</span></dt>
+<dd class="field-even"><p>two-dimensional array which contains only the temperature distribution on visible hemisphere</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.lightcurve">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">lightcurve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.lightcurve" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate soft X-ray lightcurve</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Tmap</strong> – member of Tmap class containing surface temperature map.</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>phases</strong> – list of phases [radian]</p></li>
+<li><p><strong>chi</strong> – magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)</p></li>
+<li><p><strong>inc</strong> – inclination of the observer with respect to the rotational axis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Soft X-ray lightcurve in units of intensity for each rotational phase [erg/s]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.phase_resolved_spectroscopy">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">phase_resolved_spectroscopy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phases</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.phase_resolved_spectroscopy" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate phase-resolved spectroscopy for neutron star.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Tmap</strong> – member of Tmap class containing surface temperature map.</p></li>
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>phases</strong> – rotational phases [radian]</p></li>
+<li><p><strong>chi</strong> – magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)</p></li>
+<li><p><strong>inc</strong> – inclination of the observer with respect to the rotational axis.</p></li>
+<li><p><strong>eph</strong> – list energies where spectra should be computed [keV]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="field-list simple">
+<dt class="field-odd">sp<span class="colon">:</span></dt>
+<dd class="field-odd"><p>number of photons per energy bin</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.precompute_Dcos_alpha">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">precompute_Dcos_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.precompute_Dcos_alpha" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Calculate <span class="math notranslate nohighlight">\(\mathcal D \cos\alpha\)</span> factor for all points of the mesh at the neutron star surface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Rns</strong> – radius of neutron star [km]</p></li>
+<li><p><strong>Mns</strong> – mass of neutron star [Solar mass]</p></li>
+<li><p><strong>chi</strong> – magnetic obliquity angle (angle between orientation of original dipolar magnetic field - top of the surface thermal map)</p></li>
+<li><p><strong>inc</strong> – inclination of the observer with respect to the rotational axis.</p></li>
+<li><p><strong>phase</strong> – rotational phase [radian]</p></li>
+<li><p><strong>phi1</strong> – list of magnetic longuitudets [radians] where Tmap is provided</p></li>
+<li><p><strong>theta1</strong> – list magnetic latitude [radians] where Tmap is provided</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>array of <span class="math notranslate nohighlight">\(\mathcal D \cos\alpha\)</span> factors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="magpies.flux_to_photons">
+<span class="sig-prename descclassname"><span class="pre">magpies.</span></span><span class="sig-name descname"><span class="pre">flux_to_photons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nph</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#magpies.flux_to_photons" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Convert fluxes into number of photons</p>
+<p><span class="math notranslate nohighlight">\(N_\mathrm{phot} = \frac{F}{E}\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>flx</strong> – spectral fluxes […]</p></li>
+<li><p><strong>eph</strong> – mesh of energies [keV]</p></li>
+<li><p><strong>nph</strong> – total number of photons received by X-ray telescope.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>number of photons per energy bin</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Magpies</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Tutorials.html">Magpies tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Atmos.html">Atmos method list</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Magpies method list</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.xg"><code class="docutils literal notranslate"><span class="pre">xg()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.g14"><code class="docutils literal notranslate"><span class="pre">g14()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.compute_L"><code class="docutils literal notranslate"><span class="pre">compute_L()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.compute_L_param"><code class="docutils literal notranslate"><span class="pre">compute_L_param()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.compute_Teff"><code class="docutils literal notranslate"><span class="pre">compute_Teff()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.D_factor"><code class="docutils literal notranslate"><span class="pre">D_factor()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.single_BB_photons"><code class="docutils literal notranslate"><span class="pre">single_BB_photons()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.two_BB_photons"><code class="docutils literal notranslate"><span class="pre">two_BB_photons()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.examine_spectral_fit_1BB_photons"><code class="docutils literal notranslate"><span class="pre">examine_spectral_fit_1BB_photons()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.examine_spectral_fit_2BB_photons"><code class="docutils literal notranslate"><span class="pre">examine_spectral_fit_2BB_photons()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.Cstat_1BB"><code class="docutils literal notranslate"><span class="pre">Cstat_1BB()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.Cstat_2BB"><code class="docutils literal notranslate"><span class="pre">Cstat_2BB()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.fit_spectral_model_Cstat"><code class="docutils literal notranslate"><span class="pre">fit_spectral_model_Cstat()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.spectra_pole"><code class="docutils literal notranslate"><span class="pre">spectra_pole()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.spectra_any"><code class="docutils literal notranslate"><span class="pre">spectra_any()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.lightcurve"><code class="docutils literal notranslate"><span class="pre">lightcurve()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.phase_resolved_spectroscopy"><code class="docutils literal notranslate"><span class="pre">phase_resolved_spectroscopy()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.precompute_Dcos_alpha"><code class="docutils literal notranslate"><span class="pre">precompute_Dcos_alpha()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magpies.flux_to_photons"><code class="docutils literal notranslate"><span class="pre">flux_to_photons()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Atmos.html" title="previous chapter">Atmos method list</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2023-2024, Dr Andrei P. Igoshev.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/Magpies.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

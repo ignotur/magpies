@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Atmos method list &#8212; Magpies 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Magpies method list" href="Magpies.html" />
+    <link rel="prev" title="Phased-resolved spectroscopy" href="Phased_resolved_spectroscopy.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="atmos-method-list">
+<h1>Atmos method list<a class="headerlink" href="#atmos-method-list" title="Link to this heading">¶</a></h1>
+<p>A selection of functions to model temperature distribution over the neutron star surface</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="atmos.Tmap.__init__">
+<span class="sig-prename descclassname"><span class="pre">atmos.Tmap.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'zero'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ntheta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nphi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">99</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ns_atm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#atmos.Tmap.__init__" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>This class allows to generate and store a surface thermal map efficiently.
+Depending on provided arguments the bevaviour of the class initialisation differs.
+The thermal map is stored as Ts[<span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\(\theta\)</span>]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>usage</strong> – text string which determines the class behaviour:</p>
+</dd>
+</dl>
+<p><strong>‘zero’</strong> surface temperatures are zero and map is defined at magnetic latitudes <span class="math notranslate nohighlight">\(\theta_i\)</span> 
+and longuitudes <span class="math notranslate nohighlight">\(\phi_i\)</span>. This is useful when the surface temperature map is simply composed of
+a few compact hot regions which can be edited after the surface thermal map is created.</p>
+<p><strong>‘NS_atm’</strong> member of NS_atmosphere class is provided as an optional argument. The surface thermal
+map is defined at uniform grid of magnetic latitudes with Ntheta grid points and Nphi longuitudes.</p>
+<p><strong>‘Ts’</strong> list of magnetic latitudes and longuitudes as well as list of respective temeperature is 
+directly provided as arguments of the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Ntheta</strong> – number of grid points for magnetic latitudes</p></li>
+<li><p><strong>Nphi</strong> – number of grid points for magnetic longuitudes</p></li>
+<li><p><strong>theta</strong> – list magnetic latitude [radians] where Tmap is provided</p></li>
+<li><p><strong>phi</strong> – list of magnetic longuitudets [radians] where Tmap is provided</p></li>
+<li><p><strong>Ts</strong> – the surface thermal map [K]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Ns_atm<span class="colon">:</span></dt>
+<dd class="field-even"><p>class member of NS_atmosphere</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class member</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="atmos.Tmap.plot_Ts">
+<span class="sig-prename descclassname"><span class="pre">atmos.Tmap.</span></span><span class="sig-name descname"><span class="pre">plot_Ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#atmos.Tmap.plot_Ts" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Plot the surface temperature distrubituion using Aitoff projection</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> – store the figure using filename</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="atmos.NS_atmosphere">
+<span class="sig-prename descclassname"><span class="pre">atmos.</span></span><span class="sig-name descname"><span class="pre">NS_atmosphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#atmos.NS_atmosphere" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Class which simulates or stores the surface temperature distribution for different types of magnetised atmospheres</p>
+<p>OUTPUT: class member describing the surface temperature distribution</p>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="atmos.NS_atmosphere.__init__">
+<span class="sig-prename descclassname"><span class="pre">atmos.NS_atmosphere.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#atmos.NS_atmosphere.__init__" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Initialise the class member with physical parameters of the neutron star</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g14</strong> – is free fall acceleration at the NS surface in units of g/1e14 cm/s/s</p></li>
+<li><p><strong>Tb</strong> – is the temperature in deep layers in units of Kelvin</p></li>
+<li><p><strong>B</strong> – is the pole magnetic field in units of Gauss</p></li>
+<li><p><strong>model_name</strong> – is the fit type for surface temperature distribution, options are as the following:</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Potekhin_2015</strong> is for Potekhin, Pons &amp; Page (2015) <a class="footnote-reference brackets" href="#id6" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> for iron envelope</p>
+<p><strong>Potekhin_2003_iron</strong> is for Potekhin, Yakovlev, Chabrier &amp; Gnedin (2003) <a class="footnote-reference brackets" href="#id7" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> for iron envelope, same as <a class="footnote-reference brackets" href="#id8" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p>
+<p><strong>Potekhin_Yakovlev_2001_iron</strong> is for Potekhin &amp; Yakovlev (2001) <a class="footnote-reference brackets" href="#id9" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a> for iron envelope</p>
+<p><strong>Potekhin_2003_accr</strong> is for Potekhin, Yakovlev, Chabrier &amp; Gnedin (2003) <a class="footnote-reference brackets" href="#id7" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> for fully accreted envelope</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>class member</p>
+</dd>
+<dt class="field-even">References<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id6" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Potekhin, Pons &amp; Page (2015), Space Science Reviews, Volume 191, Issue 1-4, pp. 239-291 <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2015SSRv..191..239P/abstract">https://ui.adsabs.harvard.edu/abs/2015SSRv..191..239P/abstract</a></p>
+</aside>
+<aside class="footnote brackets" id="id7" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id5">2</a>)</span>
+<p>Potekhin, Yakovlev, Chabrier &amp; Gnedin (2003), The Astrophysical Journal, Volume 594, Issue 1, pp. 404-418 <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2003ApJ...594..404P/abstract">https://ui.adsabs.harvard.edu/abs/2003ApJ…594..404P/abstract</a></p>
+</aside>
+<aside class="footnote brackets" id="id8" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p>Beznogov, Potekhin &amp; Yakovlev (2021), Physics Reports, Volume 919, p. 1-68 <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2021PhR...919....1B/abstract">https://ui.adsabs.harvard.edu/abs/2021PhR…919….1B/abstract</a></p>
+</aside>
+<aside class="footnote brackets" id="id9" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">4</a><span class="fn-bracket">]</span></span>
+<p>Potekhin &amp; Yakovlev (2001) Astronomy and Astrophysics, v.374, p.213-226 (2001) <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2001A%26A...374..213P/abstract">https://ui.adsabs.harvard.edu/abs/2001A%26A…374..213P/abstract</a></p>
+</aside>
+</aside>
+</dd></dl>
+
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="atmos.NS_atmosphere.Ts">
+<span class="sig-prename descclassname"><span class="pre">atmos.NS_atmosphere.</span></span><span class="sig-name descname"><span class="pre">Ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#atmos.NS_atmosphere.Ts" title="Link to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Describes the dependance of the surface temperature distribution on magnetic latitude</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>theta</strong> – [radians] is magnetic latitude</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>surface temperature [Kelvins] at locations prescribed by specifiying magnetic latitude</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Magpies</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Tutorials.html">Magpies tutorials</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Atmos method list</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#atmos.Tmap.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#atmos.Tmap.plot_Ts"><code class="docutils literal notranslate"><span class="pre">plot_Ts()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#atmos.NS_atmosphere"><code class="docutils literal notranslate"><span class="pre">NS_atmosphere()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#atmos.NS_atmosphere.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#atmos.NS_atmosphere.Ts"><code class="docutils literal notranslate"><span class="pre">Ts()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Magpies.html">Magpies method list</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Phased_resolved_spectroscopy.html" title="previous chapter">Phased-resolved spectroscopy</a></li>
+      <li>Next: <a href="Magpies.html" title="next chapter">Magpies method list</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2023-2024, Dr Andrei P. Igoshev.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/Atmos.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

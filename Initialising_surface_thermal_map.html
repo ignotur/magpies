@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Initialising the surface thermal map &#8212; Magpies 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Lightcurve produced by two opposite hotspots" href="Lightcurve_two_hot_spots.html" />
+    <link rel="prev" title="Simple example for computing spectra and lightcurve" href="Simple_example.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="initialising-the-surface-thermal-map">
+<span id="temp"></span><h1>Initialising the surface thermal map<a class="headerlink" href="#initialising-the-surface-thermal-map" title="Link to this heading">¶</a></h1>
+<p>The code provides a few distinct ways to create surface thermal map.
+Here we consider all important options.</p>
+<section id="using-ns-atmospheric-model">
+<h2>Using NS atmospheric model<a class="headerlink" href="#using-ns-atmospheric-model" title="Link to this heading">¶</a></h2>
+<p>The simplest way to initialise a new surface temperature distribution
+is by using a numerical fit which relates deep crust temperature with the top of the
+atmosphere temperature assuming axi-symmetric dipolar magnetic field.
+These theoretical fits are implemented in <a class="reference internal" href="Atmos.html#atmos.NS_atmosphere" title="atmos.NS_atmosphere"><code class="xref py py-mod docutils literal notranslate"><span class="pre">atmos.NS_atmosphere</span></code></a>
+class. We start with importing python packages which will be required.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">magpies</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">atmos</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>After this we choose essential parameters of the neutron star such as its radius, mass (to compute
+compactness), deep crust temperature and strength of the polar magnetic field.
+We additionally compute the free fall acceleration for selected radius and mass using
+method <a class="reference internal" href="Magpies.html#magpies.g14" title="magpies.g14"><code class="xref py py-mod docutils literal notranslate"><span class="pre">magpies.g14</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Rns</span> <span class="o">=</span> <span class="mi">12</span>  <span class="c1">## km</span>
+<span class="n">Mns</span> <span class="o">=</span> <span class="mf">1.4</span> <span class="c1">## M_solar</span>
+<span class="n">Tb</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">7.1730</span><span class="p">)</span>  <span class="c1">## K</span>
+<span class="n">Bp</span> <span class="o">=</span> <span class="mf">1e11</span> <span class="c1">## G</span>
+<span class="n">g14c</span> <span class="o">=</span> <span class="n">g14</span> <span class="p">(</span><span class="n">Rns</span><span class="p">,</span> <span class="n">Mns</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we have all required parameters to initialise the <a class="reference internal" href="Atmos.html#atmos.NS_atmosphere" title="atmos.NS_atmosphere"><code class="xref py py-mod docutils literal notranslate"><span class="pre">atmos.NS_atmosphere</span></code></a> class.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">atm_iron_2003</span> <span class="o">=</span> <span class="n">NS_atmosphere</span> <span class="p">(</span><span class="s1">&#39;Potekhin_2003_iron&#39;</span><span class="p">,</span> <span class="n">g14c</span><span class="p">,</span> <span class="n">Tb</span><span class="p">,</span> <span class="n">Bp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We will pass the member of this class to our <code class="xref py py-mod docutils literal notranslate"><span class="pre">atmos.Tmap</span></code> class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Tm</span> <span class="o">=</span> <span class="n">Tmap</span> <span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="s1">&#39;NS_atm&#39;</span><span class="p">,</span> <span class="n">ns_atm</span><span class="o">=</span><span class="n">atm_iron_2003</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This class creates thermal map using the atmospheric model and <span class="math notranslate nohighlight">\(N_\theta = 100\)</span> and <span class="math notranslate nohighlight">\(N_\phi = 99\)</span> by default.
+It is possible to pass different mesh size as the argument.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Tm</span> <span class="o">=</span> <span class="n">Tmap</span> <span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="s1">&#39;NS_atm&#39;</span><span class="p">,</span> <span class="n">ns_atm</span><span class="o">=</span><span class="n">atm_iron_2003</span><span class="p">,</span> <span class="n">Ntheta</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">Nphi</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The result is the class member which contains the following components: Ts, theta, phi. The Tm.Ts is
+two dimensional array containing temperatures at each point of the grid, theta and phi are
+one dimensional arrays containing latitudes and longuitudes of grid points. This class
+also has a method <code class="xref py py-mod docutils literal notranslate"><span class="pre">atmos.Tmap.Ts</span></code> which allows to plot and store the
+surface thermal map in Aitoff projection.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Tm</span><span class="o">.</span><span class="n">plot_Ts</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/Ts_71_11.png" src="_images/Ts_71_11.png" />
+</section>
+<section id="creating-isolated-hot-spots">
+<h2>Creating isolated hot spots<a class="headerlink" href="#creating-isolated-hot-spots" title="Link to this heading">¶</a></h2>
+<p>Isolated hot spots can be created by direcly editing Tm.Ts array. So,
+it is possible to initialise empy <code class="xref py py-mod docutils literal notranslate"><span class="pre">atmos.Tmap</span></code> class with necessary size and add
+a hot region <span class="math notranslate nohighlight">\(T = 10^6\)</span> K close to the pole.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Tm</span> <span class="o">=</span> <span class="n">Tmap</span> <span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="s1">&#39;zero&#39;</span><span class="p">,</span>  <span class="n">Ntheta</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">Nphi</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">Tm</span><span class="o">.</span><span class="n">Ts</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e6</span>
+<span class="n">Tm</span><span class="o">.</span><span class="n">plot_Ts</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/Ts_single_hot_spot.png" src="_images/Ts_single_hot_spot.png" />
+<p>Here we work with low resolution surface thermal map that is why the single pixel hot spot seems relatively large.
+Poisiton and size of hot spots needs to be coordinated with the surface thermal map resolution.</p>
+</section>
+<section id="constracting-the-surface-thermal-map">
+<h2>Constracting the surface thermal map<a class="headerlink" href="#constracting-the-surface-thermal-map" title="Link to this heading">¶</a></h2>
+<p>If a surface thermal map is stored in some external
+file, it is possible to pass this map as parameters
+while creating the <code class="xref py py-mod docutils literal notranslate"><span class="pre">atmos.Tmap</span></code> class.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Tm</span> <span class="o">=</span> <span class="n">Tmap</span> <span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="s1">&#39;Ts&#39;</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta_list</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi_list</span><span class="p">,</span> <span class="n">Ts</span> <span class="o">=</span> <span class="n">Ts</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The array storing the map should have the following structure <span class="math notranslate nohighlight">\(\mathrm{Ts}[\phi, \theta]\)</span>.
+All functions assume that surface mesh is uniform.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Magpies</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Tutorials.html">Magpies tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Simple_example.html">Simple example for computing spectra and lightcurve</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Initialising the surface thermal map</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-ns-atmospheric-model">Using NS atmospheric model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-isolated-hot-spots">Creating isolated hot spots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constracting-the-surface-thermal-map">Constracting the surface thermal map</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Lightcurve_two_hot_spots.html">Lightcurve produced by two opposite hotspots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Fit_spectra_bb.html">Fitting X-ray lightcurve with blackbody model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Collection_of_lightcurves.html">Prepare lightcurves for different neutron star orientations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Phased_resolved_spectroscopy.html">Phased-resolved spectroscopy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Atmos.html">Atmos method list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Magpies.html">Magpies method list</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="Tutorials.html">Magpies tutorials</a><ul>
+      <li>Previous: <a href="Simple_example.html" title="previous chapter">Simple example for computing spectra and lightcurve</a></li>
+      <li>Next: <a href="Lightcurve_two_hot_spots.html" title="next chapter">Lightcurve produced by two opposite hotspots</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2023-2024, Dr Andrei P. Igoshev.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/Initialising_surface_thermal_map.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
