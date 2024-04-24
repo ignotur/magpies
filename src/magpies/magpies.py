@@ -1426,6 +1426,30 @@ def flux_to_photons (flx, eph, nph):
     return res
 
 
+def flux_to_photons_lightcurve (flx, phases, nph):
+
+    """
+    |
+
+    Convert fluxes into number of photons for a lightcurve
+
+    :math:`N_\\mathrm{phot} = \\frac{F}{\\Phi}`
+
+    :param flx: spectral fluxes [...]
+    :param eph: mesh of phases [rad]
+    :param nph: total number of photons received by X-ray telescope.
+
+    :returns: number of photons per rotational phase
+
+
+    """
+
+    Np = np.asarray(flx) / np.sum(flx)
+
+    res = np.asarray(Np * nph)
+
+    return res
+
 
 
 
